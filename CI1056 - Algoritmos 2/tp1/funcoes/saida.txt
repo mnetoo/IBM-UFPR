@@ -1,0 +1,703 @@
+
+                                    Bem-vindo ao Trabalho Prático da disciplina de Algoritmos II!
+                                    Aqui você verá a implementação de algoritmos de ordenação e busca.
+
+Selecione a operação desejada:
+
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 1
+
+Vetor gerado com sucesso...
+Digite o tamanho do vetor que deseja visualizar: 10
+520 1129 1484 520 571 1580 780 152 1796 1972 
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 2
+
+Gerar Vetor? (1. Sim / 2. Não):
+1
+
+Deseja visualizar o vetor gerado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+344 1507 1278 1760 316 789 1944 826 1541 91 
+
+
+Executando QuickSort com Pivô Último...
+
+[QuickSort - Pivô Último] Contagem de trocas: 5147
+[QuickSort - Pivô Último] Contagem de comparações: 10754
+
+Deseja imprimir o vetor ordenado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+0 2 3 8 9 11 11 15 16 18 
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 2
+
+Gerar Vetor? (1. Sim / 2. Não):
+2
+
+Executando QuickSort com Pivô Último...
+
+[QuickSort - Pivô Último] Contagem de trocas: 10489
+[QuickSort - Pivô Último] Contagem de comparações: 21951
+
+Deseja imprimir o vetor ordenado? (1. Sim / 2. Não):
+2
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 3
+
+Gerar Vetor? (1. Sim / 2. Não):
+1
+
+Deseja visualizar o vetor gerado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+1782 1856 1343 229 1547 829 1078 952 647 317 
+
+Executando QuickSort com Mediana de Três...
+
+[QuickSort - Pivô Mediana de Três] Contagem de trocas: 7022
+[QuickSort - Pivô Mediana de Três] Contagem de comparações: 10140
+
+Deseja imprimir o vetor ordenado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+0 1 1 1 2 5 7 8 10 12 
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 3
+
+Gerar Vetor? (1. Sim / 2. Não):
+2
+
+Executando QuickSort com Mediana de Três...
+
+[QuickSort - Pivô Mediana de Três] Contagem de trocas: 6021
+[QuickSort - Pivô Mediana de Três] Contagem de comparações: 9390
+
+Deseja imprimir o vetor ordenado? (1. Sim / 2. Não):
+2
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 4
+
+Gerar Vetor? (1. Sim / 2. Não):
+1
+
+Deseja visualizar o vetor gerado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+124 1287 1043 1838 320 101 1962 225 203 1523 
+
+Executando ShellSort com Sequência de Knuth...
+
+[ShellSort - Sequência de Knuth] Contagem de trocas: 3490
+[ShellSort - Sequência de Knuth] Contagem de comparações: 14452
+
+Deseja imprimir o vetor ordenado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+1 3 3 4 4 6 7 8 9 9 
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 4
+
+Gerar Vetor? (1. Sim / 2. Não):
+2
+
+Executando ShellSort com Sequência de Knuth...
+
+[ShellSort - Sequência de Knuth] Contagem de trocas: 3514
+[ShellSort - Sequência de Knuth] Contagem de comparações: 14302
+
+Deseja imprimir o vetor ordenado? (1. Sim / 2. Não):
+2
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 5
+
+Gerar Vetor? (1. Sim / 2. Não):
+1
+
+Deseja visualizar o vetor gerado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+756 672 902 778 1385 90 1053 145 1697 1405 
+
+Executando ShellSort com Sequência de Hibbard...
+
+[ShellSort - Sequência de Hibbard] Contagem de trocas: 8204
+[ShellSort - Sequência de Hibbard] Contagem de comparações: 14409
+
+Deseja imprimir o vetor ordenado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+3 6 10 28 29 30 34 35 37 42 
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 5
+
+Gerar Vetor? (1. Sim / 2. Não):
+2
+
+Executando ShellSort com Sequência de Hibbard...
+
+[ShellSort - Sequência de Hibbard] Contagem de trocas: 8204
+[ShellSort - Sequência de Hibbard] Contagem de comparações: 15704
+
+Deseja imprimir o vetor ordenado? (1. Sim / 2. Não):
+2
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 6
+
+Gerar Vetor? (1. Sim / 2. Não):
+1
+
+Deseja visualizar o vetor gerado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+1174 826 370 1163 81 238 41 921 97 1686 
+
+Executando SelectionSort...
+
+[SelectionSort] Contagem de trocas: 1018
+[SelectionSort] Contagem de comparações: 523776
+
+Deseja imprimir o vetor ordenado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+0 0 2 7 8 11 13 19 20 25 
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 6
+
+Gerar Vetor? (1. Sim / 2. Não):
+2
+
+Executando SelectionSort...
+
+[SelectionSort] Contagem de trocas: 1012
+[SelectionSort] Contagem de comparações: 523776
+
+Deseja imprimir o vetor ordenado? (1. Sim / 2. Não):
+2
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 7
+
+Gerar Vetor? (1. Sim / 2. Não):
+1
+
+Deseja visualizar o vetor gerado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+2005 150 1594 941 1026 1858 817 449 182 1099 
+
+Executando Busca Sequencial...
+Escolha uma opção: 
+1. Digitar um número para buscar
+2. Gerar um número aleatório para buscar
+Opção: 1
+
+Digite o número a ser buscado: 18
+Elemento 18 não encontrado no vetor após 1024 comparações.
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 7
+
+Gerar Vetor? (1. Sim / 2. Não):
+1
+
+Deseja visualizar o vetor gerado? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+573 325 841 549 791 1046 422 1212 900 954 
+
+Executando Busca Sequencial...
+Escolha uma opção:
+1. Digitar um número para buscar
+2. Gerar um número aleatório para buscar
+Opção: 2
+Número gerado aleatoriamente para busca: 703
+Elemento 703 não encontrado no vetor após 1024 comparações.
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 7
+
+Gerar Vetor? (1. Sim / 2. Não):
+2
+
+Executando Busca Sequencial...
+Escolha uma opção:
+1. Digitar um número para buscar
+2. Gerar um número aleatório para buscar
+Opção: 1
+
+Digite o número a ser buscado: 18
+Elemento 18 não encontrado no vetor após 1024 comparações.
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 7
+
+Gerar Vetor? (1. Sim / 2. Não):
+2
+
+Executando Busca Sequencial...
+Escolha uma opção:
+1. Digitar um número para buscar
+2. Gerar um número aleatório para buscar
+Opção: 2
+
+Número gerado aleatoriamente para busca: 1545
+Elemento 1545 não encontrado no vetor após 1024 comparações.
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 8
+
+Gerar Vetor? (1. Sim / 2. Não):
+1
+
+Deseja visualizar o vetor gerado (Ordenado)? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+0 2 2 2 6 10 10 11 12 17 
+
+Executando Busca Binária...
+Escolha uma opção para a busca binária:
+1 - Digitar o elemento a ser buscado
+2 - Gerar aleatoriamente o elemento a ser buscado
+Opção: 1
+
+Digite o elemento a ser buscado: 18
+Elemento não encontrado no vetor.
+Número de comparações realizadas: 10
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 8
+
+Gerar Vetor? (1. Sim / 2. Não):
+1
+
+Deseja visualizar o vetor gerado (Ordenado)? (1. Sim / 2. Não):
+1
+
+Digite o tamanho do vetor que deseja visualizar: 10
+4 12 15 19 22 26 27 29 35 41 
+
+Executando Busca Binária...
+Escolha uma opção para a busca binária:
+1 - Digitar o elemento a ser buscado
+2 - Gerar aleatoriamente o elemento a ser buscado
+Opção: 2
+
+Elemento gerado aleatoriamente: 894
+Elemento não encontrado no vetor.
+Número de comparações realizadas: 10
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 8
+
+Gerar Vetor? (1. Sim / 2. Não):
+2
+
+Executando Busca Binária...
+Escolha uma opção para a busca binária:
+1 - Digitar o elemento a ser buscado
+2 - Gerar aleatoriamente o elemento a ser buscado
+Opção: 1
+
+Digite o elemento a ser buscado: 18
+Elemento não encontrado no vetor.
+Número de comparações realizadas: 10
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 8
+
+Gerar Vetor? (1. Sim / 2. Não):
+2
+
+Executando Busca Binária...
+Escolha uma opção para a busca binária:
+1 - Digitar o elemento a ser buscado
+2 - Gerar aleatoriamente o elemento a ser buscado
+Opção: 2
+
+Elemento gerado aleatoriamente: 1623
+Elemento encontrado na posição: 805
+Número de comparações realizadas: 9
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 9
+
+Executando TODOS os algoritmos 1000 vezes...
+Resultados das Comparações após 1000 execuções:
+
+QuickSort (Pivô Último): Média = 11318.16
+QuickSort (Pivô Último): Desvio Padrão = 658.06
+QuickSort (Pivô Último): Total = 11318156
+____________________________________________________________________________
+
+QuickSort (Pivô Mediana de Três): Média = 9649.95, 
+QuickSort (Pivô Mediana de Três): Desvio Padrão = 344.28
+QuickSort (Pivô Mediana de Três): Total = 9649953
+____________________________________________________________________________
+
+ShellSort (Sequência de Knuth): Média = 14172.91
+ShellSort (Sequência de Knuth): Desvio Padrão = 461.24
+ShellSort (Sequência de Knuth): Total = 14172911
+____________________________________________________________________________
+
+ShellSort (Sequência de Hibbard): Média = 14963.91
+ShellSort (Sequência de Hibbard): Desvio Padrão = 390.93
+ShellSort (Sequência de Hibbard): Total = 14963911
+____________________________________________________________________________
+
+SelectionSort: Média = 523776.00
+SelectionSort: Desvio Padrão = 0.00
+SelectionSort: Total = 523776000
+____________________________________________________________________________
+
+Busca Sequencial: Média = 798.20
+Busca Sequencial: Desvio Padrão = 334.04
+Busca Sequencial: Total = 798197
+____________________________________________________________________________
+
+Busca Binária: Média = 9.52
+Busca Binária: Desvio Padrão = 1.08
+Busca Binária: Total = 9523
+____________________________________________________________________________
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 9
+
+Executando TODOS os algoritmos 1000 vezes...
+Resultados das Comparações após 1000 execuções:
+
+QuickSort (Pivô Último): Média = 11286.05
+QuickSort (Pivô Último): Desvio Padrão = 623.97
+QuickSort (Pivô Último): Total = 11286049
+____________________________________________________________________________
+
+QuickSort (Pivô Mediana de Três): Média = 9645.00, 
+QuickSort (Pivô Mediana de Três): Desvio Padrão = 345.38
+QuickSort (Pivô Mediana de Três): Total = 9644999
+____________________________________________________________________________
+
+ShellSort (Sequência de Knuth): Média = 14181.77
+ShellSort (Sequência de Knuth): Desvio Padrão = 459.67
+ShellSort (Sequência de Knuth): Total = 14181768
+____________________________________________________________________________
+
+ShellSort (Sequência de Hibbard): Média = 14945.10
+ShellSort (Sequência de Hibbard): Desvio Padrão = 381.28
+ShellSort (Sequência de Hibbard): Total = 14945097
+____________________________________________________________________________
+
+SelectionSort: Média = 523776.00
+SelectionSort: Desvio Padrão = 0.00
+SelectionSort: Total = 523776000
+____________________________________________________________________________
+
+Busca Sequencial: Média = 822.29
+Busca Sequencial: Desvio Padrão = 313.37
+Busca Sequencial: Total = 822287
+____________________________________________________________________________
+
+Busca Binária: Média = 9.49
+Busca Binária: Desvio Padrão = 1.13
+Busca Binária: Total = 9495
+____________________________________________________________________________
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 9
+
+Executando TODOS os algoritmos 1000 vezes...
+Resultados das Comparações após 1000 execuções:
+
+QuickSort (Pivô Último): Média = 11313.62
+QuickSort (Pivô Último): Desvio Padrão = 672.62
+QuickSort (Pivô Último): Total = 11313625
+____________________________________________________________________________
+
+QuickSort (Pivô Mediana de Três): Média = 9648.94, 
+QuickSort (Pivô Mediana de Três): Desvio Padrão = 363.33
+QuickSort (Pivô Mediana de Três): Total = 9648937
+____________________________________________________________________________
+
+ShellSort (Sequência de Knuth): Média = 14202.78
+ShellSort (Sequência de Knuth): Desvio Padrão = 457.45
+ShellSort (Sequência de Knuth): Total = 14202785
+____________________________________________________________________________
+
+ShellSort (Sequência de Hibbard): Média = 14937.35
+ShellSort (Sequência de Hibbard): Desvio Padrão = 377.95
+ShellSort (Sequência de Hibbard): Total = 14937348
+____________________________________________________________________________
+
+SelectionSort: Média = 523776.00
+SelectionSort: Desvio Padrão = 0.00
+SelectionSort: Total = 523776000
+____________________________________________________________________________
+
+Busca Sequencial: Média = 789.35
+Busca Sequencial: Desvio Padrão = 334.52
+Busca Sequencial: Total = 789351
+____________________________________________________________________________
+
+Busca Binária: Média = 9.52
+Busca Binária: Desvio Padrão = 1.22
+Busca Binária: Total = 9515
+____________________________________________________________________________
+
+0. Sair
+1. Gerar Vetor
+2. QuickSort - Pivô Último
+3. QuickSort - Pivô Mediana de Três
+4. ShellSort - Sequência de Knuth
+5. ShellSort - Sequência de Hibbard
+6. SelectionSort - Quadrático
+7. Busca Sequencial
+8. Busca Binária
+9. Executar todos os algoritmos 1000 vezes
+
+Digite a opção desejada: 0
+Saindo do programa...
