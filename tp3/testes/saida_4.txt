@@ -1,0 +1,5 @@
+VETOR = -3/2 -2 -1 4 -1 0 
+VETOR = -3/2 -2 -1 4 -1 0 
+VETOR = -2 -3/2 -1 -1 0 4 
+SOMA = -3/2
+VETOR = NULL NULL NULL NULL NULL NULL 

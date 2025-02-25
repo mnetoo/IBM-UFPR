@@ -1,0 +1,5 @@
+VETOR = NaN NaN NaN NaN NaN NaN 
+VETOR = 
+VETOR = 
+SOMA = 0
+VETOR = 

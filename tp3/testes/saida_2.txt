@@ -1,0 +1,5 @@
+VETOR = 1 -8/3 NaN NaN NaN NaN 
+VETOR = 1 -8/3 
+VETOR = -8/3 1 
+SOMA = -5/3
+VETOR = NULL NULL 
