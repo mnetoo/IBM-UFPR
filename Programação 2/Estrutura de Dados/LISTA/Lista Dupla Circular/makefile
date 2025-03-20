@@ -5,7 +5,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -O2 -std=c99
 
 # Nome do executável
-TARGET = SIMPLES_CIRCULAR
+TARGET = DUPLA_CIRCULAR
 
 # Arquivos fonte
 SRCS = main.c lista_circular.c
