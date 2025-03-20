@@ -1,0 +1,96 @@
+Criando lista:
+L1: [  ] (0 itens)
+
+Inserindo itens:
+Inserindo 5 no início
+L1: [ 5 ] (1 item)
+Inserindo 6 no início
+L1: [ 6 5 ] (2 itens)
+Inserindo 7 no início
+L1: [ 7 6 5 ] (3 itens)
+Inserindo 6 no fim
+L1: [ 7 6 5 6 ] (4 itens)
+Inserindo 7 no fim
+L1: [ 7 6 5 6 7 ] (5 itens)
+Inserindo 8 no fim
+L1: [ 7 6 5 6 7 8 ] (6 itens)
+Inserindo 1 no meio (posição 3)
+L1: [ 7 6 5 1 6 7 8 ] (7 itens)
+Inserindo 2 no meio (posição 3)
+L1: [ 7 6 5 2 1 6 7 8 ] (8 itens)
+Inserindo 3 no meio (posição 4)
+L1: [ 7 6 5 2 3 1 6 7 8 ] (9 itens)
+
+Consultando posições:
+L1: [ 7 6 5 2 3 1 6 7 8 ] (9 itens)
+Valor na posição 0: 7
+Valor na posição 1: 6
+Valor na posição 2: 5
+Valor na posição 3: 2
+Valor na posição 4: 3
+Valor na posição 5: 1
+Valor na posição 6: 6
+Valor na posição 7: 7
+Valor na posição 8: 8
+Valor na posição 9: não encontrado
+
+Procurando valores:
+L1: [ 7 6 5 2 3 1 6 7 8 ] (9 itens)
+Posição do valor 4: não encontrado
+Posição do valor 5: 2
+Posição do valor 6: 1
+Posição do valor 7: 0
+Posição do valor 8: 8
+Posição do valor 9: não encontrado
+
+Retirando itens:
+L1: [ 7 6 5 2 3 1 6 7 8 ] (9 itens)
+Retirou valor 7 do início
+L1: [ 6 5 2 3 1 6 7 8 ] (8 itens)
+Retirou valor 6 da posição 5
+L1: [ 6 5 2 3 1 7 8 ] (7 itens)
+Retirou valor 8 do fim
+L1: [ 6 5 2 3 1 7 ] (6 itens)
+
+Esvaziando a lista:
+L1: [ 6 5 2 3 1 7 ] (6 itens)
+Retirou 6
+L1: [ 5 2 3 1 7 ] (5 itens)
+Retirou 5
+L1: [ 2 3 1 7 ] (4 itens)
+Retirou 2
+L1: [ 3 1 7 ] (3 itens)
+Retirou 3
+L1: [ 1 7 ] (2 itens)
+Retirou 1
+L1: [ 7 ] (1 item)
+Retirou 7
+L1: [  ] (0 itens)
+Lista vazia!
+
+Destruindo a lista:
+
+Testando com lista imensa (1000000 itens):
+
+Inserindo itens:
+L2: [  ] (0 itens)
+Inserindo 1000000 itens no final
+Tamanho da lista: 1000000 itens
+
+Consultando posições:
+Valor na posição 0: 0
+Valor na posição -1: 999999
+Valor na posição 500000: 500000
+Valor na posição 1000001: não encontrado
+
+Procurando valores:
+Posição do valor 3715: 3715
+Posição do valor -2: não encontrado
+Posição do valor 500000: 500000
+Posição do valor 1000001: não encontrado
+
+Destruindo a lista:
+
+Testando operações com parâmetros inválidos:
+
+Agora falta analisar no Valgrind

@@ -1,0 +1,18 @@
+quantidade de maquinas  = machines
+
+numero de rodadas durante um dia  = rounds
+
+maquina:
+	id (a partir de 1)
+	probality (1 ate 100), inicia com 5
+	
+conjunto de maquinas disponiveis dever ser implementada com LISTA CIRCULAR DUPLAMENTE ENCADEADA
+
+maquina aleatorio que contenha uma pelucia = machine_place
+	representa o numero de passos a ser dado na lista de maquinas com pelucia disponivel
+	jogador sobre qual maquina jogar
+
+tentativa do jogador 0 a 100 aleatorio = machine_attempt
+
+
+jogador começa pela maquina com menor id e analisa linearmente ate decidir
