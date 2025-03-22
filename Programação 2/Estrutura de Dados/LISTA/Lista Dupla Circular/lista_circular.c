@@ -70,18 +70,18 @@ void inserir_lista(lista* lista, int valor)
 
 
 
-int remover_lista(lista* lista)
+int remover_lista(lista* lista, int valor)
 {
     if(!lista->primeiro)
     {
-        printf("Lista vazia, nada a remover.");
+        printf("Lista vazia, nada a remover.\n");
         return -1;
     }
 
     //  se a lista tiver apenas um elemento
     if(lista->primeiro == lista->ultimo)
     {
-        int valor_removido = lista->primeiro->valor;
+        int valor_removido = valor;
         free(lista->primeiro);
         lista->primeiro = NULL;
         lista->ultimo = NULL;
@@ -91,7 +91,7 @@ int remover_lista(lista* lista)
     else
     {
         nodo *removido = lista->primeiro;
-        int valor_removido = lista->primeiro->valor;
+        int valor_removido = valor;
 
         //  o lista primeiro aponta para o proximo que se torna o novo primeiro
         lista->primeiro = lista->primeiro->proximo;
@@ -107,4 +107,57 @@ int remover_lista(lista* lista)
         return valor_removido;
     }
 
+}
+
+
+
+
+
+
+
+void imprimir_lista(lista* lista)
+{
+    if(!lista->primeiro)
+    {
+        printf("Lista vazia\n\n");
+        return;
+    }
+
+    nodo* atual = lista->primeiro;
+    printf("[ ");
+    do
+    {
+        printf("%d ", atual->valor);
+        atual = atual->proximo; 
+    } while(atual != lista->primeiro);
+    printf("]\n\n");
+}
+
+
+
+
+
+
+
+
+
+
+void destruir_lista(lista* lista)
+{
+    if(!lista)
+        return;
+
+    nodo *atual = lista->primeiro;
+
+    // Percorre todos os nodos da lista e vai liberando a memória
+    while (atual != NULL)
+    {
+        nodo *temp = atual;
+        atual = atual->proximo;
+        free(temp);  // Libera a memória do nodo
+    }
+
+    free(lista);
+
+    printf("Lista destruída\n");
 }

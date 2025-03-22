@@ -1,5 +1,5 @@
 #ifndef LISTA_CIRCULAR
-#define LISTA_CIRCLAR
+#define LISTA_CIRCULAR
 
 
 #include <stdio.h>
@@ -11,6 +11,7 @@ typedef struct nodo
 {
     struct nodo *anterior;
     struct nodo *proximo;
+    
     int valor;
 } nodo;
 
@@ -28,7 +29,7 @@ lista* criar_lista();
 
 void inserir_lista(lista* lista, int valor);
 
-int remover_lista(lista* lista);
+int remover_lista(lista* lista, int valor);
 
 void imprimir_lista(lista* lista);
 
