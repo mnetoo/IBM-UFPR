@@ -1,0 +1,6 @@
+Carne|10.50|5
+Arroz|20.00|3
+Refrigerante|15.75|7
+Sorvete|8.55|4
+Chocolate|5.75|13
+Café|18.75|6
