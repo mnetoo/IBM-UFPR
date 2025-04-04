@@ -18,13 +18,12 @@ add r2, r0   ;; r2 = 10
 sub r0, r0   ;; r0 = 0 (zera r0 para os números pares)
 
 loop:
-st r0, r1    ;; Armazena r0 na posição de memória r1 - posiçaõ 40 = r0
-addi 1       ;; r0 = 1 (usar r0 temporariamente)
-add r1, r0   ;; r1 = r1 + 1 (avança para o próximo endereço)
-sub r0, r0   ;; r0 = 0
-addi 2       ;; r0 = r0 + 2 (incrementa corretamente o valor par)
-add r0, r0   ;; Garante que o incremento seja acumulativo
-sub r2, r3   ;; r2 = r2 - 1 (decrementa contador)
-not r0, r2
-brzr r0, r3  ;; Se r2 == 0, sai do loop
-ji loop      ;; Volta para repetir o loop
+    st r0, r1    ;; Armazena r0 na posição de memória r1 - posiçaõ 40 = r0
+    addi 1       ;; r0 = 1 (usar r0 temporariamente)
+    add r1, r0   ;; r1 = r1 + 1 (avança para o próximo endereço)
+    sub r0, r0   ;; r0 = 0
+    addi 2       ;; r0 = r0 + 2 (incrementa corretamente o valor par)
+    sub r2, r3   ;; r2 = r2 - 1 (decrementa contador)
+    not r0, r2
+    brzr r0, r3  ;; Se r2 == 0, sai do loop
+    ji loop      ;; Volta para repetir o loop
