@@ -1,27 +1,19 @@
-;; Programa Assembly rEDUX-V para somar vetores A e B, armazenando o resultado em r
-
-;; Início do código
-        addi    r0, 0      ;; Zera r0 (vai armazenar o índice i)
-        addi    r1, 10     ;; r1 = 10 (limite do loop)
-        addi    r2, A      ;; r2 aponta para A
-        addi    r3, B      ;; r3 aponta para B
-        addi    r4, r      ;; r4 aponta para r
-
-loop:   brzr    r0, fim    ;; Se i >= 10, sai do loop
-        ld      r5, r2     ;; r5 = A[i]
-        ld      r6, r3     ;; r6 = B[i]
-        add     r7, r5, r6 ;; r7 = A[i] + B[i]
-        st      r7, r4     ;; r[i] = r7
-
-        addi    r2, 1      ;; Avança ponteiro de A
-        addi    r3, 1      ;; Avança ponteiro de B
-        addi    r4, 1      ;; Avança ponteiro de r
-        addi    r0, 1      ;; i++
-        ji      loop       ;; Volta para o início do loop
-
-fim:    ji      fim        ;; Loop infinito ao terminar
-
-;; Dados (na memória, logo após o código)
-A:      .byte   0, 2, 4, 6, 8, 10, 12, 14, 16, 18
-B:      .byte   1, 3, 5, 7, 9, 11, 13, 15, 17, 19
-r:      .byte   0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+addi 5
+addi 5 ;; r0 = 10
+add r3, r0 ;; r3 = 10
+addi 5
+addi 5 ;; r0 = 20
+add r2, r0 ;; r2 = 20
+addi 5
+addi 5
+addi 5
+addi 5 ;; r0 = 40 
+add r1, r0 ;; r1 = 40
+sub r0, r0 ;; r0 = 0
+addi 1 ;; r0 = 1
+;; loop que carrega um "vetor" de 10 posições com o número 1 em cada posição
+st r0, r1 ;; na posicao 40 guardou 1
+add r1, r0 ;; r1 41
+sub r3, r0 ;; 10 - 1 = 9
+brzr r3, r2 ;; se r3 = 0 sai do loop
+ji -4 ;; volta 4 instruções

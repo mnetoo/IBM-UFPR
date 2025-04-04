@@ -14,10 +14,6 @@ struct nodo
 };
 
 
-
-
-
-
 struct nodo* cria_nodo(int chave)
 {
     struct nodo *n = (struct nodo*) malloc(sizeof(struct nodo));
@@ -35,9 +31,6 @@ struct nodo* cria_nodo(int chave)
 
     return n;
 }
-
-
-
 
 
 // Função para inserir um novo nó na árvore binária
@@ -61,9 +54,6 @@ struct nodo* binary(struct nodo *n, int chave)
 }
 
 
-
-
-
 // Função para imprimir a árvore em ordem
 void printTree(struct nodo *n)
 {
@@ -74,9 +64,6 @@ void printTree(struct nodo *n)
     printf("%d ", n->chave);
     printTree(n->direita);
 }
-
-
-
 
 
 int main() 
