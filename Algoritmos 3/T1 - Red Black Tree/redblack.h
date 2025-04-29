@@ -1,95 +1,112 @@
-#ifndef REDBLACK_H
-#define REDBLACK_H
+/*
+    Disciplina: Algoritmos e Estrutura de Dados III.
+    Professor: Prof. Dr. Eduardo Cunha de Almeida.
+    Aluno: Marcus Sebastião Adriano Rocha Neto.
+    GRR: 20240710.
+    Curso: Informática Biomédica.
+    Descrição: Trabalho 1, implementação Árvore Rubro Negra.
+*/
 
+#ifndef __REDBLACK__
+#define __REDBLACK__
 
+#define RED 1
+#define BLACK 0
 
-
-enum Color { RED, BLACK };
-
-
-
-
-struct RBNode 
+// Estrutura de cada nó da árvore
+struct nodo 
 {
-    int key;
-    enum Color color;
-    struct RBNode *left, *right, *parent;
+	struct nodo *esquerda;
+	struct nodo *direita;
+	struct nodo *pai;
+	
+	int chave;
+	int cor;
+	int nivel;
 };
 
-
-
-struct RBTree 
+// Estrutura para representar a raiz da árvore
+struct arvore
 {
-    struct RBNode *root;
+	struct nodo *raiz;
 };
 
+// Estrutura para simular folha nulas
+extern struct nodo *NILL;
 
 
+//==========================================================================================
 
-//  Function for create tree
-struct RBTree* create_tree();
+// Função para inicializar o nó sentinela NILL
+void inicializa_nill();
 
-//------------------------------------------------------------------------------
+//==========================================================================================
 
-//  Function for create a node
-struct RBNode* create_node(int key); 
+// Função para criar uma árvore
+struct arvore* cria_arvore();
 
-//------------------------------------------------------------------------------
+//==========================================================================================
 
-// Funcion for left rotate
-void left_rotate(struct RBTree *tree, struct RBNode *x);
+// Função para criar um novo nó na árvore
+struct nodo *cria_nodo(struct nodo *pai, int chave);
 
-//------------------------------------------------------------------------------
+//==========================================================================================
 
-//  Function for right rotate
-void right_rotate(struct RBTree *tree, struct RBNode *y);
+// Função para encontrar o nó com a maior chave em uma subárvore
+struct nodo *maximum(struct nodo *x);
 
+//==========================================================================================
 
-//------------------------------------------------------------------------------
+// Função para realizar uma rotação à direita em um nó y
+void rot_direita(struct arvore *tree, struct nodo *y);
 
-//  Function for printing in order and formatted
-void print_formatted(struct RBNode *node, int level);
+// Função para realizar uma rotação à esquerda em um nó x
+void rot_esquerda(struct arvore *tree, struct nodo *x);
 
-//------------------------------------------------------------------------------
+//==========================================================================================
 
-//  Function that inserts value into BST tree
-void insert_BST(struct RBTree *tree, int key);
+//  FUNÇÕES PARA INSERIR VALORS NA ÁRVORE REDBLACK 
 
-//------------------------------------------------------------------------------
+// Função para corrigir a árvore após inclusão de novo nó
+void inserir_fixup(struct arvore *t, struct nodo *z);
 
-//  Function to fix inclusion
-void fix_inclusion(struct RBTree *tree, struct RBNode *z);
+// Função para inserir mum valor na árvore BST
+void inserir(struct arvore *t, struct nodo *z);
 
-//------------------------------------------------------------------------------
+//==========================================================================================
 
-//  Function that performs the transplant function on the tree
-void RBTransplant(struct RBTree *tree, struct RBNode *u, struct RBNode *v);
+//  FUNÇÕES PARA REMOVER VALORES DA ÁRVORE REDBLACK
 
-//------------------------------------------------------------------------------
+// Função para buscar um nó com uma chave específica em uma árvore binária
+struct nodo *busca_no(struct nodo *n, int procurado);
 
-//  Function that finds the smallest value from the given node
-struct RBNode *minimum(struct RBNode *node);
+// Função para transplantar (substituir) uma subárvore por outra
+void transplante(struct arvore *t, struct nodo *u, struct nodo *v);
 
-//------------------------------------------------------------------------------
+// Função para corrigir a árvore após a exclusão de um nó
+void remover_fixup(struct arvore *t, struct nodo *x);
 
-//  Function that finds the largest value from the given node
-struct RBNode *maximum(struct RBNode *node);
+// Função para excluir um nó da árvore
+void remover(struct arvore *t, struct nodo *z);
 
-//------------------------------------------------------------------------------
+//==========================================================================================
 
-//  Function that deletes a node
-void delete(struct RBTree *tree, int key);
+// Função para ajustar níveis dos nós
+void ajustar_nivel(struct nodo *no, int nivel);
 
-//------------------------------------------------------------------------------
+//==========================================================================================
 
-//  Function that corrects the deletion of a node
-void fix_deletion(struct RBTree *tree, struct RBNode *x);
+// Função para imprimir a árvore (EM ORDEM)
+void imprimir(struct nodo *no);
 
-//------------------------------------------------------------------------------
+//==========================================================================================
 
-//  Function that destroys the created tree
-void free_tree(struct RBNode *node);
+// Função auxiliar recursiva para liberar os nós
+void libera_nos(struct nodo *no);
 
-//------------------------------------------------------------------------------
+// Função para destruir a árvore e liberar memória
+void destruir_arvore(struct arvore *arvore);
+
+//==========================================================================================
 
 #endif
