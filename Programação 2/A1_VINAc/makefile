@@ -11,7 +11,7 @@ TARGET = vinac
 SRCS = vinac.c membro.c utils.c
 
 # Arquivos cabeçalho
-HDRS = membro.h utils.h
+HDRS = membro.h utils.h utils.h
 
 # Arquivos objeto (gerados a partir dos .c)
 OBJS = $(SRCS:.c=.o)

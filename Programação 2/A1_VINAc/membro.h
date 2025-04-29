@@ -27,4 +27,6 @@ void escrever_membro(FILE *f, const Membro *m);
 // Lê membro de um arquivo binário
 int ler_membro(FILE *f, Membro *m);
 
+void salvar_membro(FILE *archive, const char *nome_arquivo, int ordem);
+
 #endif
