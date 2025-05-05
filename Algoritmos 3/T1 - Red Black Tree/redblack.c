@@ -238,6 +238,7 @@ void inserir_fixup(struct arvore *t, struct nodo *z)
         }
     }
     t->raiz->cor = BLACK;  // Garante que a raiz seja sempre preta
+    ajustar_nivel(t->raiz, 0);
 }
 
 // Função para inserir mum valor na árvore BST
@@ -411,6 +412,7 @@ void remover_fixup(struct arvore *t, struct nodo *x)
         }
     }
     x->cor = BLACK; // Garante propriedade da raiz
+    ajustar_nivel(t->raiz, 0);
 }
 
 // Função para excluir um nó da árvore

@@ -24,17 +24,14 @@ int main()
 		{
 			struct nodo *z = cria_nodo(NILL, valor);
 			inserir(arvore, z);
-			ajustar_nivel(arvore->raiz, 0);
 		}
 
 		else if(opcao == 'r')
 		{
 			struct nodo *z = busca_no(arvore->raiz, valor);
+			
 			if (z != NILL) 
-			{
 				remover(arvore, z);
-				ajustar_nivel(arvore->raiz, 0);
-			} 
 			else
 				printf("Nó %d não encontrado para remoção!\n", valor);
 		}
