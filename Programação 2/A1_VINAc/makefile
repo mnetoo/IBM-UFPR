@@ -8,10 +8,10 @@ CFLAGS = -Wall -Wextra
 TARGET = vinac
 
 # Arquivos fonte
-SRCS = vinac.c membro.c utils.c
+SRCS = vinac.c membro.c functions.c lz.c
 
 # Arquivos cabeçalho
-HDRS = membro.h utils.h utils.h
+HDRS = membro.h functions.h lz.h
 
 # Arquivos objeto (gerados a partir dos .c)
 OBJS = $(SRCS:.c=.o)

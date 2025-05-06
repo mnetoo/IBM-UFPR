@@ -29,4 +29,6 @@ int ler_membro(FILE *f, Membro *m);
 
 void salvar_membro(FILE *archive, const char *nome_arquivo, int ordem);
 
+int ler_diretorio(FILE *f, Membro membros[]);
+
 #endif
