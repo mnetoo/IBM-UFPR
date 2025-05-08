@@ -5,7 +5,10 @@ CC = gcc
 CFLAGS = -Wall -Wextra
 
 # Nome do executável
-TARGET = vinac
+TARGET = vina
+
+# Diretório de saída
+OUTPUT_DIR := msarn24
 
 # Arquivos fonte
 SRCS = vinac.c membro.c functions.c lz.c
@@ -16,12 +19,16 @@ HDRS = membro.h functions.h lz.h
 # Arquivos objeto (gerados a partir dos .c)
 OBJS = $(SRCS:.c=.o)
 
-# Regra padrão
-all: $(TARGET)
+# Regra padrão - compila o executável
+all: $(OUTPUT_DIR)/$(TARGET)
 
-# Regra para construir o executável
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+# Cria o diretório de saída se não existir
+$(OUTPUT_DIR):
+	mkdir -p $(OUTPUT_DIR)
+
+# Regra para construir o executável no diretório especificado
+$(OUTPUT_DIR)/$(TARGET): $(OBJS) | $(OUTPUT_DIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
 # Regra para compilar cada arquivo .c em um .o
 %.o: %.c $(HDRS)
@@ -29,7 +36,8 @@ $(TARGET): $(OBJS)
 
 # Limpar arquivos gerados
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJS) $(OUTPUT_DIR)/$(TARGET)
+	rmdir $(OUTPUT_DIR) 2>/dev/null || true
 
 # Para evitar conflitos com arquivos de mesmo nome
-.PHONY: all clean
+.PHONY: all clean info

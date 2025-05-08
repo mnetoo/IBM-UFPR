@@ -1,0 +1,69 @@
+Autor: Marcus Sebastião Adriano Rocha Neto - GRR20240710
+Curso: Informática Biomédica - UFPR
+Disciplina: Programação 2 - Vinícius Fülber Garcia
+
+
+
+
+Estrutura do Projeto:
+
+- vinac.c ................. Arquivo principal com as funções do programa (i_option, r_option, x_option etc.)
+
+- lz.h ........... Biblioteca disponibilizada para lidar com compressão de descompressão de arquivos.
+----- lz.c ........... Implementação das funções de compressão e descompressão.
+
+- membro.h .............. Declaração do tipo MEMBRO e funções auxiliares para manipulação dos membros.
+----- membro.c ........... Implementação das funções para lidar com membros.
+
+- functions.h .............. Declaração das funções principais do software.
+----- functions.c ........... Implementação das funções.
+
+- Makefile ............... Arquivo de build para compilar o projeto.
+
+- Arquivos do formato .txt para testes do programa.
+
+
+
+
+Algoritmos e Estruturas de Dados:
+
+-
+-
+-
+-
+
+
+
+
+
+
+Decisões:
+
+- Também foi considerado manter o diretório no ínicio do arquivo, mas isso complicava a atualização. 
+  - Solução final: diretório mantido no final do arquivo, facilitando reescrita com `fseek` e também a visualização do conteúdos dos arquivos de testes.
+-
+-
+-
+
+
+
+
+
+Dificuldades encontradas:
+
+- Manipulação do ponteiro do arquivo para evitar sobrescrever dados ao abrir o archive existente.
+- Descompressão indevida de arquivos não comprimidos.
+  - Corrigido com a inclusão de uma flag `comprimido` no struct `Membro`.
+- Ordenação dos membros no diretório exibido (corrigido posteriormente).
+
+
+
+
+
+
+
+Bugs conhecidos:
+
+- O programa não trata corretamente nomes de arquivos duplicados com diferenças de maiúsculas/minúsculas em sistemas case-insensitive.
+- Arquivos com nomes muito longos (> 100 caracteres) podem ter problemas devido ao tamanho fixo do campo `nome` no struct `Membro`.
+- Se o usuário interromper o programa no meio da execução, o archive pode ficar corrompido.
