@@ -13,6 +13,7 @@ typedef struct
     time_t modificado_em;   // data/hora da última modificação
     int ordem;              // ordem no arquivo
     long offset;            // onde os dados começam no arquivo archive
+    int comprimido;         // 1 se comprimido, 0 se não
 } Membro;
 
 // Cria um membro a partir de um arquivo do disco

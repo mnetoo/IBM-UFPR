@@ -11,38 +11,38 @@
 //===================================================================
 
 //  Função para inserir sem compressão
-int ip_option(char *arquivo, int argc, char *argv[]);
+int p_option(char *arquivo, int argc, char *argv[]);
 
 //===================================================================
 
 //  Função para inserir com compressão
-int ic_option(char *arquivo, int argc, char *argv[]);
+int i_option(char *arquivo, int argc, char *argv[]);
 
 //===================================================================
 
 // Função para listar os membros do archive
-int c_option(char *arquivo, int argc, char *argv[]);
+int c_option(char *arquivo);
 
 //===================================================================
 
-// Função que processa a opção "-m"
+// Função que move o membro indicado na linha de comando
 int m_option(char *arquivo, int argc, char *argv[]);
 
 //===================================================================
 
-// Função que processa a opção "-x"
+// Função que extrai os membros indicados de archive
 int x_option(char *arquivo, int argc, char *argv[]);
 
 //===================================================================
 
-// Função que processa a opção "-r"
+// Função que remove os membros indicados de archive
 int r_option(char *arquivo, int argc, char *argv[]);
 
 //===================================================================
 
-time_t obter_data_modificacao(const char *nome_arquivo);
+//  Funções auxiliares
 
-//===================================================================
+time_t obter_data_modificacao(const char *nome_arquivo);
 
 int obter_uid();
 

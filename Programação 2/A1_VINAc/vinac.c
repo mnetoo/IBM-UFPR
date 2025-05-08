@@ -19,14 +19,29 @@ int main(int argc, char *argv[])
     printf("Opção: %s\n", opcao);
     printf("Arquivo: %s\n", arquivo);
 
-    if (strcmp(opcao, "-ip") == 0) 
-        return ip_option(arquivo, argc, argv);
+    // Insere sem compressão
+    if (strcmp(opcao, "-p") == 0) 
+        return p_option(arquivo, argc, argv);
 
-    else if (strcmp(opcao, "-ic") == 0)
-        return ic_option(arquivo, argc, argv);
+    // Insere com compressão
+    else if (strcmp(opcao, "-i") == 0)
+        return i_option(arquivo, argc, argv);
+    
+    // Remove os membros indicados
+    else if (strcmp(opcao, "-r") == 0)
+        return r_option(arquivo, argc, argv);
 
+    // Extrai os membros indicados
+    else if (strcmp(opcao, "-x") == 0)
+        return x_option(arquivo, argc, argv);
+
+    // Move os membros indicados
+    else if (strcmp(opcao, "-m") == 0)
+        return m_option(arquivo, argc, argv);
+
+    // Lista os membros do archive
     else if (strcmp(opcao, "-c") == 0)
-        return c_option(arquivo, argc, argv);
+        return c_option(arquivo);
 
     return 0;
 }
