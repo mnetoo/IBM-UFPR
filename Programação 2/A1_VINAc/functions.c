@@ -94,11 +94,12 @@ int p_option(char *arquivo, int argc, char *argv[])
                 continue;
             }
 
+            // Inicializa Membro
             Membro m = membros_existentes[i];
             m.offset = ftell(archive);
             m.comprimido = 0; // sempre 0 para inserção sem compressão
 
-            char buffer[1024];
+            char buffer[1024] = {0}; // Inicializa o buffer com zeros
             size_t lidos;
             fseek(f, 0, SEEK_SET);
             while ((lidos = fread(buffer, 1, sizeof(buffer), f)) > 0)
@@ -120,11 +121,12 @@ int p_option(char *arquivo, int argc, char *argv[])
             continue;
         }
 
+        // Inicializa Membro
         Membro m = criar_membro(nome_membro, qtd_finais + 1);
         m.offset = ftell(archive);
         m.comprimido = 0; // sempre 0 para inserção sem compressão
 
-        char buffer[1024];
+        char buffer[1024] = {0}; // Inicializa o buffer com zeros
         size_t lidos;
         while ((lidos = fread(buffer, 1, sizeof(buffer), f)) > 0)
             fwrite(buffer, 1, lidos, archive);
@@ -152,6 +154,8 @@ int p_option(char *arquivo, int argc, char *argv[])
 
     return 0;
 }
+
+
 
 
 //============================================================================================================================
@@ -321,6 +325,7 @@ int c_option(char *arquivo)
 
 //============================================================================================================================
 
+
 // Função que remove os membros indicados de archive
 int r_option(char *arquivo, int argc, char *argv[])
 {
@@ -336,18 +341,27 @@ int r_option(char *arquivo, int argc, char *argv[])
 
     // Cria flags de quais manter
     int manter[MAX_MEMBROS];
-    for (int i = 0; i < qtd_membros; i++)
-        manter[i] = 1;
 
-    // Marca os membros que devem ser removidos
-    for (int i = 3; i < argc; i++) 
+    // Se nenhum nome de membro foi passado, remove todos
+    if (argc == 3) 
     {
-        for (int j = 0; j < qtd_membros; j++) 
+        for (int i = 0; i < qtd_membros; i++)
+            manter[i] = 0;
+    }
+    else 
+    {
+        for (int i = 0; i < qtd_membros; i++)
+            manter[i] = 1;
+
+        for (int i = 3; i < argc; i++) 
         {
-            if (strcmp(argv[i], membros[j].nome) == 0) 
+            for (int j = 0; j < qtd_membros; j++) 
             {
-                manter[j] = 0;
-                break;
+                if (strcmp(argv[i], membros[j].nome) == 0) 
+                {
+                    manter[j] = 0;
+                    break;
+                }
             }
         }
     }
@@ -393,7 +407,7 @@ int r_option(char *arquivo, int argc, char *argv[])
         imprimir_membro(&membros[i]);
     }
 
-    // Escreve nova quantidade
+    // Escreve nova quantidade de membros no final do arquivo
     fwrite(&nova_qtd, sizeof(int), 1, tmp);
 
     fclose(archive);
@@ -409,7 +423,6 @@ int r_option(char *arquivo, int argc, char *argv[])
 
     return 0;
 }
-
 
 
 //============================================================================================================================
