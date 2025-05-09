@@ -69,7 +69,6 @@ int p_option(char *arquivo, int argc, char *argv[])
     archive = fopen(arquivo, "wb");
     if (!archive) 
     {
-        // Se falhar ao abrir para escrita, exibe mensagem de erro
         printf("Erro: não foi possível criar o arquivo de archive '%s'\n", arquivo);
         return 1;
     }
@@ -82,14 +81,21 @@ int p_option(char *arquivo, int argc, char *argv[])
     for (int i = 0; i < qtd_existentes; i++) 
     {
         int substituir = 0;
-        // Verifica se o nome do membro existente aparece nos novos argumentos (para substituição)
+        // Verifica se o nome do membro existente aparece nos novos argumentos
         for (int j = 3; j < argc; j++) 
         {
             if (strcmp(membros_existentes[i].nome, argv[j]) == 0) 
             {
-                printf("Membro '%s' já existe. Substituindo...\n", argv[j]);
-                substituir = 1;
-                break;
+                if (membros_existentes[i].comprimido == 0)
+                {
+                    printf("Membro '%s' já existe sem compressão. Substituindo...\n", argv[j]);
+                    substituir = 1;
+                    break;
+                }
+                else
+                {
+                    printf("Membro '%s' já existe comprimido. Mantendo e adicionando novo.\n", argv[j]);
+                }
             }
         }
 
@@ -103,23 +109,21 @@ int p_option(char *arquivo, int argc, char *argv[])
                 continue;
             }
 
-            // Copia os dados do membro para o novo arquivo
             Membro m = membros_existentes[i];
-            m.offset = ftell(archive);   // Atualiza a posição (offset) no novo arquivo
-            m.comprimido = 0;            // Indica que o membro não está comprimido
+            m.offset = ftell(archive);   // Atualiza offset no novo arquivo
 
-            char buffer[1024] = {0};     // Buffer temporário para leitura e escrita
+            char buffer[1024] = {0};
             size_t lidos;
-            fseek(f, 0, SEEK_SET);       // Garante que a leitura começa do início
+            fseek(f, 0, SEEK_SET);
             while ((lidos = fread(buffer, 1, sizeof(buffer), f)) > 0)
                 fwrite(buffer, 1, lidos, archive);
 
             fclose(f);
-            membros_finais[qtd_finais++] = m; // Adiciona o membro à lista final
+            membros_finais[qtd_finais++] = m;
         }
     }
 
-    // Adiciona os novos membros (inclusive os que substituem existentes)
+    // Adiciona os novos membros
     for (int i = 3; i < argc; i++) 
     {
         const char *nome_membro = argv[i];
@@ -130,41 +134,39 @@ int p_option(char *arquivo, int argc, char *argv[])
             continue;
         }
 
-        // Cria um novo membro a partir do arquivo
+        // Cria novo membro
         Membro m = criar_membro(nome_membro, qtd_finais + 1);
-        m.offset = ftell(archive);   // Define onde os dados do membro serão armazenados
-        m.comprimido = 0;            // Sem compressão
+        m.offset = ftell(archive);
+        m.comprimido = 0; // Sem compressão
 
-        char buffer[1024] = {0};     // Buffer para leitura e escrita
+        char buffer[1024] = {0};
         size_t lidos;
         while ((lidos = fread(buffer, 1, sizeof(buffer), f)) > 0)
             fwrite(buffer, 1, lidos, archive);
 
         fclose(f);
-        membros_finais[qtd_finais++] = m; // Adiciona o novo membro à lista final
+        membros_finais[qtd_finais++] = m;
     }
 
-    // Ajusta os campos 'ordem' de cada membro para garantir sequência correta
+    // Ajusta ordem
     for (int i = 0; i < qtd_finais; i++)
         membros_finais[i].ordem = i + 1;
 
-    // Escreve o vetor de membros no final do arquivo
+    // Escreve membros e quantidade no final do arquivo
     fwrite(membros_finais, sizeof(Membro), qtd_finais, archive);
-
-    // Escreve a quantidade total de membros como último valor no arquivo
     fwrite(&qtd_finais, sizeof(int), 1, archive);
-
-    // Fecha o arquivo archive após gravação
     fclose(archive);
 
-    // Mensagem de sucesso e exibição dos membros incluídos
+    // Exibe sucesso
     printf("\nArchive atualizado com sucesso!\n");
     printf("Total de membros: %d\n", qtd_finais);
-    for (int i = 0; i < qtd_finais; i++) 
-        imprimir_membro(&membros_finais[i]);
+    
+    //for (int i = 0; i < qtd_finais; i++) 
+     //   imprimir_membro(&membros_finais[i]);
 
     return 0;
 }
+
 
 
 //============================================================================================================================
@@ -291,7 +293,6 @@ int i_option(char *arquivo, int argc, char *argv[])
     for (int i = 0; i < qtd_membros; i++) 
     {
         escrever_membro(archive, &membros[i]);  // grava metadados
-        imprimir_membro(&membros[i]);           // exibe metadados no terminal
     }
 
     // Grava a quantidade total de membros no final do arquivo
