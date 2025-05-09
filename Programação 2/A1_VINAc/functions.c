@@ -237,13 +237,37 @@ int i_option(char *arquivo, int argc, char *argv[])
 
         // Verifica se o membro já existe no diretório
         int existe = -1;
+        int ignorar = 0;
         for (int j = 0; j < qtd_membros; j++) 
         {
             if (strcmp(membros[j].nome, nome_membro) == 0) 
             {
-                existe = j;
+                if (membros[j].comprimido) 
+                {
+                    // Se o membro já existe e foi comprimido, ignora a inserção
+                    printf("Membro '%s' já existe e está comprimido. Ignorando...\n", nome_membro);
+                    ignorar = 1;
+                } 
+                else if (!usar_original) 
+                {
+                    // Se o membro já existe sem compressão e o arquivo não está comprimido, insere como novo membro comprimido
+                    printf("Membro '%s' já existe sem compressão. Inserindo versão comprimida como novo membro.\n", nome_membro);
+                } 
+                else 
+                {
+                    // Se o membro já existe e está sem compressão, substitui os dados
+                    existe = j;
+                }
                 break;
             }
+        }
+
+        // Se o membro for ignorado, libera a memória alocada e continua para o próximo arquivo
+        if (ignorar)
+        {
+            free(conteudo_original);
+            free(conteudo_comp);
+            continue;
         }
 
         // Marca o offset atual no arquivo (onde os dados do membro começarão)
@@ -258,7 +282,7 @@ int i_option(char *arquivo, int argc, char *argv[])
 
         if (existe != -1) 
         {
-            // Se o membro já existia, atualiza seus dados
+            // Se o membro já existia sem compressão, atualiza seus dados
             printf("Membro '%s' já existe. Substituindo...\n", nome_membro);
             membros[existe].offset = offset;
             membros[existe].tamanho_original = tamanho_original;
@@ -304,6 +328,7 @@ int i_option(char *arquivo, int argc, char *argv[])
 
     return 0;
 }
+
 
 
 //============================================================================================================================
