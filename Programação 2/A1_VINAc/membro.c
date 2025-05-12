@@ -12,16 +12,17 @@
 Membro criar_membro(const char *nome_arquivo, int ordem) 
 {
     Membro m;
+
+    // Zera toda a struct para evitar dados não inicializados
+    memset(&m, 0, sizeof(Membro));
+
     struct stat st;
 
-    // Limpar o campo nome antes de copiar
-    memset(m.nome, 0, sizeof(m.nome));  // Limpa para evitar lixo de memória
-
-    // Copia o nome do arquivo, garantindo que não ultrapasse o tamanho máximo
+    // Copia o nome do arquivo com segurança
     strncpy(m.nome, nome_arquivo, sizeof(m.nome) - 1);
-    m.nome[sizeof(m.nome) - 1] = '\0';  // Garante que o nome termina com '\0'
+    m.nome[sizeof(m.nome) - 1] = '\0';  // Garante '\0'
 
-    // Obtém informações sobre o arquivo
+    // Obtém informações do arquivo
     if (stat(nome_arquivo, &st) == 0) 
     {
         m.tamanho_original = st.st_size;
@@ -37,10 +38,11 @@ Membro criar_membro(const char *nome_arquivo, int ordem)
 
     m.uid = obter_uid();
     m.ordem = ordem;
-    m.offset = -1;  // será atribuído ao salvar
+    m.offset = -1;
 
     return m;
 }
+
 
 
 //===================================================================================

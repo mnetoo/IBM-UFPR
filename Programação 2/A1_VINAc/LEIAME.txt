@@ -27,11 +27,8 @@ Estrutura do Projeto:
 
 Algoritmos e Estruturas de Dados:
 
--
--
--
--
-
+- Ordenação dos membros:
+  - O projeto não usa um algoritmo de ordenação explícito. A ordenação é implícita e sequencial, baseada na ordem dos membros no vetor após cada operação.
 
 
 
@@ -39,11 +36,11 @@ Algoritmos e Estruturas de Dados:
 
 Decisões:
 
-- Também foi considerado manter o diretório no ínicio do arquivo, mas isso complicava a atualização. 
+- Também considerei manter o diretório no ínicio do arquivo, mas isso complicava a atualização. 
   - Solução final: diretório mantido no final do arquivo, facilitando reescrita com `fseek` e também a visualização do conteúdos dos arquivos de testes.
--
--
--
+- Estrutura de membro separada.
+- Verificação de membro já existente
+  - Decidi que quando verificar se o membro que estou inserindo já existe, verificar se ele foi inserido sem compressão ou com compressão e dependendo do tipo da inserção do membro eu insiro como um novo. Se existe um arquivo "grande.txt" que foi inserido sem compressão e agora vou inserir o mesmo arquivo com compressão, eles são arquivos diferentes e vice versa.
 
 
 
@@ -55,7 +52,9 @@ Dificuldades encontradas:
 - Descompressão indevida de arquivos não comprimidos.
   - Corrigido com a inclusão de uma flag `comprimido` no struct `Membro`.
 - Ordenação dos membros no diretório exibido (corrigido posteriormente).
-
+- Achei a manipulação dos offsets difícil nas operações.
+- Gerenciamento de memória. Tentei encontrar a fonte dos erros apontados pelo Valgrind, mas não consegui resolvê-los.
+- Achei difícil lidar com  fread, fwrite, fseek e ftell.
 
 
 
@@ -64,6 +63,9 @@ Dificuldades encontradas:
 
 Bugs conhecidos:
 
-- O programa não trata corretamente nomes de arquivos duplicados com diferenças de maiúsculas/minúsculas em sistemas case-insensitive.
-- Arquivos com nomes muito longos (> 100 caracteres) podem ter problemas devido ao tamanho fixo do campo `nome` no struct `Membro`.
 - Se o usuário interromper o programa no meio da execução, o archive pode ficar corrompido.
+- Erros apontados pelo valgrind na função "i_option":
+  -  ==13286==  Address 0x4a909e1 is 0 bytes after a block of size 1,665 alloc'd
+  - ==13286== ERROR SUMMARY: 22 errors from 1 contexts (suppressed: 0 from 0)
+
+

@@ -1,9 +1,13 @@
 #ifndef MEMBRO_H
 #define MEMBRO_H
-
 #include <time.h>
 #include <stdio.h>
 
+
+//============================================================================================================================
+
+
+//Estrutura de membro
 typedef struct 
 {
     char nome[256];         // nome do arquivo (sem espaços)
@@ -16,20 +20,32 @@ typedef struct
     int comprimido;         // 1 se comprimido, 0 se não
 } Membro;
 
+
+//============================================================================================================================
+
 // Cria um membro a partir de um arquivo do disco
 Membro criar_membro(const char *nome_arquivo, int ordem);
+
+//============================================================================================================================
 
 // Imprime os dados do membro
 void imprimir_membro(const Membro *m);
 
+//============================================================================================================================
+
 // Escreve membro em um arquivo binário
 void escrever_membro(FILE *f, const Membro *m);
+
+//============================================================================================================================
 
 // Lê membro de um arquivo binário
 int ler_membro(FILE *f, Membro *m);
 
-void salvar_membro(FILE *archive, const char *nome_arquivo, int ordem);
+//============================================================================================================================
 
+//  Lê o diretório de membros do arquivo
 int ler_diretorio(FILE *f, Membro membros[]);
+
+//============================================================================================================================
 
 #endif

@@ -1,11 +1,11 @@
+/*
+    Arquivo de cabeçalho para protótipos das funções
+    para o software Arquivador VINAc.
+*/
+
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 #include <time.h>
-
-
-
-
-
 
 
 //===================================================================
