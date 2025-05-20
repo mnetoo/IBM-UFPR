@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/marcus-neto/Documentos/GitHub/IBM-UFPR/Programação 2/A1_VINAc_remake",
-      "program": "/home/marcus-neto/Documentos/GitHub/IBM-UFPR/Programação 2/A1_VINAc_remake/build/Debug/outDebug",
+      "cwd": "/home/marcus-neto/Documentos/GitHub/IBM-UFPR/Programação 2/A1_VINAC_REMAKE",
+      "program": "/home/marcus-neto/Documentos/GitHub/IBM-UFPR/Programação 2/A1_VINAC_REMAKE/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

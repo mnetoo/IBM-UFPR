@@ -16,9 +16,6 @@ int main(int argc, char *argv[])
     char *opcao = argv[1];
     char *arquivo = argv[2];
 
-    printf("Opção: %s\n", opcao);
-    printf("Arquivo: %s\n", arquivo);
-
     // Insere sem compressão
     if (strcmp(opcao, "-p") == 0) 
         return p_option(arquivo, argc, argv);

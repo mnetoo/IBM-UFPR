@@ -2,6 +2,13 @@
 #define MEMBRO_H
 #include <time.h>
 #include <stdio.h>
+#include <stdlib.h> 
+#include <stdio.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <time.h>
+#include "functions.h"
+#include "lz.h"
 
 
 //============================================================================================================================
@@ -45,6 +52,31 @@ int ler_membro(FILE *f, Membro *m);
 
 //  Lê o diretório de membros do arquivo
 int ler_diretorio(FILE *f, Membro membros[]);
+
+//============================================================================================================================
+
+
+int carregar_membros(const char *arquivo, Membro membros[]);
+
+//============================================================================================================================
+
+//
+void salvar_membros(FILE *archive, Membro membros[], int qtd);
+
+//============================================================================================================================
+
+//
+void copiar_conteudo(FILE *src, FILE *dst);
+
+//============================================================================================================================
+
+//
+int regravar_membros(FILE *archive, Membro membros_existentes[], int qtd_existentes, char *argv[], int argc, Membro membros_finais[]);
+
+//============================================================================================================================
+
+//
+int adicionar_membros(FILE *archive, char *argv[], int argc, int qtd_inicial, Membro membros_finais[]); 
 
 //============================================================================================================================
 
