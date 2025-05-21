@@ -2,26 +2,23 @@
     Implementação das funções para o software Arquivador VINAc.
     Desenvolvido por Marcus Neto.
 */
-
-#include <sys/stat.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "membro.h"
 #include "lz.h"
 #include "functions.h"
 
-#define MAX_MEMBROS 1024
 
-
+//  Função que obtém o UID do usuário atual
+int obter_uid() 
+{
+    return getuid();  // pega UID do usuário atual
+}
 
 
 //============================================================================================================================
 
 
-//  Função para inserir sem compressão
-// Função para atualizar um arquivo "archive" com novos membros ou substituir membros existentes
+
+//  Função para inserir/atualizar arquivos sem compressão em um archive
 // Parâmetros:
 // - arquivo: nome do arquivo archive
 // - argc: contagem de argumentos da linha de comando
@@ -216,50 +213,53 @@ int p_option(char *arquivo, int argc, char *argv[])
 //============================================================================================================================
 
 
-// Função para inserir arquivos com compressão
+
+// Função para inserir/atualizar arquivos com compressão em um archive
+// Parâmetros:
+// - arquivo: nome do archive
+// - argc: contagem de argumentos
+// - argv: vetor de argumentos (argv[3..] contém os arquivos a inserir)
 int i_option(char *arquivo, int argc, char *argv[]) 
 {
-    // Tenta abrir o arquivo em modo de leitura e escrita binária
+    // Tenta abrir o archive em modo leitura/escrita binária
     FILE *archive = fopen(arquivo, "r+b");
     if (!archive) 
     {
-        // Se falhar, tenta abrir o arquivo para escrita (criando o arquivo se não existir)
+        // Se não existir, cria um novo archive
         archive = fopen(arquivo, "w+b");
         if (!archive) 
         {
-            // Se ainda assim não conseguir abrir/criar o arquivo, exibe erro e retorna 1
             printf("Erro: não foi possível criar o arquivo de archive '%s'\n", arquivo);
             return 1;
         }
     }
 
-    // Inicializa o vetor de membros com zero (usado para armazenar informações sobre cada membro)
+    // Array para armazenar informações dos membros (arquivos contidos no archive)
     Membro membros[MAX_MEMBROS] = {0};  
-    int qtd_membros = 0;  // Contador de membros no arquivo
-    long file_size = 0;   // Variável para armazenar o tamanho do arquivo
+    int qtd_membros = 0;
+    long file_size = 0;
 
-    // Verifica se o arquivo tem conteúdo (não está vazio)
+    // Verifica se o arquivo já contém dados
     if (fseek(archive, 0, SEEK_END) == 0) 
     {
-        // Obtém o tamanho do arquivo
+        // Obtém o tamanho atual do archive
         file_size = ftell(archive);
-        rewind(archive);  // Move o ponteiro de volta para o início do arquivo
-        
+        rewind(archive); // Volta para o início
+
+        // Se o archive não estiver vazio, lê o diretório existente
         if (file_size > 0) 
         {
-            // Se o arquivo não estiver vazio, tenta ler o diretório de membros do arquivo
             qtd_membros = ler_diretorio(archive, membros);
-            // Verifica se houve erro na leitura ou se o número de membros é inválido
             if (qtd_membros < 0 || qtd_membros > MAX_MEMBROS) 
             {
                 printf("Erro ao ler diretório de membros.\n");
-                fclose(archive);  // Fecha o arquivo antes de retornar
+                fclose(archive);
                 return 1;
             }
         }
     }
 
-    // Verifica se o ponteiro de leitura foi posicionado corretamente no final do arquivo
+    // Posiciona o ponteiro no final do archive para novas inserções
     if (fseek(archive, 0, SEEK_END) != 0) 
     {
         printf("Erro ao posicionar ponteiro no final do arquivo.\n");
@@ -267,30 +267,39 @@ int i_option(char *arquivo, int argc, char *argv[])
         return 1;
     }
 
-    // Loop que percorre os argumentos passados na linha de comando (nomes de arquivos a serem processados)
+    // Processa cada arquivo passado como argumento (a partir do 3º)
     for (int i = 3; i < argc; i++) 
     {
         const char *nome_membro = argv[i];
-        // Tenta abrir o arquivo do membro
+        
+        // Abre o arquivo a ser inserido
         FILE *f = fopen(nome_membro, "rb");
         if (!f) 
         {
-            // Se não conseguir abrir o arquivo, imprime mensagem de erro e continua com o próximo arquivo
             printf("Erro: não foi possível abrir '%s'. Pulando...\n", nome_membro);
             continue;
         }
 
-        // Obtém o tamanho do arquivo do membro, com verificação de erro
-        long tamanho_original = 0;
-        if (fseek(f, 0, SEEK_END) != 0 || (tamanho_original = ftell(f)) < 0) 
+        // Calcula tamanho do arquivo
+        if (fseek(f, 0, SEEK_END) != 0) 
         {
-            printf("Erro ao obter tamanho de '%s'. Pulando...\n", nome_membro);
+            printf("Erro ao buscar fim de '%s'. Pulando...\n", nome_membro);
             fclose(f);
             continue;
         }
 
-        rewind(f);  // Volta o ponteiro de leitura para o início do arquivo
-        char *conteudo_original = malloc(tamanho_original);  // Aloca memória para armazenar o conteúdo do arquivo
+        long tamanho_original = ftell(f);
+        rewind(f);
+
+        if (tamanho_original <= 0) 
+        {
+            printf("Arquivo '%s' vazio ou inválido. Pulando...\n", nome_membro);
+            fclose(f);
+            continue;
+        }
+
+        // Lê todo o conteúdo do arquivo para memória
+        char *conteudo_original = malloc(tamanho_original);
         if (!conteudo_original) 
         {
             printf("Erro ao alocar memória para '%s'. Pulando...\n", nome_membro);
@@ -298,19 +307,17 @@ int i_option(char *arquivo, int argc, char *argv[])
             continue;
         }
 
-        // Lê o conteúdo do arquivo para a memória
-        size_t lido = fread(conteudo_original, 1, tamanho_original, f);
-        fclose(f);
-        // Verifica se o conteúdo foi lido corretamente
-        if (lido != (size_t)tamanho_original) 
+        if (fread(conteudo_original, 1, tamanho_original, f) != (size_t)tamanho_original) 
         {
-            printf("Erro ao ler conteúdo de '%s'. Pulando...\n", nome_membro);
-            free(conteudo_original);  // Libera a memória alocada e continua com o próximo arquivo
+            printf("Erro ao ler '%s'. Pulando...\n", nome_membro);
+            free(conteudo_original);
+            fclose(f);
             continue;
         }
+        fclose(f);
 
-        // Aloca memória para o conteúdo comprimido (se necessário)
-        char *conteudo_comp = malloc(tamanho_original * 2); 
+        // Tenta comprimir o conteúdo usando LZ
+        char *conteudo_comp = malloc(tamanho_original);
         if (!conteudo_comp) 
         {
             printf("Erro ao alocar memória para compressão de '%s'. Pulando...\n", nome_membro);
@@ -318,72 +325,59 @@ int i_option(char *arquivo, int argc, char *argv[])
             continue;
         }
 
-        // Tenta comprimir o conteúdo do arquivo
-        int tamanho_comp = LZ_Compress(
-            (unsigned char *)conteudo_original,
-            (unsigned char *)conteudo_comp,
-            tamanho_original
-        );
-
-        // Verifica se a compressão foi eficaz ou se o arquivo deve ser armazenado sem compressão
-        int usar_original = (tamanho_comp >= tamanho_original || tamanho_comp <= 0);
+        int tamanho_comp = LZ_Compress((unsigned char *)conteudo_original, (unsigned char *)conteudo_comp, tamanho_original);
+        
+        // Decide se usa o conteúdo original ou comprimido (baseado na eficiência da compressão)
+        int usar_original = (tamanho_comp <= 0 || tamanho_comp >= tamanho_original);
         char *dados_finais = usar_original ? conteudo_original : conteudo_comp;
         int tamanho_final = usar_original ? tamanho_original : tamanho_comp;
 
-        // Caso a compressão não seja eficaz, avisa o usuário
         if (usar_original)
-            printf("Aviso: compressão de '%s' ineficiente. Armazenando arquivo original.\n", nome_membro);
+            printf("Aviso: compressão de '%s' ineficiente. Armazenando original.\n", nome_membro);
 
-        // Verifica se o membro já existe no diretório de membros
-        int existe = -1;
+        // Verifica se o arquivo já existe no archive
+        int idx_existente = -1;
         for (int j = 0; j < qtd_membros; j++) 
         {
             if (strcmp(membros[j].nome, nome_membro) == 0) 
             {
-                // Se o membro já existir e estiver comprimido, substitui o conteúdo
-                if (membros[j].comprimido) 
-                {
-                    printf("Membro '%s' já existe e está comprimido. Substituindo...\n", nome_membro);
-                    membros[j].offset = ftell(archive);  // Atualiza o offset
-                    membros[j].tamanho_original = tamanho_original;
-                    membros[j].tamanho_comp = tamanho_final;
-                    membros[j].modificado_em = time(NULL);
-                    membros[j].comprimido = !usar_original;  // Marca como comprimido ou não
-                }
-                else 
-                {
-                    // Se o membro não está comprimido e foi encontrado, ignora a operação
-                    printf("Membro '%s' já existe e não está comprimido. Ignorando...\n", nome_membro);
-                }
-
-                existe = j;
+                idx_existente = j;
                 break;
             }
         }
 
-        // Se o membro não foi encontrado, adiciona um novo membro ao arquivo
-        if (existe == -1) 
+        // Obtém a posição atual no archive (onde os dados serão escritos)
+        long offset = ftell(archive);
+        if (offset < 0) 
         {
-            long offset = ftell(archive);  // Obtém o offset onde o novo membro será adicionado
-            if (offset < 0) 
-            {
-                printf("Erro ao obter offset para '%s'. Pulando...\n", nome_membro);
-                free(conteudo_original);
-                free(conteudo_comp);
-                continue;
-            }
+            printf("Erro ao obter offset para '%s'. Pulando...\n", nome_membro);
+            free(conteudo_original);
+            free(conteudo_comp);
+            continue;
+        }
 
-            // Escreve os dados finais no arquivo
-            size_t escrito = fwrite(dados_finais, 1, tamanho_final, archive);
-            if (escrito != (size_t)tamanho_final) 
-            {
-                printf("Erro ao escrever dados de '%s' no archive.\n", nome_membro);
-                free(conteudo_original);
-                free(conteudo_comp);
-                continue;
-            }
+        // Escreve os dados (originais ou comprimidos) no archive
+        if (fwrite(dados_finais, 1, tamanho_final, archive) != (size_t)tamanho_final) 
+        {
+            printf("Erro ao escrever '%s' no archive. Pulando...\n", nome_membro);
+            free(conteudo_original);
+            free(conteudo_comp);
+            continue;
+        }
 
-            // Verifica se o número máximo de membros foi excedido
+        if (idx_existente >= 0) 
+        {
+            // Atualiza membro existente no diretório
+            membros[idx_existente].offset = offset;
+            membros[idx_existente].tamanho_original = tamanho_original;
+            membros[idx_existente].tamanho_comp = tamanho_final;
+            membros[idx_existente].modificado_em = time(NULL);
+            membros[idx_existente].comprimido = !usar_original;
+            printf("Membro '%s' atualizado.\n", nome_membro);
+        }
+        else 
+        {
+            // Adiciona novo membro ao diretório
             if (qtd_membros >= MAX_MEMBROS) 
             {
                 printf("Erro: número máximo de membros excedido. Ignorando '%s'.\n", nome_membro);
@@ -392,70 +386,55 @@ int i_option(char *arquivo, int argc, char *argv[])
                 continue;
             }
 
-            // Cria um novo membro e adiciona ao vetor de membros
-            Membro m = criar_membro(nome_membro, qtd_membros + 1);
-            m.offset = offset;
-            m.tamanho_original = tamanho_original;
-            m.tamanho_comp = tamanho_final;
-            m.modificado_em = time(NULL);
-            m.comprimido = !usar_original;
-            membros[qtd_membros++] = m;
+            Membro novo = criar_membro(nome_membro, qtd_membros + 1);
+            novo.offset = offset;
+            novo.tamanho_original = tamanho_original;
+            novo.tamanho_comp = tamanho_final;
+            novo.modificado_em = time(NULL);
+            novo.comprimido = !usar_original;
+            membros[qtd_membros++] = novo;
         }
 
-        // Libera a memória alocada para o conteúdo original e comprimido
         free(conteudo_original);
         free(conteudo_comp);
     }
 
-    // Atualiza a ordem dos membros no arquivo
+    // Recalcula a ordem/número dos membros
     for (int i = 0; i < qtd_membros; i++) 
         membros[i].ordem = i + 1;
 
-    // Exibe informações sobre o processo
-    printf("\nArchive criado com sucesso!\n");
-    printf("Total de membros: %d\n", qtd_membros);
-
-    // Obtém a posição do diretório no arquivo
-    long inicio_diretorio = ftell(archive);
-    if (inicio_diretorio < 0) 
+    // Escreve o diretório atualizado no final do archive
+    long inicio_dir = ftell(archive);
+    if (inicio_dir < 0) 
     {
-        printf("Erro ao obter posição do diretório no archive.\n");
+        printf("Erro ao obter posição do diretório.\n");
         fclose(archive);
         return 1;
     }
 
-    // Escreve os membros no arquivo
+    // Escreve informações de cada membro
     for (int i = 0; i < qtd_membros; i++) 
         escrever_membro(archive, &membros[i]);
 
-    // Escreve a quantidade total de membros no final do arquivo
+    // Escreve a quantidade total de membros
     if (fwrite(&qtd_membros, sizeof(int), 1, archive) != 1) 
     {
-        printf("Erro ao escrever quantidade de membros no final do arquivo.\n");
+        printf("Erro ao escrever número de membros.\n");
         fclose(archive);
         return 1;
     }
 
-    // Garante que todos os dados sejam gravados no arquivo
-    if (fflush(archive) != 0) 
-        printf("Erro ao descarregar buffers para o arquivo.\n");
-
-    // Fecha o arquivo
+    // Garante que todos os dados são escritos no disco
+    fflush(archive);
     fclose(archive);
-
-    // Exibe informações finais
-    printf("\nArchive atualizado com sucesso!\n");
-    printf("Novo diretório inicia em: %ld bytes\n", inicio_diretorio);
-
     return 0;
 }
-
 
 
 //============================================================================================================================
 
 
-// Função para listar os membros do archive com formatação aprimorada
+// Função para listar os membros do archive
 int c_option(char *arquivo) 
 {
     // Abre o arquivo para leitura
@@ -503,122 +482,134 @@ int c_option(char *arquivo)
 //============================================================================================================================
 
 
-// Função que remove os membros indicados de archive
-int r_option(char *arquivo, int argc, char *argv[])
+
+// Função para remover arquivos de um archive
+// Parâmetros:
+// - arquivo: nome do archive
+// - argc: contagem de argumentos
+// - argv: vetor de argumentos (argv[3..] contém os arquivos a remover)
+int r_option(char *arquivo, int argc, char *argv[]) 
 {
-    // Abre o arquivo binário do archive em modo leitura binária
-    FILE *archive = fopen(arquivo, "rb");
+    // 1. ABERTURA DO ARCHIVE
+    // Tenta abrir o archive em modo leitura/escrita binária
+    FILE *archive = fopen(arquivo, "r+b");
     if (!archive) 
     {
-        // Se não for possível abrir o arquivo, exibe erro e retorna
         printf("Erro: não foi possível abrir '%s'\n", arquivo);
         return 1;
     }
 
-    // Vetor para armazenar os metadados dos membros do archive
+    // 2. LEITURA DO DIRETÓRIO ATUAL
+    // Array para armazenar informações dos membros existentes
     Membro membros[MAX_MEMBROS];
-    // Lê o diretório do archive e retorna a quantidade de membros
+    // Lê o diretório de membros do archive
     int qtd_membros = ler_diretorio(archive, membros);
 
-    // Vetor de flags para indicar quais membros devem ser mantidos (1 = manter, 0 = remover)
+    // 3. IDENTIFICAÇÃO DOS ARQUIVOS A MANTER/REMOVER
+    // Array para marcar quais membros devem ser mantidos (1) ou removidos (0)
     int manter[MAX_MEMBROS];
-
-    // Se apenas 3 argumentos foram passados (programa, -r, nome_arquivo), significa que nenhum nome foi passado,
-    // então todos os membros devem ser removidos
+    
+    // Caso 1: Se apenas 'r' foi passado (sem arquivos específicos)
     if (argc == 3) 
     {
-        for (int i = 0; i < qtd_membros; i++)
+        // Remove todos os arquivos (marca todos para não manter)
+        for (int i = 0; i < qtd_membros; i++) 
             manter[i] = 0;
-    }
+    } 
     else 
     {
-        // Inicialmente marcamos todos os membros para serem mantidos
-        for (int i = 0; i < qtd_membros; i++)
+        // Caso 2: Com arquivos específicos para remover
+        // Primeiro marca todos para manter
+        for (int i = 0; i < qtd_membros; i++) 
             manter[i] = 1;
-
-        // Para cada argumento extra passado (a partir do índice 3), verificamos se corresponde ao nome de algum membro
+        
+        // Depois desmarca os que devem ser removidos
         for (int i = 3; i < argc; i++) 
         {
             for (int j = 0; j < qtd_membros; j++) 
             {
-                // Se o nome do membro for igual ao argumento passado, marcamos para ser removido
                 if (strcmp(argv[i], membros[j].nome) == 0) 
                 {
-                    manter[j] = 0;
+                    manter[j] = 0;  // Marca para remoção
                     break;
                 }
             }
         }
     }
 
-    // Cria um novo arquivo temporário onde os membros que devem ser mantidos serão gravados
-    FILE *tmp = fopen("temp_archive.bin", "wb");
-    if (!tmp) 
+    // 4. PREPARAÇÃO PARA RECONSTRUÇÃO DO ARCHIVE
+    // Encontra o maior tamanho entre os membros que serão mantidos
+    // (para alocar um buffer de tamanho adequado)
+    long maior_tam = 0;
+    for (int i = 0; i < qtd_membros; i++)
     {
-        // Se não for possível criar o arquivo temporário, exibe erro, fecha o original e retorna
-        printf("Erro ao criar arquivo temporário.\n");
+        if (manter[i] && membros[i].tamanho_comp > maior_tam)
+            maior_tam = membros[i].tamanho_comp;
+    }
+
+    // Aloca buffer com tamanho do maior membro a ser mantido
+    char *buffer = malloc(maior_tam);
+    if (!buffer) 
+    {
+        perror("Erro ao alocar buffer");
         fclose(archive);
         return 1;
     }
 
-    int nova_qtd = 0;       // Nova quantidade de membros no arquivo
-    long offset = 0;        // Posição atual de escrita no arquivo temporário
+    // 5. RECONSTRUÇÃO DO ARCHIVE
+    long offset_atual = 0;  // Controla a posição atual no novo archive
+    int nova_qtd = 0;       // Contador de membros no novo archive
 
-    // Percorre todos os membros do archive original
     for (int i = 0; i < qtd_membros; i++) 
     {
-        if (manter[i]) // Se o membro deve ser mantido
-        {
-            // Aloca buffer para armazenar os dados do membro
-            char *buffer = malloc(membros[i].tamanho_comp);
-            
-            // Lê os dados do membro do arquivo original
+        if (manter[i]) {
+            // 5.1 LÊ O MEMBRO DO ARCHIVE ORIGINAL
             fseek(archive, membros[i].offset, SEEK_SET);
             fread(buffer, 1, membros[i].tamanho_comp, archive);
 
-            // Escreve os dados no arquivo temporário na posição correta
-            fseek(tmp, offset, SEEK_SET);
-            fwrite(buffer, 1, membros[i].tamanho_comp, tmp);
+            // 5.2 ESCREVE NA NOVA POSIÇÃO (compactando o archive)
+            fseek(archive, offset_atual, SEEK_SET);
+            fwrite(buffer, 1, membros[i].tamanho_comp, archive);
 
-            // Atualiza os metadados do membro no novo array
-            membros[nova_qtd] = membros[i];          // Copia os metadados
-            membros[nova_qtd].offset = offset;       // Atualiza o novo offset no arquivo
-            membros[nova_qtd].ordem = nova_qtd + 1;  // Atualiza a ordem (sequencial)
-            offset += membros[i].tamanho_comp;       // Atualiza o próximo offset
-            nova_qtd++;                              // Incrementa a nova quantidade de membros
+            // 5.3 ATUALIZA OS METADADOS DO MEMBRO
+            membros[nova_qtd] = membros[i];           // Copia os dados
+            membros[nova_qtd].offset = offset_atual;  // Atualiza offset
+            membros[nova_qtd].ordem = nova_qtd + 1;   // Atualiza ordem
 
-            // Libera a memória alocada
-            free(buffer);
+            // 5.4 ATUALIZA CONTADORES
+            offset_atual += membros[i].tamanho_comp;  // Avança o offset
+            nova_qtd++;                               // Incrementa contador
         }
     }
 
-    // Marca a posição onde começa o novo diretório no arquivo temporário
-    long inicio_diretorio = ftell(tmp);
+    // 6. ESCRITA DO NOVO DIRETÓRIO
+    // Posiciona no final dos dados compactados
+    fseek(archive, offset_atual, SEEK_SET);
 
-    // Escreve os metadados dos membros restantes no final do arquivo (diretório)
+    // Escreve todos os membros mantidos no diretório
     for (int i = 0; i < nova_qtd; i++) 
-    {
-        escrever_membro(tmp, &membros[i]);    // Escreve no arquivo
-        imprimir_membro(&membros[i]);         // Imprime na tela (opcional/informativo)
-    }
+        escrever_membro(archive, &membros[i]);
 
-    // Escreve a nova quantidade de membros no final do arquivo (após o diretório)
-    fwrite(&nova_qtd, sizeof(int), 1, tmp);
+    // Escreve a nova quantidade de membros no final
+    fwrite(&nova_qtd, sizeof(int), 1, archive);
 
-    // Fecha os arquivos
-    fclose(archive);
-    fclose(tmp);
+    // 7. AJUSTE FINAL DO TAMANHO DO ARQUIVO
+    // Obtém a posição final do archive
+    long final_pos = ftell(archive);
+    fflush(archive);
+    
+    // Trunca o arquivo para remover espaço não utilizado
+    #if defined(_WIN32)
+        _chsize(_fileno(archive), final_pos);  // Windows
+    #else
+        ftruncate(fileno(archive), final_pos); // Linux/Unix
+    #endif
 
-    // Remove o arquivo original e renomeia o temporário como o novo arquivo final
-    remove(arquivo);
-    rename("temp_archive.bin", arquivo);
+    // 8. LIMPEZA E FINALIZAÇÃO
+    free(buffer);     // Libera o buffer temporário
+    fclose(archive);  // Fecha o archive
 
-    // Mensagem de sucesso e resumo
-    printf("\nMembros removidos com sucesso!\n");
-    printf("Novo diretório inicia em: %ld bytes\n", inicio_diretorio);
-    printf("Total restante de membros: %d\n", nova_qtd);
-
-    return 0; // Sucesso
+    return 0;  // Retorna sucesso
 }
 
 
@@ -626,253 +617,299 @@ int r_option(char *arquivo, int argc, char *argv[])
 //============================================================================================================================
 
 
-// Função que extrai os membros indicados de archive
+// Função para extrair arquivos de um archive
+// Parâmetros:
+// - arquivo: nome do archive
+// - argc: contagem de argumentos
+// - argv: vetor de argumentos (argv[3..] contém os arquivos específicos a extrair)
 int x_option(char *arquivo, int argc, char *argv[])
 {
-    // Abre o arquivo de arquivo (archive) no modo binário de leitura
+    // 1. ABERTURA DO ARCHIVE
+    // Abre o arquivo archive em modo leitura binária
     FILE *archive = fopen(arquivo, "rb");
     if (!archive) 
     {
-        // Se não conseguir abrir, exibe erro e encerra
         printf("Erro: não foi possível abrir '%s'\n", arquivo);
         return 1;
     }
 
-    // Lê o diretório de membros do arquivo e armazena no vetor 'membros'
+    // 2. LEITURA DO DIRETÓRIO
+    // Lê a lista de membros (arquivos contidos) no archive
     Membro membros[MAX_MEMBROS];
     int qtd_membros = ler_diretorio(archive, membros);
 
-    // Verifica se deve extrair todos os membros (nenhum nome foi passado após o nome do arquivo)
+    // 3. VERIFICAÇÃO DE ARGUMENTOS
+    // Determina se deve extrair todos os membros (quando não há arquivos específicos)
     int extrair_todos = (argc <= 3);
 
-    // Itera por todos os membros do diretório
+    // 4. PREPARAÇÃO DO BUFFER
+    // Encontra o maior tamanho entre os membros para alocação de buffer único
+    long maior_tam = 0;
+    for (int i = 0; i < qtd_membros; i++)
+    {
+        if (membros[i].tamanho_comp > maior_tam)
+            maior_tam = membros[i].tamanho_comp;
+    }
+
+    // Aloca buffer com tamanho do maior membro encontrado
+    unsigned char *buffer = malloc(maior_tam);
+    if (!buffer) 
+    {
+        printf("Erro ao alocar memória\n");
+        fclose(archive);
+        return 1;
+    }
+
+    // 5. PROCESSAMENTO DOS MEMBROS
+    // Itera por todos os membros do archive
     for (int i = 0; i < qtd_membros; i++) 
     {
-        int deve_extrair = extrair_todos;
+        // 5.1 VERIFICA SE DEVE EXTRAIR ESTE MEMBRO
+        int deve_extrair = extrair_todos; // Extrai todos se não houver argumentos
 
-        // Se não for para extrair todos, verifica se o nome do membro atual foi passado na linha de comando
+        // Se houver arquivos específicos, verifica se este membro está na lista
         if (!extrair_todos) 
         {
             for (int j = 3; j < argc; j++) 
             {
                 if (strcmp(argv[j], membros[i].nome) == 0) 
                 {
-                    // Marca para extração se o nome do membro corresponder
                     deve_extrair = 1;
                     break;
                 }
             }
         }
 
-        // Se for para extrair esse membro
+        // 5.2 EXTRAÇÃO DO MEMBRO
         if (deve_extrair) 
         {
-            // Move o ponteiro do arquivo para a posição do dado compactado
+            // Posiciona o ponteiro no início dos dados do membro
             fseek(archive, membros[i].offset, SEEK_SET);
 
-            // Aloca um buffer com o tamanho dos dados compactados e lê os dados
-            unsigned char *buffer = malloc(membros[i].tamanho_comp);
+            // Lê os dados compactados/armazenados para o buffer
             fread(buffer, 1, membros[i].tamanho_comp, archive);
 
-            // Abre o arquivo de saída com o nome do membro
+            // Cria o arquivo de saída com o nome original do membro
             FILE *f_out = fopen(membros[i].nome, "wb");
             if (!f_out) 
             {
-                // Caso falhe ao criar o arquivo de saída, exibe erro e pula para o próximo membro
                 printf("Erro ao criar '%s'. Pulando...\n", membros[i].nome);
-                free(buffer);
                 continue;
             }
 
-            // Verifica se o membro está compactado
+            // 5.3 TRATAMENTO DE DADOS COMPACTADOS
             if (membros[i].comprimido) 
             {
-                // Se estiver, aloca espaço para os dados originais e descompacta
-                unsigned char *dados_orig = malloc(membros[i].tamanho_original);
-                LZ_Uncompress(buffer, dados_orig, membros[i].tamanho_comp);
+                // Aloca buffer temporário para os dados descomprimidos
+                unsigned char *saida = malloc(membros[i].tamanho_original);
+                if (!saida) 
+                {
+                    printf("Erro ao alocar memória para descompressão\n");
+                    fclose(f_out);
+                    continue;
+                }
 
-                // Escreve os dados descompactados no arquivo de saída
-                fwrite(dados_orig, 1, membros[i].tamanho_original, f_out);
-                free(dados_orig);
+                // Descomprime os dados usando o algoritmo LZ
+                LZ_Uncompress(buffer, saida, membros[i].tamanho_comp);
+                
+                // Escreve os dados descomprimidos no arquivo de saída
+                fwrite(saida, 1, membros[i].tamanho_original, f_out);
+                
+                // Libera o buffer de descompressão
+                free(saida);
             } 
             else 
             {
-                // Se não estiver compactado, escreve os dados diretamente
+                // 5.4 TRATAMENTO DE DADOS NÃO COMPACTADOS
+                // Escreve diretamente os dados lidos no arquivo de saída
                 fwrite(buffer, 1, membros[i].tamanho_original, f_out);
             }
 
-            // Fecha o arquivo de saída e libera o buffer
+            // Fecha o arquivo de saída
             fclose(f_out);
-            free(buffer);
-
-            // Informa que o membro foi extraído com sucesso
-            printf("Extraído: %s\n", membros[i].nome);
+            
+            // Comentado: poderia mostrar o progresso
+            // printf("Extraído: %s\n", membros[i].nome);
         }
     }
 
-    // Fecha o arquivo principal
+    // 6. FINALIZAÇÃO
+    // Libera o buffer principal
+    free(buffer);
+    
+    // Fecha o arquivo archive
     fclose(archive);
-    return 0;
+    
+    return 0; // Retorna sucesso
 }
-
 
 
 //============================================================================================================================
 
 
-// Função que move o membro indicado na linha de comando
+// Função para mover/reordenar membros dentro do archive
+// Parâmetros:
+// - arquivo: nome do archive
+// - argc: contagem de argumentos
+// - argv: vetor de argumentos
+//   [3]: target (membro de referência ou "NULL" para início)
+//   [4]: mover (membro a ser movido)
 int m_option(char *arquivo, int argc, char *argv[])
 {
-    // Verifica se o número de argumentos é suficiente
     if (argc < 5) 
     {
         printf("Uso incorreto. Esperado: -m <target|NULL> <membro>\n");
         return 1;
     }
 
-    // Define o membro alvo (após quem será inserido) e o membro a ser movido
     const char *target = argv[3];
     const char *mover = argv[4];
 
-    Membro membros[MAX_MEMBROS];
-    int qtd_membros = 0;
-
-    // Abre o arquivo do archive para leitura binária
-    FILE *archive = fopen(arquivo, "rb");
-    if (!archive) 
+    FILE *f = fopen(arquivo, "rb+");
+    if (!f) 
     {
-        perror("Erro ao abrir o arquivo archive para leitura");
+        perror("Erro ao abrir o arquivo archive");
         return 1;
     }
 
-    // Lê a quantidade de membros no final do arquivo
-    fseek(archive, -sizeof(int), SEEK_END);
-    fread(&qtd_membros, sizeof(int), 1, archive);
+    Membro membros[MAX_MEMBROS];
+    Membro membros_originais[MAX_MEMBROS];
+    int qtd_membros = 0;
 
-    // Lê o vetor de metadados dos membros
-    fseek(archive, -(sizeof(int) + qtd_membros * sizeof(Membro)), SEEK_END);
-    fread(membros, sizeof(Membro), qtd_membros, archive);
-
-    // Define uma estrutura auxiliar para armazenar dados de cada membro
-    typedef struct 
+    // Lê diretório e quantidade
+    if (fseek(f, -sizeof(int), SEEK_END) != 0 ||
+        fread(&qtd_membros, sizeof(int), 1, f) != 1 ||
+        fseek(f, -(sizeof(int) + qtd_membros * sizeof(Membro)), SEEK_END) != 0 ||
+        fread(membros, sizeof(Membro), qtd_membros, f) != (size_t)qtd_membros) 
     {
-        Membro info;               // Metadados do membro
-        unsigned char *dados;      // Conteúdo binário do membro
-    } Registro;
-
-    Registro registros[MAX_MEMBROS];
-
-    // Carrega os dados de todos os membros do arquivo
-    for (int i = 0; i < qtd_membros; i++) 
-    {
-        registros[i].info = membros[i];
-        registros[i].dados = malloc(membros[i].tamanho_comp);  // Aloca espaço para os dados
-        fseek(archive, membros[i].offset, SEEK_SET);           // Vai para a posição do dado no arquivo
-        fread(registros[i].dados, 1, membros[i].tamanho_comp, archive);  // Lê os dados
+        perror("Erro ao ler dados do arquivo");
+        fclose(f);
+        return 1;
     }
 
-    fclose(archive);  // Fecha o arquivo após leitura
+    // Cópia dos membros com offsets originais
+    memcpy(membros_originais, membros, sizeof(Membro) * qtd_membros);
 
-    // Encontra os índices do membro a mover e do membro alvo
     int idx_mover = -1, idx_target = -1;
     for (int i = 0; i < qtd_membros; i++) 
     {
-        if (strcmp(registros[i].info.nome, mover) == 0)
+        if (strcmp(membros[i].nome, mover) == 0)
             idx_mover = i;
 
-        // Se o target não for "NULL", compara com os nomes
-        if (target && strcmp(target, "NULL") != 0 &&
-            strcmp(registros[i].info.nome, target) == 0)
+        if (target && strcmp(target, "NULL") != 0 && strcmp(membros[i].nome, target) == 0)
             idx_target = i;
     }
 
-    // Se o membro a ser movido não foi encontrado, aborta
     if (idx_mover == -1) 
     {
         printf("Erro: membro '%s' não encontrado no archive.\n", mover);
+        fclose(f);
         return 1;
     }
 
-    // Remove o membro da posição original (desloca os outros para preencher o espaço)
-    Registro movido = registros[idx_mover];
-    for (int i = idx_mover; i < qtd_membros - 1; i++)
-        registros[i] = registros[i + 1];
-
-    qtd_membros--;  // Reduz a quantidade temporariamente
-
-    // Calcula a nova posição do membro
-    // Se target for "NULL", o membro será inserido no início
-    // Se mover estava antes do target, ele será inserido exatamente onde o target estava
-    // Caso contrário, será inserido uma posição à frente
-    int nova_pos = (strcmp(target, "NULL") == 0) ? 0 : idx_target + (idx_mover < idx_target ? 0 : 1);
-
-    // Insere o membro na nova posição (desloca os outros para abrir espaço)
-    for (int i = qtd_membros; i > nova_pos; i--)
-        registros[i] = registros[i - 1];
-
-    registros[nova_pos] = movido;  // Coloca o membro na nova posição
-    qtd_membros++;                 // Atualiza a quantidade de membros
-
-    // Reabre o arquivo para escrita binária (vai sobrescrever tudo)
-    archive = fopen(arquivo, "wb");
-    if (!archive) 
+    if (target && strcmp(target, "NULL") != 0 && idx_target == -1) 
     {
-        perror("Erro ao abrir o arquivo archive para escrita");
+        printf("Erro: membro target '%s' não encontrado no archive.\n", target);
+        fclose(f);
         return 1;
     }
 
-    // Escreve os dados dos membros na nova ordem e atualiza os offsets
-    long offset = 0;
-    for (int i = 0; i < qtd_membros; i++) 
+    int nova_pos = (target && strcmp(target, "NULL") == 0) ? 0 : idx_target + (idx_mover < idx_target ? 0 : 1);
+    if (nova_pos == idx_mover) 
     {
-        registros[i].info.offset = offset;                 // Define novo offset
-        registros[i].info.ordem = i + 1;                   // Atualiza ordem
-        fwrite(registros[i].dados, 1, registros[i].info.tamanho_comp, archive);  // Grava os dados
-        offset += registros[i].info.tamanho_comp;          // Atualiza o offset para o próximo
+        printf("Membro já está na posição desejada.\n");
+        fclose(f);
+        return 0;
     }
 
-    // Atualiza o vetor de membros com os novos metadados e libera memória
-    for (int i = 0; i < qtd_membros; i++) 
-    {
-        membros[i] = registros[i].info;
-        free(registros[i].dados);  // Libera a memória alocada para os dados
+    Membro mover_membro = membros[idx_mover];
+
+    if (idx_mover < nova_pos) {
+        for (int i = idx_mover; i < nova_pos - 1; i++)
+            membros[i] = membros[i + 1];
+        membros[nova_pos - 1] = mover_membro;
+    } else {
+        for (int i = idx_mover; i > nova_pos; i--)
+            membros[i] = membros[i - 1];
+        membros[nova_pos] = mover_membro;
     }
 
-    // Grava os metadados dos membros ao final do arquivo
-    fwrite(membros, sizeof(Membro), qtd_membros, archive);
-    fwrite(&qtd_membros, sizeof(int), 1, archive);  // Grava a quantidade total de membros
+// Logo após memcpy dos membros_originais
+size_t maior_tamanho = 0;
+for (int i = 0; i < qtd_membros; i++)
+    if ((size_t)membros[i].tamanho_comp > maior_tamanho)
+        maior_tamanho = (size_t)membros[i].tamanho_comp;
 
-    fclose(archive);  // Fecha o arquivo
+unsigned char *buffer = malloc(maior_tamanho);
+if (!buffer) {
+    perror("malloc falhou");
+    fclose(f);
+    return 1;
+}
 
-    // Mensagem de sucesso
+// Reescreve fisicamente os conteúdos na nova ordem
+size_t offset = 0;
+for (int i = 0; i < qtd_membros; i++) {
+    // Pega o offset original do membro[i]
+    long offset_antigo = -1;
+    int tamanho_comp = membros[i].tamanho_comp;
+
+    for (int j = 0; j < qtd_membros; j++) {
+        if (strcmp(membros[i].nome, membros_originais[j].nome) == 0) {
+            offset_antigo = membros_originais[j].offset;
+            break;
+        }
+    }
+
+    if (offset_antigo == -1) {
+        printf("Erro interno: offset original não encontrado para '%s'\n", membros[i].nome);
+        free(buffer);
+        fclose(f);
+        return 1;
+    }
+
+    // Lê do offset antigo
+    if (fseek(f, offset_antigo, SEEK_SET) != 0 ||
+        fread(buffer, 1, (size_t)tamanho_comp, f) != (size_t)tamanho_comp) {
+        perror("Erro ao ler conteúdo original");
+        free(buffer);
+        fclose(f);
+        return 1;
+    }
+
+    // Atualiza offset e ordem
+    membros[i].offset = (long)offset;
+    membros[i].ordem = i + 1;
+
+    // Escreve no novo offset
+    if (fseek(f, membros[i].offset, SEEK_SET) != 0 ||
+        fwrite(buffer, 1, (size_t)tamanho_comp, f) != (size_t)tamanho_comp) {
+        perror("Erro ao gravar conteúdo reorganizado");
+        free(buffer);
+        fclose(f);
+        return 1;
+    }
+
+    offset += (size_t)tamanho_comp;
+}
+
+    // Atualiza diretório
+    if (fseek(f, 0, SEEK_END) != 0 ||
+        fwrite(membros, sizeof(Membro), qtd_membros, f) != (size_t)qtd_membros ||
+        fwrite(&qtd_membros, sizeof(int), 1, f) != 1) 
+    {
+        perror("Erro ao atualizar diretório");
+        free(buffer);
+        fclose(f);
+        return 1;
+    }
+
+    free(buffer);
+    fclose(f);
     printf("Membro '%s' movido com sucesso para após '%s'.\n", mover, target);
     return 0;
 }
 
-
-//============================================================================================================================
-
-
-//  Função que obtém a data de modificação de um arquivo
-time_t obter_data_modificacao(const char *nome_arquivo) 
-{
-    struct stat info;
-
-    if (stat(nome_arquivo, &info) == 0) 
-        return info.st_mtime;
-
-    return 0;
-}
-
-
-//============================================================================================================================
-
-
-//  Função que obtém o UID do usuário atual
-int obter_uid() 
-{
-    return getuid();  // pega UID do usuário atual
-}
 
 
 //============================================================================================================================
