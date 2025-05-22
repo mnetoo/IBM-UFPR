@@ -25,185 +25,149 @@ int obter_uid()
 // - argv: array de argumentos da linha de comando
 int p_option(char *arquivo, int argc, char *argv[]) 
 {
-    Membro membros_existentes[MAX_MEMBROS];  // Array para armazenar membros já existentes no archive
-    int qtd_existentes = 0;                  // Contador de membros existentes
+    Membro membros_existentes[MAX_MEMBROS];
+    int qtd_existentes = 0;
+    char *dados_antigos[MAX_MEMBROS] = {NULL}; // Para armazenar dados dos membros não substituídos
 
-    // Tenta abrir o arquivo archive existente para leitura
-    FILE *archive = fopen(arquivo, "rb");
-    if (archive) 
+    // 1. Ler o archive existente (se existir)
+    FILE *old_archive = fopen(arquivo, "rb");
+    if (old_archive) 
     {
-        // Lê a quantidade de membros existentes (armazenada no final do arquivo)
-        fseek(archive, -sizeof(int), SEEK_END);
-        fread(&qtd_existentes, sizeof(int), 1, archive);
+        fseek(old_archive, -sizeof(int), SEEK_END);
+        fread(&qtd_existentes, sizeof(int), 1, old_archive);
         
-        // Posiciona no início da lista de membros existentes e lê-os
-        fseek(archive, -(sizeof(int) + qtd_existentes * sizeof(Membro)), SEEK_END);
-        fread(membros_existentes, sizeof(Membro), qtd_existentes, archive);
-        fclose(archive);
+        long membros_offset = -(sizeof(int) + qtd_existentes * sizeof(Membro));
+        fseek(old_archive, membros_offset, SEEK_END);
+        fread(membros_existentes, sizeof(Membro), qtd_existentes, old_archive);
+
+        // Ler os dados de todos os membros existentes
+        for (int i = 0; i < qtd_existentes; i++) {
+            dados_antigos[i] = malloc(membros_existentes[i].tamanho_original);
+            if (dados_antigos[i]) {
+                fseek(old_archive, membros_existentes[i].offset, SEEK_SET);
+                fread(dados_antigos[i], 1, membros_existentes[i].tamanho_original, old_archive);
+            }
+        }
+        fclose(old_archive);
     }
 
-    // Abre o arquivo archive para escrita (cria novo ou sobrescreve existente)
-    archive = fopen(arquivo, "wb");
-    if (!archive) 
+    // 2. Criar novo archive
+    FILE *new_archive = fopen(arquivo, "wb");
+    if (!new_archive) 
     {
         printf("Erro: não foi possível criar o arquivo de archive '%s'\n", arquivo);
+        for (int i = 0; i < qtd_existentes; i++) free(dados_antigos[i]);
         return 1;
     }
 
-    Membro membros_finais[MAX_MEMBROS];  // Array para os membros que estarão no archive final
-    int qtd_finais = 0;                  // Contador de membros finais
+    Membro membros_finais[MAX_MEMBROS];
+    int qtd_finais = 0;
+    long current_offset = 0;
 
-    // Processa os membros existentes
+    // 3. Processar membros existentes
     for (int i = 0; i < qtd_existentes; i++) 
     {
-        int substituido = 0;  // Flag para indicar se o membro foi substituído
+        int substituido = 0;
 
-        // Verifica se o membro existente está na lista de argumentos (para ser substituído)
+        // Verificar se deve ser substituído
         for (int j = 3; j < argc; j++) 
         {
             if (strcmp(membros_existentes[i].nome, argv[j]) == 0) 
             {
-                printf("Membro '%s' já existe. Substituindo...\n", argv[j]);
-
-                // Tenta abrir o arquivo que substituirá o membro existente
+                printf("Substituindo membro '%s'...\n", argv[j]);
                 FILE *f = fopen(argv[j], "rb");
                 if (!f) 
                 {
-                    printf("Erro: não foi possível abrir '%s'. Pulando...\n", argv[j]);
-                    substituido = 1; // marca como processado para não tentar regravar o antigo
+                    printf("Erro ao abrir '%s'. Mantendo versão antiga.\n", argv[j]);
                     break;
                 }
 
-                // Cria um novo membro com os dados do arquivo
+                // Criar novo membro
                 Membro m = criar_membro(argv[j], qtd_finais + 1);
-                m.offset = ftell(archive);  // Armazena a posição atual no archive
-                m.comprimido = 0;           // Marca como não comprimido
+                m.offset = current_offset;
+                m.comprimido = 0;
 
-                // Lê o conteúdo do arquivo
+                // Ler e escrever dados
                 fseek(f, 0, SEEK_END);
-                long tamanho_arquivo = ftell(f);
+                m.tamanho_original = ftell(f);
                 rewind(f);
 
-                // Aloca buffer e copia o conteúdo para o archive
-                char *buffer = (char *) malloc(tamanho_arquivo);
-                if (!buffer) {
-                    printf("Erro: falha ao alocar memória para '%s'. Pulando...\n", argv[j]);
-                    fclose(f);
-                    substituido = 1;
-                    break;
+                char *buffer = malloc(m.tamanho_original);
+                if (buffer) {
+                    fread(buffer, 1, m.tamanho_original, f);
+                    fwrite(buffer, 1, m.tamanho_original, new_archive);
+                    free(buffer);
+                    current_offset += m.tamanho_original;
+                } else {
+                    printf("Erro de alocação para '%s'\n", argv[j]);
                 }
 
-                size_t lidos = fread(buffer, 1, tamanho_arquivo, f);
-                fwrite(buffer, 1, lidos, archive);
-
-                free(buffer);
                 fclose(f);
-
-                // Adiciona o novo membro à lista final
                 membros_finais[qtd_finais++] = m;
                 substituido = 1;
-                break; // já substituído, não precisa procurar mais
-            }
-        }
-
-        // Se o membro existente não foi substituído, copia-o para o novo archive
-        if (!substituido) 
-        {
-            FILE *f = fopen(membros_existentes[i].nome, "rb");
-            if (!f) 
-            {
-                printf("Aviso: não foi possível reabrir '%s'. Pulando...\n", membros_existentes[i].nome);
-                continue;
-            }
-
-            Membro m = membros_existentes[i];
-            m.offset = ftell(archive);  // Atualiza o offset para a nova posição
-
-            // Copia o conteúdo do membro existente para o novo archive
-            fseek(f, 0, SEEK_END);
-            long tamanho_arquivo = ftell(f);
-            rewind(f);
-
-            char *buffer = (char *) malloc(tamanho_arquivo);
-            if (!buffer) {
-                printf("Erro: falha ao alocar memória para '%s'. Pulando...\n", m.nome);
-                fclose(f);
-                continue;
-            }
-
-            size_t lidos = fread(buffer, 1, tamanho_arquivo, f);
-            fwrite(buffer, 1, lidos, archive);
-
-            free(buffer);
-            fclose(f);
-
-            membros_finais[qtd_finais++] = m;
-        }
-    }
-
-    // Adiciona os novos membros que ainda não foram inseridos (não substituídos)
-    for (int j = 3; j < argc; j++) 
-    {
-        int ja_adicionado = 0;
-
-        // Verifica se o membro já foi adicionado
-        for (int i = 0; i < qtd_finais; i++) 
-        {
-            if (strcmp(membros_finais[i].nome, argv[j]) == 0) 
-            {
-                ja_adicionado = 1;
                 break;
             }
         }
 
-        // Se não foi adicionado, inclui no archive
-        if (!ja_adicionado) 
+        // Se não foi substituído, copiar do archive antigo
+        if (!substituido && dados_antigos[i]) 
         {
-            FILE *f = fopen(argv[j], "rb");
-            if (!f) 
-            {
-                printf("Erro: não foi possível abrir '%s'. Pulando...\n", argv[j]);
-                continue;
-            }
+            Membro m = membros_existentes[i];
+            m.offset = current_offset;
+            m.ordem = qtd_finais + 1;
 
-            Membro m = criar_membro(argv[j], qtd_finais + 1);
-            m.offset = ftell(archive);
-            m.comprimido = 0;
-
-            // Copia o conteúdo do novo arquivo para o archive
-            fseek(f, 0, SEEK_END);
-            long tamanho_arquivo = ftell(f);
-            rewind(f);
-
-            char *buffer = (char *) malloc(tamanho_arquivo);
-            if (!buffer) {
-                printf("Erro: falha ao alocar memória para '%s'. Pulando...\n", argv[j]);
-                fclose(f);
-                continue;
-            }
-
-            size_t lidos = fread(buffer, 1, tamanho_arquivo, f);
-            fwrite(buffer, 1, lidos, archive);
-
-            free(buffer);
-            fclose(f);
-
+            fwrite(dados_antigos[i], 1, m.tamanho_original, new_archive);
+            current_offset += m.tamanho_original;
             membros_finais[qtd_finais++] = m;
         }
     }
 
-    // Atualiza a ordem/número de todos os membros
-    for (int i = 0; i < qtd_finais; i++)
-        membros_finais[i].ordem = i + 1;
+    // 4. Adicionar novos membros
+    for (int j = 3; j < argc; j++) 
+    {
+        int ja_existe = 0;
+        for (int i = 0; i < qtd_finais; i++) {
+            if (strcmp(membros_finais[i].nome, argv[j]) == 0) {
+                ja_existe = 1;
+                break;
+            }
+        }
 
-    // Escreve a lista de membros e a quantidade total no final do archive
-    fwrite(membros_finais, sizeof(Membro), qtd_finais, archive);
-    fwrite(&qtd_finais, sizeof(int), 1, archive);
+        if (!ja_existe) {
+            FILE *f = fopen(argv[j], "rb");
+            if (f) {
+                Membro m = criar_membro(argv[j], qtd_finais + 1);
+                m.offset = current_offset;
+                m.comprimido = 0;
 
-    fclose(archive);
+                fseek(f, 0, SEEK_END);
+                m.tamanho_original = ftell(f);
+                rewind(f);
+
+                char *buffer = malloc(m.tamanho_original);
+                if (buffer) {
+                    fread(buffer, 1, m.tamanho_original, f);
+                    fwrite(buffer, 1, m.tamanho_original, new_archive);
+                    free(buffer);
+                    current_offset += m.tamanho_original;
+                    membros_finais[qtd_finais++] = m;
+                }
+                fclose(f);
+            }
+        }
+    }
+
+    // 5. Escrever metadados no final
+    fwrite(membros_finais, sizeof(Membro), qtd_finais, new_archive);
+    fwrite(&qtd_finais, sizeof(int), 1, new_archive);
+
+    // 6. Liberar memória e fechar arquivos
+    for (int i = 0; i < qtd_existentes; i++) free(dados_antigos[i]);
+    fclose(new_archive);
 
     return 0;
 }
+
 
 
 

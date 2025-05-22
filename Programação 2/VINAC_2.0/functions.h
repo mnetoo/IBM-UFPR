@@ -15,6 +15,7 @@
 #include <errno.h>
 
 #define MAX_MEMBROS 1024
+#define BUFFER_SIZE (1024 * 1024) // 1 MB, pode ajustar conforme memória disponível
 
 //===================================================================
 
