@@ -69,18 +69,19 @@ rm chatgpt-40k.txt && ./vina -x arc1.vc chatgpt-40k.txt img.jpeg (correto)
 diff files/chatgpt-5k.txt chatgpt-40k.txt && diff files/img.jpeg img.jpeg (correto)
 
 rm arc1.vc chatgpt-40k.txt img.jpeg
-PASSOU (rever)
+PASSOU
 
 
 ===============================================================================================================================================================================
 
 
 TESTE: 5
+
 cp files/chatgpt-5k.txt files/img.jpeg files/radio-100k.bin . && ./vina -p arc1.vc img.jpeg chatgpt-5k.txt radio-100k.bin (correto)
 
 rm chatgpt-5k.txt img.jpeg radio-100k.bin && cp files/chatgpt-40k.txt chatgpt-5k.txt 													#(prestem atenção aqui)
 
-./vina -ic arc1.vc chatgpt-5k.txt && rm chatgpt-5k.txt (correto)
+./vina -i arc1.vc chatgpt-5k.txt && rm chatgpt-5k.txt (correto)
 
 ./vina -x arc1.vc chatgpt-5k.txt && ./vina -x arc1.vc radio-100k.bin (correto)
 
@@ -115,7 +116,7 @@ cp files/chatgpt-5k.txt files/chatgpt-40k.txt files/img.jpeg files/radio-100k.bi
 
 ./vina -p arc1.vc chatgpt-40k.txt img.jpeg radio-100k.bin && rm chatgpt-5k.txt chatgpt-40k.txt img.jpeg radio-100k.bin radio.cfg (correto)
 
-./vina -m arc1.vc img.jpeg && ./vina -x arc1.vc img.jpeg radio-100k.bin (correto)
+./vina -m arc1.vc NULL img.jpeg && ./vina -x arc1.vc img.jpeg radio-100k.bin (correto)
 
 diff files/img.jpeg img.jpeg && diff files/radio-100k.bin radio-100k.bin (correto)
 
@@ -127,17 +128,24 @@ PASSOU
 
 
 TESTE: 8
-cp files/chatgpt-5k.txt files/chatgpt-40k.txt files/img.jpeg files/radio-100k.bin files/radio.cfg . && ./vina -i arc1.vc img.jpeg chatgpt-40k.txt radio-100k.bin (correto)
+cp files/chatgpt-5k.txt files/chatgpt-40k.txt files/img.jpeg files/radio-100k.bin files/radio.cfg .
 
-./vina -p arc1.vc chatgpt-5k.txt radio.cfg && rm chatgpt-5k.txt chatgpt-40k.txt img.jpeg radio-100k.bin radio.cfg (correto)
+./vina -i arc1.vc img.jpeg chatgpt-40k.txt radio-100k.bin
 
-./vina -m arc1.vc chatgpt-40k.txt chatgpt-5k.txt && ./vina -x arc1.vc chatgpt-40k.txt chatgpt-5k.txt (correto)
+./vina -p arc1.vc chatgpt-5k.txt radio.cfg
 
-diff files/chatgpt-5k.txt chatgpt-5k.txt && diff files/chatgpt-40k.txt chatgpt-40k.txt (correto)
+rm chatgpt-5k.txt chatgpt-40k.txt img.jpeg radio-100k.bin radio.cfg
+
+./vina -m arc1.vc chatgpt-40k.txt chatgpt-5k.txt
+
+./vina -x arc1.vc chatgpt-40k.txt chatgpt-5k.txt
+
+diff files/chatgpt-5k.txt chatgpt-5k.txt
+
+diff files/chatgpt-40k.txt chatgpt-40k.txt
 
 rm arc1.vc chatgpt-5k.txt chatgpt-40k.txt
-NAO PASSOU
-
+PASSOU
 
 ===============================================================================================================================================================================
 

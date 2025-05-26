@@ -228,34 +228,34 @@ for test in [1,2,3,4,5,6,7,8,9]:
 			if command.startswith("diff"):
 				diff_file = open("diff_file.txt", "wb+")
 				try:
-					result = subprocess.run(command.split(), timeout=10, stdout = diff_file)
-				except:
-					continue
+					result = subprocess.run(command.split(), timeout=20, stdout = diff_file)
+				except Exception as e:
+					print("ERRO -", e)
 				if (result.returncode != 0):
 					input("ERRO - Verifique o diff_file.txt e pressione ENTER para continuar...")
 				else:
 					print("SUCESSO -", result)
 				try:
-					result = subprocess.run(["rm", "diff_file.txt"], timeout=10, stdout = diff_file)
-				except:
-					continue
+					result = subprocess.run(["rm", "diff_file.txt"], timeout=20, stdout = diff_file)
+				except Exception as e:
+					print("ERRO -", e)
 			elif command.startswith("cmp"):
 				cmp_file = open("cmp_file.txt", "wb+")
 				try:
-					result = subprocess.run(command.split(), timeout=10, stdout = cmp_file)
+					result = subprocess.run(command.split(), timeout=20, stdout = cmp_file)
 				except:
 					continue
 				cmp_file.close()
 			elif command.startswith("wc"):
 				try:
-					result = subprocess.run(command.split(), timeout=10)
-				except:
-					continue
+					result = subprocess.run(command.split(), timeout=20)
+				except Exception as e:
+					print("ERRO -", e)
 			else:
 				try:
-					result = subprocess.run(command.split(), timeout=10, stdout = subprocess.DEVNULL)
-				except:
-					continue
+					result = subprocess.run(command.split(), timeout=20, stdout = subprocess.DEVNULL)
+				except Exception as e:
+					print("ERRO -", e)
 				if (result.returncode != 0):
 					print("ERRO -", result)
 				else:
@@ -264,9 +264,9 @@ for test in [1,2,3,4,5,6,7,8,9]:
 			print("---")
 			for subcommand in command:
 				try:
-					result = subprocess.run(subcommand.split(), timeout=10, stdout = subprocess.DEVNULL)
-				except:
-					continue
+					result = subprocess.run(subcommand.split(), timeout=20, stdout = subprocess.DEVNULL)
+				except Exception as e:
+					print("ERRO -", e)
 				if (result.returncode != 0):
 					print("ERRO -", result)
 				else:
