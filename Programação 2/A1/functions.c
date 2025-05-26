@@ -878,3 +878,119 @@ int m_option(char *arquivo, int argc, char *argv[])
 
 
 //============================================================================================================================
+
+
+
+// Função que cria um novo arquivo derivado
+int z_option(char *arquivo, int argc, char *argv[]) 
+{
+    // Abre o arquivo original em modo leitura binária
+    FILE *orig = fopen(arquivo, "rb");
+    if (!orig) 
+    {
+        printf("Erro: não foi possível abrir o arquivo '%s'\n", arquivo);
+        return 1;
+    }
+
+    // Lê o diretório de membros do arquivo original
+    Membro membros[MAX_MEMBROS];
+    int qtd_membros = ler_diretorio(orig, membros); 
+
+    int qtd_solicitados = argc - 3;
+    if (qtd_solicitados <= 0) 
+    {
+        printf("Erro: nenhum membro especificado para derivação.\n");
+        fclose(orig);
+        return 1;
+    }
+
+    Membro selecionados[MAX_MEMBROS]; 
+    int encontrados = 0; 
+
+    // Loop para processar cada membro solicitado na linha de comando
+    for (int j = 3; j < argc; j++) 
+    {
+        int achou = 0;
+        
+        // Procura o membro na lista de membros do arquivo original
+        for (int i = 0; i < qtd_membros; i++) 
+        {
+            if (strcmp(argv[j], membros[i].nome) == 0) 
+            {
+                selecionados[encontrados++] = membros[i];
+                achou = 1;
+                break;
+            }
+        }
+        
+        // Se o membro não foi encontrado, encerra
+        if (!achou) 
+        {
+            printf("Erro: membro '%s' não encontrado no arquivo.\n", argv[j]);
+            fclose(orig);
+            return 1;
+        }
+    }
+
+    // Cria o nome do arquivo derivado
+    char nome_derivado[256];
+    snprintf(nome_derivado, sizeof(nome_derivado), "%s_z", arquivo);
+
+    // Abre o arquivo derivado em modo escrita binária
+    FILE *derivado = fopen(nome_derivado, "wb");
+    if (!derivado) 
+    {
+        printf("Erro: não foi possível criar o arquivo '%s'\n", nome_derivado);
+        fclose(orig);
+        return 1;
+    }
+
+    // Processa cada membro selecionado para copiar para o novo arquivo
+    for (int i = 0; i < encontrados; i++) 
+    {
+        // Aloca memória para o buffer que armazenará o conteúdo do membro
+        unsigned char *buffer = malloc(selecionados[i].tamanho_comp);
+        if (!buffer) 
+        {
+            printf("Erro: falha ao alocar memória.\n");
+            fclose(orig);
+            fclose(derivado);
+            return 1;
+        }
+
+        // Posiciona o ponteiro no arquivo original no início do membro
+        fseek(orig, selecionados[i].offset, SEEK_SET);
+        
+        // Lê o conteúdo do membro no arquivo original
+        size_t lidos = fread(buffer, 1, selecionados[i].tamanho_comp, orig);
+        if (lidos != (size_t)selecionados[i].tamanho_comp) 
+        {
+            printf("Erro ao ler dados do membro '%s'\n", selecionados[i].nome);
+            free(buffer);
+            fclose(orig);
+            fclose(derivado);
+            return 1;
+        }
+
+        // Atualiza o offset do membro para a posição atual no novo arquivo
+        selecionados[i].offset = ftell(derivado);
+        
+        // Escreve o conteúdo do membro no arquivo derivado
+        fwrite(buffer, 1, selecionados[i].tamanho_comp, derivado);
+        free(buffer);
+    }
+
+    // Atualiza a ordem dos membros no novo arquivo
+    for (int i = 0; i < encontrados; i++)
+        selecionados[i].ordem = i + 1;
+
+    fwrite(selecionados, sizeof(Membro), encontrados, derivado);
+    fwrite(&encontrados, sizeof(int), 1, derivado);
+
+    // Fecha os arquivos
+    fclose(orig);
+    fclose(derivado);
+    
+    // Retorna sucesso
+    return 0;
+}

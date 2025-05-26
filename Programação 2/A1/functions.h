@@ -73,6 +73,9 @@ int m_option(char *arquivo, int argc, char *argv[]);
 //===================================================================
 
 
+int z_option(char *arquivo, int argc, char *argv[]);
+
+
 //  Função que obtém o UID do usuário atual
 int obter_uid();
 

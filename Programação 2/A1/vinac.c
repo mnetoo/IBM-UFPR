@@ -36,6 +36,10 @@ int main(int argc, char *argv[])
     else if (strcmp(opcao, "-m") == 0)
         return m_option(arquivo, argc, argv);
 
+    // Move os membros indicados
+    else if (strcmp(opcao, "-z") == 0)
+        return z_option(arquivo, argc, argv);   
+
     // Lista os membros do archive
     else if (strcmp(opcao, "-c") == 0)
         return c_option(arquivo);
