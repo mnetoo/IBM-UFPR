@@ -1,18 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-#define MAX_INIMIGOS 2
-#define TELA_LARGURA 900
-#define TELA_ALTURA 600
 
-
-
-
-
-
-
-
-
+//  Estado do jogo
 typedef enum 
 {
     ESTADO_MENU,
@@ -23,19 +13,20 @@ typedef enum
 } EstadoJogo;
 
 
-
-
-
+//  Função que roda o jogo
 EstadoJogo run_game();
 
+//======================================================
+
+//  Função que roda a tela de MENU
 EstadoJogo run_menu();
 
+//======================================================
+
+//  Função que roda tela de GAME OVER
 EstadoJogo run_gameover();
 
-
-
-
-
+//======================================================
 
 
 #endif

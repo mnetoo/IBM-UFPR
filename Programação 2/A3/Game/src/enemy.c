@@ -1,12 +1,10 @@
-#include "enemy.h"
-#include <allegro5/allegro_image.h>
-#include <stdio.h>
+#include "includes.h"
 
 
 //==============================================================================
 
 
-//
+//  Função que inicializa um inimigo
 void init_enemy(Enemy *e, float x, float y) 
 {
     e->x = x;
@@ -25,7 +23,7 @@ void init_enemy(Enemy *e, float x, float y)
 //==============================================================================
 
 
-//
+//  Função de movimentação de inimigo
 void update_enemy(Enemy *e) 
 {
     if (!e->ativo) return;
@@ -41,7 +39,7 @@ void update_enemy(Enemy *e)
 //==============================================================================
 
 
-//
+//  Carrega a sprite do inimigo
 void draw_enemy(Enemy *e) 
 {
     if (!e->ativo || !e->sprite) 
@@ -54,7 +52,7 @@ void draw_enemy(Enemy *e)
 //==============================================================================
 
 
-//
+//  Função que destrói inimigo
 void destroy_enemy(Enemy *e) 
 {
     if (e->sprite) al_destroy_bitmap(e->sprite);

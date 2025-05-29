@@ -1,18 +1,4 @@
-#include "player.h"
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_image.h>
-#include <stdio.h>
-
-
-#define GRAVIDADE 0.5
-#define PULO -8
-#define VELOCIDADE 3
-
-#define VIDA_PLAYER 100
-#define POSICAO_INICIAL_X 100
-#define POSICAO_INICIAL_Y 380
-#define ALTURA_SPRITE 48
-#define LARGURA_SPRITE 32
+#include "includes.h"
 
 
 //============================================================================
@@ -24,7 +10,7 @@ void init_player(Player *p)
     printf("Inicializando jogador...\n");
 
     p->x = POSICAO_INICIAL_X;
-    p->y = POSICAO_INICIAL_Y;
+    p->y = ALTURA_CHAO - LARGURA_SPRITE;
     p->vel_x = 0;
     p->vel_y = 0;
     p->width = LARGURA_SPRITE;
@@ -94,7 +80,7 @@ void update_player(Player *p)
     {
         p->vel_y = PULO;
         p->estado = JUMP;
-        can_jump = false;  // Impede novos pulos até tocar o chão
+        can_jump = false;
     }
 
     // Atualizar posição
@@ -102,18 +88,22 @@ void update_player(Player *p)
     p->y += p->vel_y;
     p->vel_y += GRAVIDADE;
 
-    // Colisão com o chão
-    if (p->y >= 380) 
+    float limite_y = ALTURA_CHAO - p->height;
+    bool em_chao_visivel = tem_chao_visivel(p->x + p->width / 2);
+
+    if (em_chao_visivel && p->y >= limite_y) 
     {
-        p->y = 380;
+        p->y = limite_y;
         p->vel_y = 0;
-        can_jump = true;  // Permite pular novamente ao tocar o chão
-        
-        if (p->estado == JUMP)  // Atualiza o estado se estava pulando
+        can_jump = true;
+
+        if (p->estado == JUMP)
             p->estado = STAND;
     }
-}
 
+    if (p->y > TELA_ALTURA)
+        p->vida = 0;  // ou mudar estado diretamente
+}
 
 
 //============================================================================
@@ -162,3 +152,6 @@ void destroy_player(Player *p)
     al_destroy_bitmap(p->sprite_crouch);
     al_destroy_bitmap(p->sprite_shoot);
 }
+
+
+//============================================================================

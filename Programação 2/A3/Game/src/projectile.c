@@ -1,11 +1,10 @@
-#include <allegro5/allegro_image.h>
-#include "projectile.h"
+#include "includes.h"
 
 
 //==========================================================================================
 
 
-//
+//  Função que inicializa bullet
 void init_projectile(Projectile *p, float x, float y, float vel_x) 
 {
     p->x = x;
@@ -19,7 +18,7 @@ void init_projectile(Projectile *p, float x, float y, float vel_x)
 //==========================================================================================
 
 
-//
+//  Função que movimentação do projétil
 void update_projectile(Projectile *p)
 {
     if (!p->ativo) return;
@@ -28,14 +27,13 @@ void update_projectile(Projectile *p)
 
     if (p->x < 0 || p->x > 840)
         p->ativo = false;
-
 }
 
 
 //==========================================================================================
 
 
-//
+//  Função que carrega a sprite bullet
 void draw_projectile(Projectile *p) 
 {
     if (p->ativo && p->sprite)
@@ -46,7 +44,7 @@ void draw_projectile(Projectile *p)
 //==========================================================================================
 
 
-//
+//  Função que destrói bullet
 void destroy_projectile(Projectile *p) 
 {
     if (p->sprite) 

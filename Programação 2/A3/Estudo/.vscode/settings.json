@@ -55,15 +55,5 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp_Runner.msvcSecureNoWarnings": false,
-  "files.associations": {
-    "assets.h": "c",
-    "background.h": "c",
-    "allegro_primitives.h": "c",
-    "allegro.h": "c",
-    "enemy.h": "c",
-    "allegro_font.h": "c",
-    "stdio.h": "c",
-    "allegro_ttf.h": "c"
-  }
+  "C_Cpp_Runner.msvcSecureNoWarnings": false
 }

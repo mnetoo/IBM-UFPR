@@ -1,11 +1,10 @@
-#include <allegro5/allegro_image.h>
-#include "background.h"
+#include "includes.h"
 
 
 //====================================================================================
 
 
-//
+//  Função que inicializa o background
 void init_background(Background *bg, const char *caminho) 
 {
     bg->imagem = al_load_bitmap(caminho);
@@ -16,7 +15,7 @@ void init_background(Background *bg, const char *caminho)
 //====================================================================================
 
 
-//
+//  Função para o Rolling Background
 void update_background(Background *bg, float player_x) 
 {
     // Atualiza o scroll para seguir o jogador, mas limitado ao tamanho do fundo
@@ -28,7 +27,7 @@ void update_background(Background *bg, float player_x)
 //====================================================================================
 
 
-//
+//  Carrega o background
 void draw_background(Background *bg) 
 {
     if (bg->imagem)
@@ -39,7 +38,7 @@ void draw_background(Background *bg)
 //====================================================================================
 
 
-//
+//  Função que destrói o background
 void destroy_background(Background *bg) 
 {
     if (bg->imagem) al_destroy_bitmap(bg->imagem);
