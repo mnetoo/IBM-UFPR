@@ -40,26 +40,31 @@ int h2(int k);
 
 //=====================================================================================
 
-// Busca a chave k na tabela (retorna 1 se encontrar, 0 se não encontrar)
+// Busca a chave k nas tabelas Tabela1 e Tabela2
+// Retorna a posição em Tabela1 ou Tabela2 onde a chave está
+// Se não encontrar, retorna -1
 int busca(struct HashTable *h, int k);
 
 //=====================================================================================
 
-// Insere a chave k na estrutura, tratando colisões
-void inserir(struct HashTable *h, int k);
+// Insere a chave k na tabela, tratando colisões estilo Cuckoo Hash
+// Retorna:
+//   posição de T1 se inserido lá,
+//   posição de T2 se houve colisão e foi movido,
+//  -1 se a chave já existia (não insere duplicadas)
+int inserir(struct HashTable *h, int k);
 
 //=====================================================================================
 
-// Remove a chave k da estrutura (marca como REMOVIDO)
-void remover(struct HashTable *h, int k);
+// Remove a chave k (marca como REMOVIDO se for encontrada)
+// Retorna:
+//   1 se a chave foi removida com sucesso
+//   0 se a chave não foi encontrada
+int remover(struct HashTable *h, int k);
 
 //=====================================================================================
 
-// Imprime as duas tabelas (Tabela1 e Tabela2) na tela
-void imprime(struct HashTable *h);
-
-//=====================================================================================
-
+//  Função para imprimir saída formatada
 void imprimeHash(struct HashTable *h);
 
 //=====================================================================================

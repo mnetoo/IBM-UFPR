@@ -48,24 +48,27 @@ int h2(int k)
 
 
 // Busca a chave k nas tabelas Tabela1 e Tabela2
+// Retorna a posição em Tabela1 ou Tabela2 onde a chave está
+// Se não encontrar, retorna -1
 int busca(struct HashTable *h, int k) 
 {
     int pos1 = h1(k);
     
+    // Se a chave está em Tabela1 na posição pos1
     if (h->Tabela1[pos1] == k)
-        return 1; // Encontrado em T1
+        return pos1; // Encontrado em T1, retorna posição em T1
     
-    // Se encontrou VAZIO em T1, sabemos que não está na tabela (não existe)
+    // Se posição em T1 estiver vazia, sabemos que não está na tabela
     if (h->Tabela1[pos1] == VAZIO)
-        return 0; // Não encontrado
+        return -1; // Não encontrado
 
-    // Se for REMOVIDO em T1, continuar procurando em T2
+    // Se for REMOVIDO em T1 ou outra chave, tenta em T2
     int pos2 = h2(k);
 
     if (h->Tabela2[pos2] == k)
-        return 1; // Encontrado em T2
-    
-    return 0; // Não encontrado
+        return pos2; // Encontrado em T2, retorna posição em T2
+
+    return -1; // Não encontrado
 }
 
 
@@ -73,36 +76,44 @@ int busca(struct HashTable *h, int k)
 
 
 // Insere a chave k na tabela, tratando colisões estilo Cuckoo Hash
-void inserir(struct HashTable *h, int k) 
+// Retorna:
+//   posição de T1 se inserido lá,
+//   posição de T2 se houve colisão e foi movido,
+//  -1 se a chave já existia (não insere duplicadas)
+int inserir(struct HashTable *h, int k) 
 {
     int pos1 = h1(k);
 
-    // Verifica se já existe
-    if (busca(h, k)) return;
+    // Se a chave já existe, não insere novamente
+    if (busca(h, k) != -1)
+        return -1;
 
-    // Se posição em Tabela1 estiver vazia ou marcada como REMOVIDA
-    if (h->Tabela1[pos1] == VAZIO || h->Tabela1[pos1] == REMOVIDO)
+    // Se a posição em T1 está vazia ou foi removida
+    if (h->Tabela1[pos1] == VAZIO || h->Tabela1[pos1] == REMOVIDO) {
         h->Tabela1[pos1] = k;
-    else 
-    {
-        // Colisão: mover chave antiga ki para Tabela2
+        return pos1; // Inserido em T1
+    } else {
+        // Colisão: chave ki já está na posição de T1
         int ki = h->Tabela1[pos1];
         int pos2 = h2(ki);
 
-        // Assumimos que Tabela2 nunca colide (como informado)
+        // Move ki para T2 (assumindo que nunca colide em T2)
         h->Tabela2[pos2] = ki;
 
-        // Inserir a nova chave na Tabela1
+        // Agora T1[pos1] está livre para nova chave k
         h->Tabela1[pos1] = k;
+        return pos1; // Inserido em T1 após mover ki para T2
     }
 }
-
 
 //=====================================================================================
 
 
 // Remove a chave k (marca como REMOVIDO se for encontrada)
-void remover(struct HashTable *h, int k)
+// Retorna:
+//   1 se a chave foi removida com sucesso
+//   0 se a chave não foi encontrada
+int remover(struct HashTable *h, int k)
 {
     int pos2 = h2(k);
 
@@ -110,51 +121,26 @@ void remover(struct HashTable *h, int k)
     {
         // Exclusão direta em T2
         h->Tabela2[pos2] = REMOVIDO;
-        return;
+        return 1;
     }
 
     int pos1 = h1(k);
 
     if (h->Tabela1[pos1] == k)
-        // Exclusão em T1 marca como REMOVIDO
+    {
+        // Exclusão em T1: marcar como REMOVIDO (não usar VAZIO)
         h->Tabela1[pos1] = REMOVIDO;
+        return 1;
+    }
 
+    // Se não encontrou em nenhuma tabela
+    return 0;
 }
 
 
 //=====================================================================================
 
-
-// Imprime as duas tabelas Tabela1 e Tabela2
-void imprime(struct HashTable *h)
-{
-    printf("Tabela 1:\n");
-    for (int i = 0; i < M; i++) 
-    {
-        if (h->Tabela1[i] == VAZIO)
-            printf("[%2d] : VAZIO\n", i);
-        else if (h->Tabela1[i] == REMOVIDO)
-            printf("[%2d] : REMOVIDO\n", i);
-        else
-            printf("[%2d] : %d\n", i, h->Tabela1[i]);
-    }
-
-    printf("\nTabela 2:\n");
-    for (int i = 0; i < M; i++) 
-    {
-        if (h->Tabela2[i] == VAZIO)
-            printf("[%2d] : VAZIO\n", i);
-        else if (h->Tabela2[i] == REMOVIDO)
-            printf("[%2d] : REMOVIDO\n", i);
-        else
-            printf("[%2d] : %d\n", i, h->Tabela2[i]);
-    }
-    printf("\n");
-}
-
-//=====================================================================================
-
-
+//  Função para imprimir saída formatada
 void imprimeHash(struct HashTable *h) 
 {
     struct EntradaHash 
