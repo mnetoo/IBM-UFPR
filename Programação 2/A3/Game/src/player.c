@@ -51,28 +51,35 @@ void update_player(Player *p)
     ALLEGRO_KEYBOARD_STATE keyState;
     al_get_keyboard_state(&keyState);
 
+    // Resetar a velocidade horizontal
     p->vel_x = 0;
 
-    // Movimento horizontal
-    if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) 
-    {
-        p->vel_x = VELOCIDADE;
-        p->estado = WALK;
-    } 
-    else if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) 
-    {
-        p->vel_x = -VELOCIDADE;
-        p->estado = WALK;
-    } 
-    else
-    {
-        p->estado = STAND;
-    }
+    // Verifica se está no ar
+    bool no_ar = (p->vel_y != 0);
 
-    // Agachar
-    if (al_key_down(&keyState, ALLEGRO_KEY_DOWN))
+    // Movimento horizontal (somente muda sprite se não estiver pulando)
+    if (!no_ar) 
     {
-        p->estado = CROUCH;
+        if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) 
+        {
+            p->vel_x = VELOCIDADE;
+            p->estado = WALK;
+        } 
+        else if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) 
+        {
+            p->vel_x = -VELOCIDADE;
+            p->estado = WALK;
+        } 
+        else
+        {
+            p->estado = STAND;
+        }
+
+        // Agachar (também só se não estiver no ar)
+        if (al_key_down(&keyState, ALLEGRO_KEY_DOWN))
+        {
+            p->estado = CROUCH;
+        }
     }
 
     // Pulo (só permite se estiver no chão e can_jump for true)
@@ -97,8 +104,14 @@ void update_player(Player *p)
         p->vel_y = 0;
         can_jump = true;
 
+        // Só muda o estado ao tocar o chão, caso ainda estivesse em JUMP
         if (p->estado == JUMP)
-            p->estado = STAND;
+        {
+            if (al_key_down(&keyState, ALLEGRO_KEY_LEFT) || al_key_down(&keyState, ALLEGRO_KEY_RIGHT))
+                p->estado = WALK;
+            else
+                p->estado = STAND;
+        }
     }
 
     if (p->y > TELA_ALTURA)

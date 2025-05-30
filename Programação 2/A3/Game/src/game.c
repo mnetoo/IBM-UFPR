@@ -46,7 +46,7 @@ EstadoJogo run_game()
     al_register_event_source(queue, al_get_timer_event_source(timer));
 
     init_player(&player);
-    init_background(&bg, "./assets/bg/level1.jpg");
+    init_background(&bg, "./assets/bg/level1.png");
 
     // Inicializa inimigos
     printf("Inicializando inimigos...\n");
