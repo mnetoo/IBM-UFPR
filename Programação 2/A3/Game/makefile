@@ -19,8 +19,7 @@ OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
 
 # Regra principal
 all: $(TARGET)
-	@clear  # Limpa o terminal após a compilação
-
+	
 # Linkagem
 $(TARGET): $(OBJS)
 	@echo "Linkando..."
@@ -30,7 +29,7 @@ $(TARGET): $(OBJS)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
 	@echo "Compilando $<..."
 	$(CC) $(CFLAGS) -c $< -o $@
-	@clear
+	
 
 # Cria o diretório build se não existir
 $(BUILD_DIR):
@@ -39,6 +38,6 @@ $(BUILD_DIR):
 # Limpa os objetos e binário
 clean:
 	rm -rf $(BUILD_DIR) $(TARGET)
-	@clear
+	
 
 .PHONY: all clean

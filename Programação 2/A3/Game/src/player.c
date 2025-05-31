@@ -16,26 +16,41 @@ void init_player(Player *p)
     p->width = LARGURA_SPRITE;
     p->height = ALTURA_SPRITE;
     p->vida = VIDA_PLAYER;
-    p->estado = STAND;
+    p->estado = STAND_AND_STOP;
+    p->olhando_para_direita = 1;
 
-    // Carregar sprites (coloque os arquivos reais em assets/player/)
-    p->sprite_stand   = al_load_bitmap("./assets/player/stand.png");
-    p->sprite_walk    = al_load_bitmap("./assets/player/walk.png");
-    p->sprite_jump    = al_load_bitmap("./assets/player/jump.png");
-    p->sprite_crouch  = al_load_bitmap("./assets/player/crouch.png");
-    p->sprite_shoot   = al_load_bitmap("./assets/player/shoot.png");
+    // Carregar sprites
+    p->sprite_stand_and_stop   = al_load_bitmap("./assets/player/stand_and_stop.png");
+    p->sprite_stand_and_shot   = al_load_bitmap("./assets/player/stand_and_shot.png");
+
+    p->sprite_walk1 = al_load_bitmap("./assets/player/walk1.png");
+    p->sprite_walk2 = al_load_bitmap("./assets/player/walk2.png");
+    p->sprite_walk3 = al_load_bitmap("./assets/player/walk3.png");
+    p->sprite_walk4 = al_load_bitmap("./assets/player/walk4.png");
+
+    p->sprite_jump1 = al_load_bitmap("./assets/player/jump1.png");
+    p->sprite_jump2 = al_load_bitmap("./assets/player/jump2.png");
+
+    p->sprite_crouch1 = al_load_bitmap("./assets/player/crouch1.png"); // direita
+    p->sprite_crouch2 = al_load_bitmap("./assets/player/crouch2.png"); // esquerda
+
+    p->sprite_crouch_and_shot = al_load_bitmap("./assets/player/crouch_and_shot.png");
 
     // Verificar carregamento
-    if (!p->sprite_stand)   
-        printf("Erro ao carregar stand.png\n");
-    if (!p->sprite_walk)    
-        printf("Erro ao carregar walk.png\n");
-    if (!p->sprite_jump)    
-        printf("Erro ao carregar jump.png\n");
-    if (!p->sprite_crouch)  
-        printf("Erro ao carregar crouch.png\n");
-    if (!p->sprite_shoot)   
-        printf("Erro ao carregar shoot.png\n");
+    if (!p->sprite_stand_and_stop) printf("Erro ao carregar stand_and_stop.png\n");
+    if (!p->sprite_stand_and_shot) printf("Erro ao carregar stand_and_shot.png\n");
+
+    if (!p->sprite_walk1) printf("Erro ao carregar walk1.png\n");
+    if (!p->sprite_walk2) printf("Erro ao carregar walk2.png\n");
+    if (!p->sprite_walk3) printf("Erro ao carregar walk3.png\n");
+    if (!p->sprite_walk4) printf("Erro ao carregar walk4.png\n");
+
+    if (!p->sprite_jump1) printf("Erro ao carregar jump1.png\n");
+    if (!p->sprite_jump2) printf("Erro ao carregar jump2.png\n");
+
+    if (!p->sprite_crouch1) printf("Erro ao carregar crouch1.png\n");
+    if (!p->sprite_crouch2) printf("Erro ao carregar crouch2.png\n");
+    if (!p->sprite_crouch_and_shot) printf("Erro ao carregar crouch_and_shot.png\n");
 
     printf("Jogador inicializado com sucesso...\n\n");
 }
@@ -44,78 +59,109 @@ void init_player(Player *p)
 //============================================================================
 
 
-//  Função para movimentar o player
 void update_player(Player *p) 
 {
-    static bool can_jump = true;  // Controla se o jogador pode pular
+    static bool can_jump = true;
+    static int walk_timer = 0;
+    const int WALK_FRAME_DELAY = 10;
+
     ALLEGRO_KEYBOARD_STATE keyState;
     al_get_keyboard_state(&keyState);
 
-    // Resetar a velocidade horizontal
     p->vel_x = 0;
 
-    // Verifica se está no ar
-    bool no_ar = (p->vel_y != 0);
+    bool no_ar = (p->y < (ALTURA_CHAO - ALTURA_SPRITE));
+    bool esta_agachado = al_key_down(&keyState, ALLEGRO_KEY_DOWN);
 
-    // Movimento horizontal (somente muda sprite se não estiver pulando)
-    if (!no_ar) 
+    // Movimento horizontal
+    if (!esta_agachado) 
     {
         if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) 
         {
             p->vel_x = VELOCIDADE;
-            p->estado = WALK;
+            p->olhando_para_direita = true;  // Atualiza direção
+            if (no_ar)
+                p->estado = JUMP1;
+            else {
+                if (walk_timer < WALK_FRAME_DELAY)
+                    p->estado = WALK1;
+                else
+                    p->estado = WALK2;
+                walk_timer = (walk_timer + 1) % (2 * WALK_FRAME_DELAY);
+            }
         } 
         else if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) 
         {
             p->vel_x = -VELOCIDADE;
-            p->estado = WALK;
+            p->olhando_para_direita = false; // Atualiza direção
+            if (no_ar)
+                p->estado = JUMP2;
+            else {
+                if (walk_timer < WALK_FRAME_DELAY)
+                    p->estado = WALK3;
+                else
+                    p->estado = WALK4;
+                walk_timer = (walk_timer + 1) % (2 * WALK_FRAME_DELAY);
+            }
         } 
-        else
+        else if (!no_ar) 
         {
-            p->estado = STAND;
-        }
-
-        // Agachar (também só se não estiver no ar)
-        if (al_key_down(&keyState, ALLEGRO_KEY_DOWN))
-        {
-            p->estado = CROUCH;
+            p->estado = STAND_AND_STOP;
+            walk_timer = 0;
         }
     }
 
-    // Pulo (só permite se estiver no chão e can_jump for true)
-    if (al_key_down(&keyState, ALLEGRO_KEY_SPACE) && can_jump && p->vel_y == 0) 
+    // Agachar
+    if (!no_ar && esta_agachado) 
+    {
+        if (p->vel_x > 0)
+            p->estado = CROUCH1;
+        else if (p->vel_x < 0)
+            p->estado = CROUCH2;
+        else
+            p->estado = p->olhando_para_direita ? CROUCH1 : CROUCH2;  // Corrigido aqui
+
+        walk_timer = 0;
+    }
+
+    // Pulo
+    if (al_key_down(&keyState, ALLEGRO_KEY_SPACE) && can_jump && !no_ar && !esta_agachado) 
     {
         p->vel_y = PULO;
-        p->estado = JUMP;
+
+        if (p->vel_x > 0)
+            p->estado = JUMP1;
+        else if (p->vel_x < 0)
+            p->estado = JUMP2;
+        else
+            p->estado = p->olhando_para_direita ? JUMP1 : JUMP2;
+
         can_jump = false;
     }
 
-    // Atualizar posição
     p->x += p->vel_x;
     p->y += p->vel_y;
-    p->vel_y += GRAVIDADE;
 
-    float limite_y = ALTURA_CHAO - p->height;
-    bool em_chao_visivel = tem_chao_visivel(p->x + p->width / 2);
-
-    if (em_chao_visivel && p->y >= limite_y) 
+    if (p->y < (ALTURA_CHAO - ALTURA_SPRITE)) 
     {
-        p->y = limite_y;
+        p->vel_y += GRAVIDADE;
+    } 
+    else 
+    {
+        p->y = ALTURA_CHAO - ALTURA_SPRITE;
         p->vel_y = 0;
         can_jump = true;
-
-        // Só muda o estado ao tocar o chão, caso ainda estivesse em JUMP
-        if (p->estado == JUMP)
-        {
-            if (al_key_down(&keyState, ALLEGRO_KEY_LEFT) || al_key_down(&keyState, ALLEGRO_KEY_RIGHT))
-                p->estado = WALK;
-            else
-                p->estado = STAND;
-        }
+    
+        if ((p->estado == JUMP1 || p->estado == JUMP2) && p->vel_x == 0)
+            p->estado = STAND_AND_STOP;
     }
+    
 
-    if (p->y > TELA_ALTURA)
-        p->vida = 0;  // ou mudar estado diretamente
+    if (!al_key_down(&keyState, ALLEGRO_KEY_SPACE))
+        can_jump = true;
+
+    //if (p->y > TELA_ALTURA)
+        //p->vida = 0;
 }
 
 
@@ -129,28 +175,48 @@ void draw_player(Player *p)
 
     switch (p->estado) 
     {
-        case STAND:  
-            sprite = p->sprite_stand; 
+        case STAND_AND_STOP:
+            sprite = p->sprite_stand_and_stop;
             break;
-        case WALK:   
-            sprite = p->sprite_walk; 
+        case STAND_AND_SHOT:
+            sprite = p->sprite_stand_and_shot;
             break;
-        case JUMP:   
-            sprite = p->sprite_jump; 
+        case WALK1:
+            sprite = p->sprite_walk1;
             break;
-        case CROUCH: 
-            sprite = p->sprite_crouch; 
+        case WALK2:
+            sprite = p->sprite_walk2;
             break;
-        case SHOOT:  
-            sprite = p->sprite_shoot; 
+        case WALK3:
+            sprite = p->sprite_walk3;
             break;
-        default:     
-            sprite = p->sprite_stand;
+        case WALK4:
+            sprite = p->sprite_walk4;
+            break;
+        case JUMP1:
+            sprite = p->sprite_jump1;
+            break;
+        case JUMP2:
+            sprite = p->sprite_jump2;
+            break;
+        case CROUCH1:
+            sprite = p->sprite_crouch1;
+            break;
+        case CROUCH2:
+            sprite = p->sprite_crouch2;
+            break;
+        case CROUCH_AND_SHOT:
+            sprite = p->sprite_crouch_and_shot;
+            break;
+        default:
+            sprite = p->sprite_stand_and_stop;
+            break;
     }
 
     if (sprite)
         al_draw_bitmap(sprite, p->x, p->y, 0);
 }
+
 
 
 //============================================================================
@@ -159,11 +225,20 @@ void draw_player(Player *p)
 //  Função para destruir o player
 void destroy_player(Player *p) 
 {
-    al_destroy_bitmap(p->sprite_stand);
-    al_destroy_bitmap(p->sprite_walk);
-    al_destroy_bitmap(p->sprite_jump);
-    al_destroy_bitmap(p->sprite_crouch);
-    al_destroy_bitmap(p->sprite_shoot);
+    al_destroy_bitmap(p->sprite_stand_and_stop);
+    al_destroy_bitmap(p->sprite_stand_and_shot);
+
+    al_destroy_bitmap(p->sprite_walk1);
+    al_destroy_bitmap(p->sprite_walk2);
+    al_destroy_bitmap(p->sprite_walk3);
+    al_destroy_bitmap(p->sprite_walk4);
+
+    al_destroy_bitmap(p->sprite_jump1);
+    al_destroy_bitmap(p->sprite_jump2);
+
+    al_destroy_bitmap(p->sprite_crouch1);
+    al_destroy_bitmap(p->sprite_crouch2);
+    al_destroy_bitmap(p->sprite_crouch_and_shot);
 }
 
 
