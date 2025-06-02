@@ -1,6 +1,5 @@
 #include "includes.h"
 
-
 int main() 
 {
     al_init();
@@ -8,14 +7,7 @@ int main()
     al_init_font_addon();
     al_init_ttf_addon();
     al_install_keyboard();
-
-    ALLEGRO_MONITOR_INFO info;
-    al_get_monitor_info(0, &info);
-    int screen_width = info.x2 - info.x1;
-    int screen_height = info.y2 - info.y1;
-
-    al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-    ALLEGRO_DISPLAY *display = al_create_display(screen_width, screen_height);
+    al_init_primitives_addon();
 
     EstadoJogo estado_atual = ESTADO_MENU;
 
@@ -24,16 +16,16 @@ int main()
         switch (estado_atual) 
         {
             case ESTADO_MENU:
-                estado_atual = run_menu(display);
+                estado_atual = run_menu();
                 break;
             case ESTADO_JOGO:
-                estado_atual = run_game(); // atualize esta função também se precisar da tela
+                estado_atual = run_game();
                 break;
             case ESTADO_GAMEOVER:
-                estado_atual = run_gameover(display);
+                estado_atual = run_gameover();
                 break;
             case ESTADO_VITORIA:
-                estado_atual = run_menu(display);
+                estado_atual = run_menu();
                 break;
             default:
                 estado_atual = ESTADO_SAIR;
@@ -41,6 +33,5 @@ int main()
         }
     }
 
-    al_destroy_display(display);
     return 0;
 }

@@ -8,12 +8,12 @@
 
 
 //  Estrutura do bakground
-typedef struct 
-{
-    float scroll_x;
+typedef struct {
     ALLEGRO_BITMAP *imagem;
+    int scroll_x;
+    int largura;
+    int altura;
 } Background;
-
 
 //  Função que inicializa o background
 void init_background(Background *bg, const char *caminho);

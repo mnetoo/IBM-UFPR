@@ -28,19 +28,19 @@
 
 //player.c
 #define GRAVIDADE 0.5
-#define PULO -12
-#define VELOCIDADE 6
+#define PULO -10
+#define VELOCIDADE 3
 #define VIDA_PLAYER 100
 #define POSICAO_INICIAL_X 100
 #define POSICAO_INICIAL_Y 380
-#define ALTURA_CHAO 750
-#define ALTURA_SPRITE 32
-#define LARGURA_SPRITE 20
+#define ALTURA_CHAO 540
+#define ALTURA_SPRITE 30
+#define LARGURA_SPRITE 30
 
 //game.h
 #define MAX_INIMIGOS 2
-#define TELA_LARGURA 900
-#define TELA_ALTURA 600
+#define TELA_LARGURA 1200
+#define TELA_ALTURA 800
 //game.c
 #define LARGURA  al_get_display_width(display)
 #define ALTURA   al_get_display_height(display)

@@ -13,7 +13,7 @@ void init_enemy(Enemy *e, float x, float y)
     e->vida = 20;
     e->ativo = true;
 
-    e->sprite = al_load_bitmap("./assets/player/stand.png");
+    e->sprite = al_load_bitmap("./assets/enemies/enemy.png");
 
     if(!e->sprite)
         printf("Erro ao carregar sprite do inimigo\n");

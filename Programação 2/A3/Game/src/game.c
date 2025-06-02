@@ -2,7 +2,6 @@
 
 static ALLEGRO_TIMER *timer;
 static ALLEGRO_EVENT_QUEUE *queue;
-static ALLEGRO_DISPLAY *display;
 static ALLEGRO_FONT *font;
 
 static Player player;
@@ -13,31 +12,16 @@ static Background bg;
 //===================================================================================================================================================================
 
 
-// Função para desenhar um fundo gradiente vertical simples
-void desenha_gradiente(ALLEGRO_DISPLAY *display) 
-{
-    for (int i = 0; i < ALTURA; i++) 
-    {
-        float r = (float)i / ALTURA * 60;
-        float g = (float)i / ALTURA * 60;
-        float b = (float)i / ALTURA * 90 + 40;
-        al_draw_line(0, i, LARGURA, i, al_map_rgb((int)r, (int)g, (int)b), 1);
-    }
-}
-
-
-//==============================================================================================================================================================
-
-
 //  Função que roda o jogo
 EstadoJogo run_game() 
 {
-    al_install_keyboard();
-    al_init_primitives_addon();
-    al_init_font_addon();
-    font = al_create_builtin_font();
+    // Removendo a flag de tela cheia e criando uma janela fixa
+    al_set_new_display_flags(ALLEGRO_WINDOWED); // Modo janela (não fullscreen)
+    ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
+    al_set_window_title(display, "GAME");
 
-    display = al_create_display(TELA_LARGURA, TELA_ALTURA);
+    font = al_load_ttf_font("./assets/font1.ttf", 20, 0);
+
     queue = al_create_event_queue();
     timer = al_create_timer(1.0 / 60.0);
 
@@ -46,7 +30,7 @@ EstadoJogo run_game()
     al_register_event_source(queue, al_get_timer_event_source(timer));
 
     init_player(&player);
-    init_background(&bg, "./assets/bg/level1.png");
+    init_background(&bg, "./assets/bg/cyberpunk-corridor-PREVIEW.png");
 
     // Inicializa inimigos
     printf("Inicializando inimigos...\n");
@@ -73,7 +57,7 @@ EstadoJogo run_game()
         if (ev.type == ALLEGRO_EVENT_TIMER) 
         {
             update_player(&player);
-            update_background(&bg, player.x);
+            update_background(&bg, player.player_pos_mundo_x);
 
             for (int i = 0; i < MAX_INIMIGOS; i++)
                 update_enemy(&inimigos[i]);
@@ -124,7 +108,6 @@ EstadoJogo run_game()
 
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
-    al_destroy_display(display);
     al_destroy_font(font);
 
     return ESTADO_MENU;
@@ -134,75 +117,93 @@ EstadoJogo run_game()
 //==============================================================================================================================================================
 
 
-//  Função que roda a tela de MENU
+// Função que roda a tela de MENU
 EstadoJogo run_menu() 
 {
     al_init_primitives_addon();
-    ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
-    al_set_window_title(display, "Menu - Seu Jogo");
-    ALLEGRO_FONT *font_titulo = al_load_ttf_font("arial.ttf", 78, 0);
-    ALLEGRO_FONT *font_opcao  = al_load_ttf_font("arial.ttf", 48, 0);
+    al_init_image_addon(); // Para carregar imagem de fundo
 
-    if (!font_titulo || !font_opcao) 
+    // Removendo a flag de tela cheia e criando uma janela fixa
+    al_set_new_display_flags(ALLEGRO_WINDOWED); // Modo janela (não fullscreen)
+    ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
+    al_set_window_title(display, "Menu");
+
+    ALLEGRO_BITMAP *fundo = al_load_bitmap("./assets/bg/level1.png");
+    ALLEGRO_FONT *font_titulo = al_load_ttf_font("./assets/font1.ttf", 90, 0);
+    ALLEGRO_FONT *font_opcao  = al_load_ttf_font("./assets/font1.ttf", 50, 0);
+
+    if (!fundo || !font_titulo || !font_opcao) 
     {
-        font_titulo = al_create_builtin_font();
-        font_opcao = al_create_builtin_font();
+        printf("Erro ao carregar imagem ou fontes.\n");
+        return ESTADO_SAIR;
     }
 
     ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
-    ALLEGRO_EVENT ev;
-
     al_install_keyboard();
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(display));
 
+    const char* opcoes[] = { "INICIAR JOGO", "SAIR DO JOGO" };
+    int opcao_selecionada = 0;
+    const int total_opcoes = 2;
 
     bool running = true;
     while (running) 
     {
-        desenha_gradiente(display);
+        // Desenha fundo
+        al_draw_scaled_bitmap(fundo, 0, 0, al_get_bitmap_width(fundo), al_get_bitmap_height(fundo),
+                              0, 0, TELA_LARGURA, TELA_ALTURA, 0);
 
-        al_draw_text(font_titulo, al_map_rgb(255, 255, 255), LARGURA / 2, ALTURA / 4, ALLEGRO_ALIGN_CENTER, "RUNN GUN");
-        al_draw_text(font_opcao, al_map_rgb(200, 255, 200), LARGURA / 2, ALTURA / 2, ALLEGRO_ALIGN_CENTER, "Pressione ENTER para Jogar");
-        al_draw_text(font_opcao, al_map_rgb(255, 180, 180), LARGURA / 2, ALTURA / 2 + 40, ALLEGRO_ALIGN_CENTER, "Pressione ESC para Sair");
+        // Título
+        al_draw_text(font_titulo, al_map_rgb(255, 255, 255), TELA_LARGURA / 2, TELA_ALTURA / 6, ALLEGRO_ALIGN_CENTER, "RUNN GUN");
+
+        // Opções com destaque na selecionada
+        for (int i = 0; i < total_opcoes; i++) {
+            ALLEGRO_COLOR cor = (i == opcao_selecionada) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255);
+            al_draw_text(font_opcao, cor, TELA_LARGURA / 2, TELA_ALTURA / 2 + i * 70, ALLEGRO_ALIGN_CENTER, opcoes[i]);
+        }
 
         al_flip_display();
 
+        ALLEGRO_EVENT ev;
         al_wait_for_event(queue, &ev);
+
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) 
         {
-            if (ev.keyboard.keycode == ALLEGRO_KEY_ENTER) 
+            switch (ev.keyboard.keycode) 
             {
-                running = false;
-                break;
-            } 
-            else if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) 
-            {
-                running = false;
-                al_destroy_event_queue(queue);
-                al_destroy_font(font_titulo);
-                al_destroy_font(font_opcao);
-                al_destroy_display(display);
-                return ESTADO_SAIR;
+                case ALLEGRO_KEY_UP:
+                    opcao_selecionada = (opcao_selecionada - 1 + total_opcoes) % total_opcoes;
+                    break;
+                case ALLEGRO_KEY_DOWN:
+                    opcao_selecionada = (opcao_selecionada + 1) % total_opcoes;
+                    break;
+                case ALLEGRO_KEY_ENTER:
+                    running = false;
+                    break;
+                case ALLEGRO_KEY_ESCAPE:
+                    opcao_selecionada = 1; // sair
+                    running = false;
+                    break;
             }
         } 
         else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) 
         {
+            opcao_selecionada = 1;
             running = false;
-            al_destroy_event_queue(queue);
-            al_destroy_font(font_titulo);
-            al_destroy_font(font_opcao);
-            al_destroy_display(display);
-            return ESTADO_SAIR;
         }
     }
 
+    // Limpeza
+    al_destroy_bitmap(fundo);
     al_destroy_event_queue(queue);
     al_destroy_font(font_titulo);
     al_destroy_font(font_opcao);
     al_destroy_display(display);
-    return ESTADO_JOGO;
+
+    return (opcao_selecionada == 0) ? ESTADO_JOGO : ESTADO_SAIR;
 }
+
 
 
 //==============================================================================================================================================================
@@ -212,59 +213,86 @@ EstadoJogo run_menu()
 EstadoJogo run_gameover() 
 {
     al_init_primitives_addon();
+    al_init_image_addon();
+
+    // Removendo a flag de tela cheia e criando uma janela fixa
+    al_set_new_display_flags(ALLEGRO_WINDOWED); // Modo janela (não fullscreen)
     ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
     al_set_window_title(display, "Game Over");
-    ALLEGRO_FONT *font_titulo = al_load_ttf_font("arial.ttf", 78, 0);
-    ALLEGRO_FONT *font_opcao  = al_load_ttf_font("arial.ttf", 48, 0);
 
-    if (!font_titulo || !font_opcao) 
+    ALLEGRO_BITMAP *fundo = al_load_bitmap("./assets/bg/level1.png");
+    ALLEGRO_FONT *font_titulo = al_load_ttf_font("./assets/font1.ttf", 90, 0);
+    ALLEGRO_FONT *font_opcao  = al_load_ttf_font("./assets/font1.ttf", 50, 0);
+
+    if (!fundo || !font_titulo || !font_opcao) 
     {
-        font_titulo = al_create_builtin_font();
-        font_opcao = al_create_builtin_font();
+        printf("Erro ao carregar imagem ou fontes.\n");
+        return ESTADO_SAIR;
     }
 
     ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
-    ALLEGRO_EVENT ev;
-
     al_install_keyboard();
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(display));
 
+    const char* opcoes[] = { "TENTAR NOVAMENTE", "VOLTAR AO MENU" };
+    int opcao_selecionada = 0;
+    const int total_opcoes = 2;
+
     bool running = true;
     while (running) 
     {
-        desenha_gradiente(display);
+        al_draw_scaled_bitmap(fundo, 0, 0, al_get_bitmap_width(fundo), al_get_bitmap_height(fundo),
+                              0, 0, TELA_LARGURA, TELA_ALTURA, 0);
 
-        al_draw_text(font_titulo, al_map_rgb(255, 100, 100), LARGURA / 2, ALTURA / 3,ALLEGRO_ALIGN_CENTER, "GAME OVER");
-        al_draw_text(font_opcao, al_map_rgb(255, 255, 255), LARGURA / 2, ALTURA / 2,ALLEGRO_ALIGN_CENTER, "Pressione ENTER para voltar ao menu");
+        // Título centralizado
+        al_draw_text(font_titulo, al_map_rgb(255, 50, 50), TELA_LARGURA / 2, TELA_ALTURA / 6, ALLEGRO_ALIGN_CENTER, "GAME OVER");
+
+        // Opções
+        for (int i = 0; i < total_opcoes; i++) 
+        {
+            ALLEGRO_COLOR cor = (i == opcao_selecionada) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255);
+            al_draw_text(font_opcao, cor, TELA_LARGURA / 2, TELA_ALTURA / 2 + i * 70, ALLEGRO_ALIGN_CENTER, opcoes[i]);
+        }
 
         al_flip_display();
 
+        ALLEGRO_EVENT ev;
         al_wait_for_event(queue, &ev);
+
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) 
         {
-            if (ev.keyboard.keycode == ALLEGRO_KEY_ENTER) 
+            switch (ev.keyboard.keycode) 
             {
-                running = false;
-                break;
+                case ALLEGRO_KEY_UP:
+                    opcao_selecionada = (opcao_selecionada - 1 + total_opcoes) % total_opcoes;
+                    break;
+                case ALLEGRO_KEY_DOWN:
+                    opcao_selecionada = (opcao_selecionada + 1) % total_opcoes;
+                    break;
+                case ALLEGRO_KEY_ENTER:
+                    running = false;
+                    break;
+                case ALLEGRO_KEY_ESCAPE:
+                    opcao_selecionada = 1; // Voltar ao menu
+                    running = false;
+                    break;
             }
         } 
         else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) 
         {
+            opcao_selecionada = 1;
             running = false;
-            al_destroy_event_queue(queue);
-            al_destroy_font(font_titulo);
-            al_destroy_font(font_opcao);
-            al_destroy_display(display);
-            return ESTADO_SAIR;
         }
     }
 
+    al_destroy_bitmap(fundo);
     al_destroy_event_queue(queue);
     al_destroy_font(font_titulo);
     al_destroy_font(font_opcao);
     al_destroy_display(display);
-    return ESTADO_MENU;
+
+    return (opcao_selecionada == 0) ? ESTADO_JOGO : ESTADO_MENU;
 }
 
 

@@ -8,14 +8,9 @@ typedef enum
 {
     STAND_AND_STOP,
     STAND_AND_SHOT,
-    WALK1,
-    WALK2,
-    WALK3,
-    WALK4,
-    JUMP1,
-    JUMP2,
-    CROUCH1,
-    CROUCH2,
+    WALK,
+    JUMP,
+    CROUCH,
     CROUCH_AND_SHOT
 } PlayerState;
 
@@ -28,30 +23,27 @@ typedef struct
     int width, height;
     int vida;
     int olhando_para_direita; // 1 para direita, 0 para esquerda
+    float player_pos_mundo_x;
 
     PlayerState estado;
 
     ALLEGRO_BITMAP *sprite_stand_and_stop;
     ALLEGRO_BITMAP *sprite_stand_and_shot;
 
-    //  Direita
-    ALLEGRO_BITMAP *sprite_walk1;
-    ALLEGRO_BITMAP *sprite_walk2;
-    //  Esquerda
-    ALLEGRO_BITMAP *sprite_walk3;
-    ALLEGRO_BITMAP *sprite_walk4;
+    // Array para sprites de andar
+    ALLEGRO_BITMAP *sprite_run[10]; 
 
-    //  Direita
-    ALLEGRO_BITMAP *sprite_jump1;
-    //  Esquerda
-    ALLEGRO_BITMAP *sprite_jump2;
-
-    //  Direita
-    ALLEGRO_BITMAP *sprite_crouch1;
-    //Esquerda
-    ALLEGRO_BITMAP *sprite_crouch2;
+    ALLEGRO_BITMAP *sprite_jump; 
+    ALLEGRO_BITMAP *sprite_crouch;
 
     ALLEGRO_BITMAP *sprite_crouch_and_shot;
+
+    int frame_andar;    // índice atual da animação de andar
+    int timer_andar;    // contador para controle da troca de frame
+    int frame_agachar;
+    int timer_agachar;
+    int frame_pulo;
+    int timer_pulo;
 
 } Player;
 
