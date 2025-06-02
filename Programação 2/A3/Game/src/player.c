@@ -10,38 +10,57 @@ void init_player(Player *p)
     printf("Inicializando jogador...\n");
 
     // Inicialização das propriedades básicas do jogador
-    p->x = POSICAO_INICIAL_X;  // Posição X inicial definida por constante
+    p->x = ALTURA_CHAO;  // Posição X inicial definida por constante
     p->y = ALTURA_CHAO - LARGURA_SPRITE;  // Posiciona o jogador no chão
+
     p->vel_x = 0;  // Velocidade horizontal inicial zero
     p->vel_y = 0;  // Velocidade vertical inicial zero
+
     p->width = LARGURA_SPRITE;  // Largura do sprite
     p->height = ALTURA_SPRITE;  // Altura do sprite
+
     p->vida = VIDA_PLAYER;  // Vida inicial definida por constante
+
     p->estado = STAND_AND_STOP;  // Estado inicial: parado
+
     p->olhando_para_direita = 1;  // Direção inicial: direita
 
     // Carregamento dos sprites - cada estado tem seu próprio sprite
     p->sprite_stand_and_stop = al_load_bitmap("./assets/player/space-marine/Sprites/Idle/sprites/idle-gun1.png");
-    p->sprite_stand_and_shot = al_load_bitmap("./assets/player/space-marine/Sprites/Shoot/sprites/shoot1.png");
     p->sprite_crouch = al_load_bitmap("./assets/player/space-marine/Sprites/Crouch/sprites/crouch3.png");
     p->sprite_jump = al_load_bitmap("./assets/player/space-marine/Sprites/Jump/sprites/jump2.png");
     
-    // Carrega os 10 frames da animação de corrida
     for (int i = 0; i < 10; i++) 
     {
         char filename[100];
         sprintf(filename, "./assets/player/space-marine/Sprites/Run_Gun/sprites/run%d.png", i + 1);
         p->sprite_run[i] = al_load_bitmap(filename);
-    }    
+    }   
+    
+    for (int i = 0; i < 2; i++) 
+    {
+        char filename[100];
+        sprintf(filename, "./assets/player/space-marine/Sprites/Shoot/sprites/shoot%d.png", i + 1);
+        p->sprite_shoot[i] = al_load_bitmap(filename);
+    } 
+
+    for (int i = 0; i < 2; i++) 
+    {
+        char filename[100];
+        sprintf(filename, "./assets/player/space-marine/Sprites/Crouch _Shoot/sprites/crouch-shoot%d.png", i + 1);
+        p->sprite_crouch_and_shot[i] = al_load_bitmap(filename);
+    } 
 
     // Verificação de erros no carregamento dos sprites
     if (!p->sprite_stand_and_stop) printf("Erro ao carregar stand_and_stop.png\n");
-    if (!p->sprite_stand_and_shot) printf("Erro ao carregar stand_and_shot.png\n");
     if (!p->sprite_crouch) printf("Erro ao carregar crouch.png\n");
     if (!p->sprite_jump) printf("Erro ao carregar jump.png\n");
-
     for (int i = 0; i < 10; i++) 
         if(!p->sprite_run[i]) printf("Erro ao carregar sprites de corrida\n");
+    for (int i = 0; i < 2; i++) 
+        if(!p->sprite_shoot[i]) printf("Erro ao carregar sprites de tiro\n");
+    for (int i = 0; i < 2; i++) 
+        if(!p->sprite_crouch_and_shot[i]) printf("Erro ao carregar sprites de tiro agachado\n");
 
     printf("Jogador inicializado com sucesso...\n\n");
 }
@@ -53,60 +72,73 @@ void init_player(Player *p)
 // Função de atualização do estado do jogador a cada frame
 void update_player(Player *p) 
 {
-    static bool can_jump = true;  // Controla se o jogador pode pular (evita pulo contínuo)
-    const int FRAME_DELAY = 5;  // Atraso entre frames de animação
+    // Variável estática para controlar se o jogador pode pular
+    static bool can_jump = true;
 
-    // Obtém o estado atual do teclado
+    // Constante que define o atraso entre quadros da animação
+    const int FRAME_DELAY = 5;
+
+    // Lê o estado atual do teclado e do mouse
     ALLEGRO_KEYBOARD_STATE keyState;
+    ALLEGRO_MOUSE_STATE mouseState;
     al_get_keyboard_state(&keyState);
+    al_get_mouse_state(&mouseState);
 
-    p->vel_x = 0;  // Reseta a velocidade horizontal a cada frame
+    // Reseta a velocidade horizontal do jogador a cada frame
+    p->vel_x = 0;
 
-    // Variáveis de estado auxiliares
-    bool no_ar = (p->y < (ALTURA_CHAO - ALTURA_SPRITE));  // Verifica se o jogador está no ar
-    bool esta_agachado = al_key_down(&keyState, ALLEGRO_KEY_DOWN);  // Verifica se a tecla para baixo está pressionada
+    // Verifica se o jogador está no ar (i.e., acima do chão)
+    bool no_ar = (p->y < (ALTURA_CHAO - ALTURA_SPRITE));
 
-    // AGACHAR
-    // Agachar tem prioridade sobre outros estados quando no chão
-    if (!no_ar && esta_agachado)
+    // Verifica se o jogador está tentando agachar
+    bool esta_agachado = false;
+    if(al_key_down(&keyState, ALLEGRO_KEY_S))
+        esta_agachado = al_key_down(&keyState, ALLEGRO_KEY_S);
+    else if(al_key_down(&keyState, ALLEGRO_KEY_DOWN))
+        esta_agachado = al_key_down(&keyState, ALLEGRO_KEY_DOWN);
+    else if(al_key_down(&keyState, ALLEGRO_KEY_LSHIFT))
+        esta_agachado = al_key_down(&keyState, ALLEGRO_KEY_LSHIFT);
+
+    // Verifica se o botão esquerdo do mouse está pressionado (tiro)
+    bool atirando = mouseState.buttons & 1;
+
+    // Ações para o caso de tiro enquanto agachado
+    if (!no_ar && esta_agachado && atirando) 
     {
-        p->estado = p->olhando_para_direita ? CROUCH : CROUCH;  // Mantém a direção mas usa o mesmo sprite
-        p->vel_x = 0;  // Impede movimento enquanto agachado
-        return;  // Sai da função - nada mais é processado enquanto agachado
+        // Define estado de agachar e atirar
+        p->estado = p->olhando_para_direita ? CROUCH_AND_SHOT : CROUCH_AND_SHOT;
+
+        // Atualiza animação de tiro agachado
+        p->timer_shoot++;
+        if (p->timer_shoot >= FRAME_DELAY) 
+        {
+            p->timer_shoot = 0;
+            p->frame_shoot = (p->frame_shoot + 1) % NUM_FRAMES_CROUCH_AND_SHOOT;
+        }
+        return;
     }
 
-    // MOVIMENTO HORIZONTAL
-    if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) 
+    // Apenas agachado, sem tiro
+    if (!no_ar && esta_agachado) 
     {
-        p->vel_x = VELOCIDADE;  // Move para direita
-        p->olhando_para_direita = true;  // Atualiza direção
+        p->estado = p->olhando_para_direita ? CROUCH : CROUCH;
+        p->vel_x = 0;
+        return;
+    }
 
-        // Define o estado baseado se está no ar ou não
-        if (no_ar)
-            p->estado = JUMP;  // Mantém estado de pulo se estiver no ar
-        else 
-        {
-            p->estado = WALK;  // Estado de caminhada
-            // Animação da caminhada
-            p->timer_andar++;
-            if (p->timer_andar >= FRAME_DELAY) 
-            {
-                p->timer_andar = 0;
-                p->frame_andar = (p->frame_andar + 1) % 10;  // Cicla entre os 10 frames
-            }
-        }
-    } 
-    else if (al_key_down(&keyState, ALLEGRO_KEY_LEFT)) 
+    // Movimento para a direita
+    if (al_key_down(&keyState, ALLEGRO_KEY_D) || al_key_down(&keyState, ALLEGRO_KEY_RIGHT))
     {
-        p->vel_x = -VELOCIDADE;  // Move para esquerda (velocidade negativa)
-        p->olhando_para_direita = false;  // Atualiza direção
+        p->vel_x = VELOCIDADE; // Aplica velocidade positiva
+        p->olhando_para_direita = true;
 
-        // Lógica idêntica ao movimento para direita
         if (no_ar)
             p->estado = JUMP;
         else 
         {
             p->estado = WALK;
+
+            // Animação de caminhada
             p->timer_andar++;
             if (p->timer_andar >= FRAME_DELAY) 
             {
@@ -115,50 +147,83 @@ void update_player(Player *p)
             }
         }
     } 
-    else if (!no_ar) 
-    {  // Se não estiver se movendo e estiver no chão
-        p->estado = STAND_AND_STOP;  // Estado parado
-        p->frame_andar = 0;  // Reseta animação de caminhada
+    // Movimento para a esquerda
+    else if (al_key_down(&keyState, ALLEGRO_KEY_A) || al_key_down(&keyState, ALLEGRO_KEY_LEFT))
+    {
+        p->vel_x = -VELOCIDADE;
+        p->olhando_para_direita = false;
+
+        if (no_ar)
+            p->estado = JUMP;
+        else 
+        {
+            p->estado = WALK;
+
+            // Animação de caminhada
+            p->timer_andar++;
+            if (p->timer_andar >= FRAME_DELAY) 
+            {
+                p->timer_andar = 0;
+                p->frame_andar = (p->frame_andar + 1) % 10;
+            }
+        }
+    } 
+    // Parado no chão (sem andar, sem atirar)
+    else if (!no_ar && !atirando) 
+    {
+        p->estado = STAND_AND_STOP;
+        p->frame_andar = 0;
         p->timer_andar = 0;
     }
 
-    // PULO (inicia apenas no chão)
-    if (al_key_down(&keyState, ALLEGRO_KEY_SPACE) && can_jump && !no_ar && !esta_agachado) 
+    // Ação de tiro em pé
+    if (atirando && !no_ar && !esta_agachado) 
     {
-        p->vel_y = PULO;  // Aplica velocidade vertical (pulo)
-        p->estado = p->olhando_para_direita ? JUMP : JUMP;  // Estado de pulo
-        can_jump = false;  // Impede pulos consecutivos
+        p->estado = p->olhando_para_direita ? STAND_AND_SHOT : STAND_AND_SHOT;
+
+        // Animação de tiro em pé
+        p->timer_shoot++;
+        if (p->timer_shoot >= FRAME_DELAY) 
+        {
+            p->timer_shoot = 0;
+            p->frame_shoot = (p->frame_shoot + 1) % NUM_FRAMES_SHOOT;
+        }
     }
 
-    // Atualização da posição
-    p->x = 100;  // Mantém X fixo na tela (o mundo se move ao redor)
-    p->player_pos_mundo_x += p->vel_x;  // Atualiza posição no mundo
-    p->y += p->vel_y;  // Atualiza posição vertical
+    // APulo
+    if ((al_key_down(&keyState, ALLEGRO_KEY_SPACE) || al_key_down(&keyState, ALLEGRO_KEY_UP) || al_key_down(&keyState, ALLEGRO_KEY_W)) 
+        && can_jump && !no_ar && !esta_agachado) 
+    {
+        p->vel_y = PULO; // Aplica força de pulo
+        p->estado = p->olhando_para_direita ? JUMP : JUMP;
+        can_jump = false;
+    }
 
-    // GRAVIDADE E CHÃO
-    if (p->y < (ALTURA_CHAO - ALTURA_SPRITE)) // Se estiver no ar
-        p->vel_y += GRAVIDADE;  // Aplica gravidade
+    // Atualização de posição do jogador
+    p->x = 100; // Posição fixa
+    p->player_pos_mundo_x += p->vel_x; // Movimento no mundo
+    p->y += p->vel_y; // Aplicação do pulo ou queda
+
+    // Aplica gravidade caso esteja no ar
+    if (p->y < (ALTURA_CHAO - ALTURA_SPRITE))
+        p->vel_y += GRAVIDADE;
     else 
-    {  // Se estiver no chão
-        p->y = ALTURA_CHAO - ALTURA_SPRITE;  // Corrige posição para não afundar
-        p->vel_y = 0;  // Zera velocidade vertical
-        can_jump = true;  // Permite pular novamente
+    {
+        // Se estiver no chão, reseta valores verticais
+        p->y = ALTURA_CHAO - ALTURA_SPRITE;
+        p->vel_y = 0;
+        can_jump = true;
 
-        // Se estava pulando e parou de se mover, volta para estado parado
-        if ((p->estado == JUMP) && p->vel_x == 0)
+        // Se estava pulando e agora está parado sem atirar
+        if ((p->estado == JUMP) && p->vel_x == 0 && !atirando)
             p->estado = STAND_AND_STOP;
     }
 
-    // Libera pulo ao soltar espaço (permite novo pulo)
-    if (!al_key_down(&keyState, ALLEGRO_KEY_SPACE))
+    // Permite novo pulo quando tecla de pulo for solta
+    if (!(al_key_down(&keyState, ALLEGRO_KEY_SPACE) || al_key_down(&keyState, ALLEGRO_KEY_UP) || al_key_down(&keyState, ALLEGRO_KEY_W)))
         can_jump = true;
-
-    // LIMITES DA TELA
-    if (p->x < 0)
-        p->x = 0;  // Impede sair pela esquerda
-    else if (p->x > TELA_LARGURA - LARGURA_SPRITE)
-        p->x = TELA_LARGURA - LARGURA_SPRITE;  // Impede sair pela direita
 }
+
 
 
 //============================================================================
@@ -169,42 +234,41 @@ void draw_player(Player *p)
 {
     ALLEGRO_BITMAP *sprite = NULL;  // Ponteiro para o sprite atual
 
-    // Seleciona o sprite baseado no estado atual
     switch (p->estado) 
     {
         case STAND_AND_STOP:
-            sprite = p->sprite_stand_and_stop;  // Sprite parado
+            sprite = p->sprite_stand_and_stop;
             break;
 
         case STAND_AND_SHOT:
-            sprite = p->sprite_stand_and_shot;  // Sprite atirando em pé
+            sprite = p->sprite_shoot[p->frame_shoot];
             break;
 
         case WALK:
-            sprite = p->sprite_run[p->frame_andar];  // Usa o frame atual da animação de corrida
+            sprite = p->sprite_run[p->frame_andar];
             break;
 
         case JUMP:
-            sprite = p->sprite_jump;  // Sprite de pulo
+            sprite = p->sprite_jump;
             break;
 
         case CROUCH:
-            sprite = p->sprite_crouch;  // Sprite agachado
+            sprite = p->sprite_crouch;
             break;
 
         case CROUCH_AND_SHOT:
-            sprite = p->sprite_crouch_and_shot;  // Sprite atirando agachado
+            sprite = p->sprite_crouch_and_shot[p->frame_shoot];
             break;
 
         default:
-            sprite = p->sprite_stand_and_stop;  // Fallback - sprite parado
+            sprite = p->sprite_stand_and_stop;
             break;
     }
 
     // Se o sprite foi carregado corretamente
     if (sprite) 
     {
-        float escala = 5;  // Fator de escala para aumentar o sprite
+        float escala = 3.5;  // Fator de escala para aumentar o sprite
         int flip = p->olhando_para_direita ? 0 : ALLEGRO_FLIP_HORIZONTAL;  // Flip horizontal se olhando para esquerda
 
         // Desenha o sprite com transformações
@@ -232,8 +296,6 @@ void destroy_player(Player *p)
 {
     // Destrói todos os bitmaps carregados
     al_destroy_bitmap(p->sprite_stand_and_stop);
-    al_destroy_bitmap(p->sprite_stand_and_shot);
-    al_destroy_bitmap(p->sprite_crouch_and_shot);
     al_destroy_bitmap(p->sprite_crouch);
     al_destroy_bitmap(p->sprite_jump);
 
@@ -243,6 +305,14 @@ void destroy_player(Player *p)
         if (p->sprite_run[i])
             al_destroy_bitmap(p->sprite_run[i]);
     }
+
+    for (int i = 0; i < 2; i++) 
+        if (p->sprite_shoot[i])
+            al_destroy_bitmap(p->sprite_shoot[i]);
+
+    for (int i = 0; i < 10; i++) 
+        if (p->sprite_crouch_and_shot[i])
+            al_destroy_bitmap(p->sprite_crouch_and_shot[i]);
 }
 
 

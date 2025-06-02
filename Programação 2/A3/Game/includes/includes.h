@@ -7,6 +7,7 @@
 
 //  BIBLIOTECAS PADRÃO
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 //  HEADERS
@@ -27,20 +28,18 @@
 //  DEFINES
 
 //player.c
-#define GRAVIDADE 0.5
-#define PULO -10
-#define VELOCIDADE 3
+#define GRAVIDADE 0.7
+#define PULO -11
+#define VELOCIDADE 2
 #define VIDA_PLAYER 100
-#define POSICAO_INICIAL_X 100
 #define POSICAO_INICIAL_Y 380
-#define ALTURA_CHAO 350
-#define ALTURA_SPRITE 30
-#define LARGURA_SPRITE 30
+#define ALTURA_CHAO 470
+#define ALTURA_SPRITE 20
+#define LARGURA_SPRITE 20
 
-//game.h
-#define MAX_INIMIGOS 2
-#define TELA_LARGURA 900
-#define TELA_ALTURA 600
-//game.c
-#define LARGURA  al_get_display_width(display)
-#define ALTURA   al_get_display_height(display)
+//game
+#define MAX_INIMIGOS 6
+#define TELA_LARGURA 1200
+#define TELA_ALTURA 700
+#define NUM_FRAMES_SHOOT 2
+#define NUM_FRAMES_CROUCH_AND_SHOOT 2

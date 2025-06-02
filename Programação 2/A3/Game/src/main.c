@@ -8,6 +8,8 @@ int main()
     al_init_ttf_addon();
     al_install_keyboard();
     al_init_primitives_addon();
+    al_install_mouse();
+
 
     EstadoJogo estado_atual = ESTADO_MENU;
 

@@ -118,7 +118,7 @@ EstadoJogo run_game()
             for (int i = 0; i < MAX_INIMIGOS; i++)
                 draw_enemy(&inimigos[i], camera_x); 
 
-            al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 20, 0, "Life: %d", player.vida);
+            al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 20, 0, "%d", player.vida);
             
             if (paused) 
             {
@@ -230,8 +230,8 @@ EstadoJogo run_menu()
             
             // Lista de controles
             const char* controles[] = {
-                "MOVIMENTO  -     Setas   direcionais",
-                "ATIRAR  -     Tecla   D",
+                "MOVIMENTO  -     W   A   S   D",
+                "ATIRAR  -     Botao   Esquerdo  do  Mouse",
                 "PULAR  -     Space  Bar",
                 "PAUSAR  -     Tecla   P",
             };

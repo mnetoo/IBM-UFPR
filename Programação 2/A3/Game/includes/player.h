@@ -28,7 +28,7 @@ typedef struct
     PlayerState estado;
 
     ALLEGRO_BITMAP *sprite_stand_and_stop;
-    ALLEGRO_BITMAP *sprite_stand_and_shot;
+    ALLEGRO_BITMAP *sprite_shoot[2];
 
     // Array para sprites de andar
     ALLEGRO_BITMAP *sprite_run[10]; 
@@ -37,10 +37,13 @@ typedef struct
     ALLEGRO_BITMAP *sprite_jump_and_shot;
 
     ALLEGRO_BITMAP *sprite_crouch;
-    ALLEGRO_BITMAP *sprite_crouch_and_shot;
+    ALLEGRO_BITMAP *sprite_crouch_and_shot[2];
 
     int frame_andar;    // índice atual da animação de andar
     int timer_andar;    // contador para controle da troca de frame
+
+    int frame_shoot;    // índice atual da animação de tiro
+    int timer_shoot;    // contador para controle da troca de tiro
 } Player;
 
 
