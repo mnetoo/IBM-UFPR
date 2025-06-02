@@ -11,7 +11,9 @@ typedef struct
     int vida;
     bool ativo;
 
-    ALLEGRO_BITMAP *sprite;
+    ALLEGRO_BITMAP *sprite[6];
+    int frame_atual;      // Índice do sprite atual
+    int timer_animacao;   // Temporizador para controlar a troca de sprite
 } Enemy;
 
 
@@ -26,7 +28,7 @@ void update_enemy(Enemy *e);
 //============================================================
 
 //  Carrega a sprite do inimigo
-void draw_enemy(Enemy *e);
+void draw_enemy(Enemy *e, float camera_x);
 
 //============================================================
 

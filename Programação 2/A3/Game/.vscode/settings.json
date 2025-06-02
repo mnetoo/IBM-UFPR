@@ -64,6 +64,7 @@
     "enemy.h": "c",
     "allegro_font.h": "c",
     "stdio.h": "c",
-    "allegro_ttf.h": "c"
+    "allegro_ttf.h": "c",
+    "utils.h": "c"
   }
 }

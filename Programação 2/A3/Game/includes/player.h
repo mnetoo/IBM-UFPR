@@ -34,17 +34,13 @@ typedef struct
     ALLEGRO_BITMAP *sprite_run[10]; 
 
     ALLEGRO_BITMAP *sprite_jump; 
-    ALLEGRO_BITMAP *sprite_crouch;
+    ALLEGRO_BITMAP *sprite_jump_and_shot;
 
+    ALLEGRO_BITMAP *sprite_crouch;
     ALLEGRO_BITMAP *sprite_crouch_and_shot;
 
     int frame_andar;    // índice atual da animação de andar
     int timer_andar;    // contador para controle da troca de frame
-    int frame_agachar;
-    int timer_agachar;
-    int frame_pulo;
-    int timer_pulo;
-
 } Player;
 
 

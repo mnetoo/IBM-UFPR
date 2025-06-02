@@ -23,7 +23,9 @@ void update_background(Background *bg, float player_pos_mundo_x)
     bg->scroll_x = (int)(player_pos_mundo_x - centro_tela);
 
     // Garante que o scroll_x sempre fique no intervalo [0, largura)
-    bg->scroll_x %= bg->largura;
+    //bg->scroll_x %= bg->largura;
+
+    bg->scroll_x = player_pos_mundo_x - centro_tela;
     if (bg->scroll_x < 0)
         bg->scroll_x += bg->largura;
 }
@@ -34,33 +36,31 @@ void update_background(Background *bg, float player_pos_mundo_x)
 
 
 // Desenha o fundo com scroll e efeito de repetição (loop infinito)
-void draw_background(Background *bg) 
+void draw_background(Background *bg)
 {
     if (!bg->imagem) return;
 
-    int sx = bg->scroll_x;
-    int sw = 300; // largura do recorte
-    int sh = bg->altura; // 176
-    int screen_h = TELA_ALTURA;
-    int screen_w = TELA_LARGURA;
+    int offset = ((int)bg->scroll_x % bg->largura + bg->largura) % bg->largura; // efeito looping
 
-    if (sx + sw <= bg->largura) 
+    int sw = 300;
+    int sh = bg->altura;
+    int screen_w = TELA_LARGURA;
+    int screen_h = TELA_ALTURA;
+
+    if (offset + sw <= bg->largura)
     {
-        // Caso 1: tudo dentro da imagem
         al_draw_scaled_bitmap(
             bg->imagem,
-            sx, 0,
+            offset, 0,
             sw, sh,
             0, 0,
             screen_w, screen_h,
             0
         );
-    } 
-    else 
+    }
+    else
     {
-        // Caso 2: parte do final da imagem + parte do início (efeito looping)
-
-        int primeira_parte = bg->largura - sx;
+        int primeira_parte = bg->largura - offset;
         int segunda_parte = sw - primeira_parte;
 
         float escala1 = (float)primeira_parte / sw;
@@ -69,17 +69,15 @@ void draw_background(Background *bg)
         float escala2 = (float)segunda_parte / sw;
         float largura2 = escala2 * screen_w;
 
-        // Desenha primeira parte (final da imagem)
         al_draw_scaled_bitmap(
             bg->imagem,
-            sx, 0,
+            offset, 0,
             primeira_parte, sh,
             0, 0,
             largura1, screen_h,
             0
         );
 
-        // Desenha segunda parte (início da imagem)
         al_draw_scaled_bitmap(
             bg->imagem,
             0, 0,

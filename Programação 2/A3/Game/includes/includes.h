@@ -33,14 +33,14 @@
 #define VIDA_PLAYER 100
 #define POSICAO_INICIAL_X 100
 #define POSICAO_INICIAL_Y 380
-#define ALTURA_CHAO 540
+#define ALTURA_CHAO 350
 #define ALTURA_SPRITE 30
 #define LARGURA_SPRITE 30
 
 //game.h
 #define MAX_INIMIGOS 2
-#define TELA_LARGURA 1200
-#define TELA_ALTURA 800
+#define TELA_LARGURA 900
+#define TELA_ALTURA 600
 //game.c
 #define LARGURA  al_get_display_width(display)
 #define ALTURA   al_get_display_height(display)
