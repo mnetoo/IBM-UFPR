@@ -20,7 +20,7 @@ EstadoJogo run_game()
     ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
     al_set_window_title(display, "GAME");
 
-    float camera_x = player.player_pos_mundo_x - (TELA_LARGURA / 2);
+    //float camera_x = player.player_pos_mundo_x - (TELA_LARGURA / 2);
 
     font = al_load_ttf_font("./assets/fonts/ARCAC___.TTF", 20, 0);
     ALLEGRO_FONT *font_pause = al_load_ttf_font("./assets/fonts/ARCAC___.TTF", 72, 0); // Fonte maior para PAUSE
@@ -37,10 +37,7 @@ EstadoJogo run_game()
 
     printf("Inicializando inimigos...\n");
     for (int i = 0; i < MAX_INIMIGOS; i++)
-    {
-        float pos_mundo = 600 + i * 400;
-        init_enemy(&inimigos[i], pos_mundo, ALTURA_CHAO);
-    }
+        init_enemy(&inimigos[i], ALTURA_CHAO);;
     printf("Inimigos inicializados com sucesso...\n\n");
 
     bool running = true;
@@ -116,7 +113,7 @@ EstadoJogo run_game()
             draw_player(&player);
 
             for (int i = 0; i < MAX_INIMIGOS; i++)
-                draw_enemy(&inimigos[i], camera_x); 
+                draw_enemy(&inimigos[i], &bg); 
 
             al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 20, 0, "%d", player.vida);
             
@@ -332,9 +329,9 @@ EstadoJogo run_gameover()
     ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
     al_set_window_title(display, "Game Over");
 
-    ALLEGRO_BITMAP *fundo = al_load_bitmap("./assets/bg/level1.png");
-    ALLEGRO_FONT *font_titulo = al_load_ttf_font("./assets/font1.ttf", 90, 0);
-    ALLEGRO_FONT *font_opcao  = al_load_ttf_font("./assets/font1.ttf", 50, 0);
+    ALLEGRO_BITMAP *fundo = al_load_bitmap("./assets/bg/cyberpunk-corridor-PREVIEW.png");
+    ALLEGRO_FONT *font_titulo = al_load_ttf_font("./assets/fonts/04B_30__.TTF", 90, 0);
+    ALLEGRO_FONT *font_opcao  = al_load_ttf_font("./assets/fonts/ARCAC___.TTF", 50, 0);
 
     if (!fundo || !font_titulo || !font_opcao) 
     {
@@ -354,16 +351,19 @@ EstadoJogo run_gameover()
     bool running = true;
     while (running) 
     {
+        // Escurece o fundo com uma camada semi-transparente
+        al_draw_filled_rectangle(0, 0, TELA_LARGURA, TELA_ALTURA, al_map_rgba(0, 0, 0, 200));
+
         al_draw_scaled_bitmap(fundo, 0, 0, al_get_bitmap_width(fundo), al_get_bitmap_height(fundo),
                               0, 0, TELA_LARGURA, TELA_ALTURA, 0);
 
         // Título centralizado
-        al_draw_text(font_titulo, al_map_rgb(255, 50, 50), TELA_LARGURA / 2, TELA_ALTURA / 6, ALLEGRO_ALIGN_CENTER, "GAME OVER");
+        al_draw_text(font_titulo, al_map_rgb(128, 0, 170), TELA_LARGURA / 2, TELA_ALTURA / 6, ALLEGRO_ALIGN_CENTER, "GAME OVER");
 
         // Opções
         for (int i = 0; i < total_opcoes; i++) 
         {
-            ALLEGRO_COLOR cor = (i == opcao_selecionada) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255);
+            ALLEGRO_COLOR cor = (i == opcao_selecionada) ? al_map_rgb(128, 0, 170) : al_map_rgb(255, 255, 255);
             al_draw_text(font_opcao, cor, TELA_LARGURA / 2, TELA_ALTURA / 2 + i * 70, ALLEGRO_ALIGN_CENTER, opcoes[i]);
         }
 

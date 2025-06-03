@@ -10,6 +10,7 @@ typedef enum
     STAND_AND_SHOT,
     WALK,
     JUMP,
+    JUMP_AND_SHOT,
     CROUCH,
     CROUCH_AND_SHOT
 } PlayerState;
@@ -44,6 +45,8 @@ typedef struct
 
     int frame_shoot;    // índice atual da animação de tiro
     int timer_shoot;    // contador para controle da troca de tiro
+
+    Projectile projeteis[MAX_PROJECTILES]; // <- Lista de projéteis
 } Player;
 
 

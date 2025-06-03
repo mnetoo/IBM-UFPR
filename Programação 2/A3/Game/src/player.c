@@ -29,6 +29,7 @@ void init_player(Player *p)
     p->sprite_stand_and_stop = al_load_bitmap("./assets/player/space-marine/Sprites/Idle/sprites/idle-gun1.png");
     p->sprite_crouch = al_load_bitmap("./assets/player/space-marine/Sprites/Crouch/sprites/crouch3.png");
     p->sprite_jump = al_load_bitmap("./assets/player/space-marine/Sprites/Jump/sprites/jump2.png");
+    p->sprite_jump_and_shot = al_load_bitmap("./assets/player/space-marine/Sprites/Jump/sprites/jump2.png");
     
     for (int i = 0; i < 10; i++) 
     {
@@ -55,6 +56,7 @@ void init_player(Player *p)
     if (!p->sprite_stand_and_stop) printf("Erro ao carregar stand_and_stop.png\n");
     if (!p->sprite_crouch) printf("Erro ao carregar crouch.png\n");
     if (!p->sprite_jump) printf("Erro ao carregar jump.png\n");
+    if (!p->sprite_jump_and_shot) printf("Erro ao carregar jump_and_shot.png\n");
     for (int i = 0; i < 10; i++) 
         if(!p->sprite_run[i]) printf("Erro ao carregar sprites de corrida\n");
     for (int i = 0; i < 2; i++) 
@@ -69,97 +71,103 @@ void init_player(Player *p)
 //============================================================================
 
 
+//  Função para criar o projétil
+void shoot_projectile(Player *p) 
+{
+    float origem_y = 0;
+
+    //  se estiver agachado o tiro sai mais baixo
+    if(p->estado == CROUCH || p->estado == CROUCH_AND_SHOT)
+        origem_y = 555;
+    //  se estiver pulando o tiro sai mais alto
+    else if(p->estado == JUMP || p->estado == JUMP_AND_SHOT)
+        origem_y = 450;
+    //  esta de pe altura normal
+    else
+        origem_y = 525;
+
+    for (int i = 0; i < MAX_PROJECTILES; i++)
+     {
+        if (!p->projeteis[i].ativo) 
+        {
+            float velocidade = p->olhando_para_direita ? VELOCIDADE_BULLET : -VELOCIDADE_BULLET;
+            float origem_x = p->x + (p->olhando_para_direita ? 150 : -10);
+            init_projectile(&p->projeteis[i], origem_x, origem_y, velocidade);
+            break;
+        }
+    }
+}
+
+
+//============================================================================
+
+
 // Função de atualização do estado do jogador a cada frame
 void update_player(Player *p) 
 {
-    // Variável estática para controlar se o jogador pode pular
     static bool can_jump = true;
-
-    // Constante que define o atraso entre quadros da animação
+    static bool mouse_seguro = false;
     const int FRAME_DELAY = 5;
 
-    // Lê o estado atual do teclado e do mouse
     ALLEGRO_KEYBOARD_STATE keyState;
     ALLEGRO_MOUSE_STATE mouseState;
     al_get_keyboard_state(&keyState);
     al_get_mouse_state(&mouseState);
 
-    // Reseta a velocidade horizontal do jogador a cada frame
-    p->vel_x = 0;
+    bool atirando = mouseState.buttons & 1;
+    if (atirando && !mouse_seguro) 
+    {
+        shoot_projectile(p);
+        mouse_seguro = true;
+    }
+    if (!atirando) mouse_seguro = false;
 
-    // Verifica se o jogador está no ar (i.e., acima do chão)
+    p->vel_x = 0;
     bool no_ar = (p->y < (ALTURA_CHAO - ALTURA_SPRITE));
 
-    // Verifica se o jogador está tentando agachar
-    bool esta_agachado = false;
-    if(al_key_down(&keyState, ALLEGRO_KEY_S))
-        esta_agachado = al_key_down(&keyState, ALLEGRO_KEY_S);
-    else if(al_key_down(&keyState, ALLEGRO_KEY_DOWN))
-        esta_agachado = al_key_down(&keyState, ALLEGRO_KEY_DOWN);
-    else if(al_key_down(&keyState, ALLEGRO_KEY_LSHIFT))
-        esta_agachado = al_key_down(&keyState, ALLEGRO_KEY_LSHIFT);
+    bool esta_agachado = al_key_down(&keyState, ALLEGRO_KEY_S) || 
+                          al_key_down(&keyState, ALLEGRO_KEY_DOWN) || 
+                          al_key_down(&keyState, ALLEGRO_KEY_LSHIFT);
 
-    // Verifica se o botão esquerdo do mouse está pressionado (tiro)
-    bool atirando = mouseState.buttons & 1;
-
-    // Ações para o caso de tiro enquanto agachado
-    if (!no_ar && esta_agachado && atirando) 
+    // Pulo
+    if ((al_key_down(&keyState, ALLEGRO_KEY_SPACE) || al_key_down(&keyState, ALLEGRO_KEY_UP) || al_key_down(&keyState, ALLEGRO_KEY_W)) 
+        && can_jump && !no_ar && !esta_agachado) 
     {
-        // Define estado de agachar e atirar
-        p->estado = p->olhando_para_direita ? CROUCH_AND_SHOT : CROUCH_AND_SHOT;
-
-        // Atualiza animação de tiro agachado
-        p->timer_shoot++;
-        if (p->timer_shoot >= FRAME_DELAY) 
-        {
-            p->timer_shoot = 0;
-            p->frame_shoot = (p->frame_shoot + 1) % NUM_FRAMES_CROUCH_AND_SHOOT;
-        }
-        return;
+        p->vel_y = PULO;
+        can_jump = false;
     }
 
-    // Apenas agachado, sem tiro
-    if (!no_ar && esta_agachado) 
-    {
-        p->estado = p->olhando_para_direita ? CROUCH : CROUCH;
-        p->vel_x = 0;
-        return;
-    }
-
-    // Movimento para a direita
-    if (al_key_down(&keyState, ALLEGRO_KEY_D) || al_key_down(&keyState, ALLEGRO_KEY_RIGHT))
-    {
-        p->vel_x = VELOCIDADE; // Aplica velocidade positiva
-        p->olhando_para_direita = true;
-
-        if (no_ar)
-            p->estado = JUMP;
-        else 
-        {
-            p->estado = WALK;
-
-            // Animação de caminhada
-            p->timer_andar++;
-            if (p->timer_andar >= FRAME_DELAY) 
-            {
-                p->timer_andar = 0;
-                p->frame_andar = (p->frame_andar + 1) % 10;
-            }
-        }
-    } 
-    // Movimento para a esquerda
-    else if (al_key_down(&keyState, ALLEGRO_KEY_A) || al_key_down(&keyState, ALLEGRO_KEY_LEFT))
-    {
+    // Movimento
+    if (al_key_down(&keyState, ALLEGRO_KEY_D) || al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) {
+        p->vel_x = VELOCIDADE;
+        p->olhando_para_direita = 1;
+    } else if (al_key_down(&keyState, ALLEGRO_KEY_A) || al_key_down(&keyState, ALLEGRO_KEY_LEFT)) {
         p->vel_x = -VELOCIDADE;
-        p->olhando_para_direita = false;
+        p->olhando_para_direita = 0;
+    }
 
-        if (no_ar)
+    // ESTADOS
+    if (no_ar) 
+    {
+        if (atirando)
+            p->estado = JUMP_AND_SHOT;
+        else
             p->estado = JUMP;
+    } 
+    else if (esta_agachado) 
+    {
+        if (atirando)
+            p->estado = CROUCH_AND_SHOT;
+        else
+            p->estado = CROUCH;
+    } 
+    else if (p->vel_x != 0) 
+    {
+        if (atirando)
+            p->estado = STAND_AND_SHOT; // Pode criar um novo estado WALK_AND_SHOT se quiser animação separada
         else 
         {
             p->estado = WALK;
-
-            // Animação de caminhada
             p->timer_andar++;
             if (p->timer_andar >= FRAME_DELAY) 
             {
@@ -168,20 +176,17 @@ void update_player(Player *p)
             }
         }
     } 
-    // Parado no chão (sem andar, sem atirar)
-    else if (!no_ar && !atirando) 
+    else 
     {
-        p->estado = STAND_AND_STOP;
-        p->frame_andar = 0;
-        p->timer_andar = 0;
+        if (atirando)
+            p->estado = STAND_AND_SHOT;
+        else
+            p->estado = STAND_AND_STOP;
     }
 
-    // Ação de tiro em pé
-    if (atirando && !no_ar && !esta_agachado) 
+    // Animação de tiro
+    if (atirando) 
     {
-        p->estado = p->olhando_para_direita ? STAND_AND_SHOT : STAND_AND_SHOT;
-
-        // Animação de tiro em pé
         p->timer_shoot++;
         if (p->timer_shoot >= FRAME_DELAY) 
         {
@@ -190,38 +195,29 @@ void update_player(Player *p)
         }
     }
 
-    // APulo
-    if ((al_key_down(&keyState, ALLEGRO_KEY_SPACE) || al_key_down(&keyState, ALLEGRO_KEY_UP) || al_key_down(&keyState, ALLEGRO_KEY_W)) 
-        && can_jump && !no_ar && !esta_agachado) 
-    {
-        p->vel_y = PULO; // Aplica força de pulo
-        p->estado = p->olhando_para_direita ? JUMP : JUMP;
-        can_jump = false;
-    }
+    // Atualiza posição
+    p->x = 100; // Fixo na tela
+    p->player_pos_mundo_x += p->vel_x;
+    p->y += p->vel_y;
 
-    // Atualização de posição do jogador
-    p->x = 100; // Posição fixa
-    p->player_pos_mundo_x += p->vel_x; // Movimento no mundo
-    p->y += p->vel_y; // Aplicação do pulo ou queda
-
-    // Aplica gravidade caso esteja no ar
-    if (p->y < (ALTURA_CHAO - ALTURA_SPRITE))
+    // Gravidade
+    if (p->y < (ALTURA_CHAO - ALTURA_SPRITE)) 
         p->vel_y += GRAVIDADE;
     else 
     {
-        // Se estiver no chão, reseta valores verticais
         p->y = ALTURA_CHAO - ALTURA_SPRITE;
         p->vel_y = 0;
         can_jump = true;
-
-        // Se estava pulando e agora está parado sem atirar
-        if ((p->estado == JUMP) && p->vel_x == 0 && !atirando)
-            p->estado = STAND_AND_STOP;
     }
 
-    // Permite novo pulo quando tecla de pulo for solta
-    if (!(al_key_down(&keyState, ALLEGRO_KEY_SPACE) || al_key_down(&keyState, ALLEGRO_KEY_UP) || al_key_down(&keyState, ALLEGRO_KEY_W)))
+    if (!(al_key_down(&keyState, ALLEGRO_KEY_SPACE) || 
+          al_key_down(&keyState, ALLEGRO_KEY_UP) || 
+          al_key_down(&keyState, ALLEGRO_KEY_W)))
         can_jump = true;
+
+    // Atualiza projéteis
+    for (int i = 0; i < MAX_PROJECTILES; i++)
+        update_projectile(&p->projeteis[i]);
 }
 
 
@@ -250,6 +246,10 @@ void draw_player(Player *p)
 
         case JUMP:
             sprite = p->sprite_jump;
+            break;
+
+        case JUMP_AND_SHOT:
+            sprite = p->sprite_jump_and_shot;
             break;
 
         case CROUCH:
@@ -283,6 +283,9 @@ void draw_player(Player *p)
             al_get_bitmap_height(sprite) * escala,  // Altura escalada
             flip  // Flags de transformação (flip horizontal)
         );
+
+        for (int i = 0; i < MAX_PROJECTILES; i++)
+            draw_projectile(&p->projeteis[i]);
     }
 }
 
@@ -296,6 +299,7 @@ void destroy_player(Player *p)
 {
     // Destrói todos os bitmaps carregados
     al_destroy_bitmap(p->sprite_stand_and_stop);
+    al_destroy_bitmap(p->sprite_jump_and_shot);
     al_destroy_bitmap(p->sprite_crouch);
     al_destroy_bitmap(p->sprite_jump);
 
@@ -313,6 +317,10 @@ void destroy_player(Player *p)
     for (int i = 0; i < 10; i++) 
         if (p->sprite_crouch_and_shot[i])
             al_destroy_bitmap(p->sprite_crouch_and_shot[i]);
+
+    for (int i = 0; i < MAX_PROJECTILES; i++)
+        destroy_projectile(&p->projeteis[i]);
+    
 }
 
 

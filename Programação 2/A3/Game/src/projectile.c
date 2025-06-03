@@ -11,7 +11,7 @@ void init_projectile(Projectile *p, float x, float y, float vel_x)
     p->y = y;
     p->vel_x = vel_x;
     p->ativo = true;
-    p->sprite = al_load_bitmap("./assets/bullet.png");
+    p->sprite = al_load_bitmap("./assets/player/sprite/bullet.png");
 }
 
 
@@ -25,7 +25,7 @@ void update_projectile(Projectile *p)
 
     p->x += p->vel_x;
 
-    if (p->x < 0 || p->x > 840)
+    if (p->x < 0 || p->x > 1200)
         p->ativo = false;
 }
 

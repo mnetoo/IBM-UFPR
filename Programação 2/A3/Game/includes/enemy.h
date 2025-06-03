@@ -18,7 +18,7 @@ typedef struct
 
 
 //  Função que inicializa um inimigo
-void init_enemy(Enemy *e, float x, float y);
+void init_enemy(Enemy *e, float y);
 
 //============================================================
 
@@ -28,7 +28,7 @@ void update_enemy(Enemy *e);
 //============================================================
 
 //  Carrega a sprite do inimigo
-void draw_enemy(Enemy *e, float camera_x);
+void draw_enemy(Enemy *e, Background *bg);
 
 //============================================================
 

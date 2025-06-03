@@ -22,9 +22,6 @@ void update_background(Background *bg, float player_pos_mundo_x)
     int centro_tela = TELA_LARGURA / 2;
     bg->scroll_x = (int)(player_pos_mundo_x - centro_tela);
 
-    // Garante que o scroll_x sempre fique no intervalo [0, largura)
-    //bg->scroll_x %= bg->largura;
-
     bg->scroll_x = player_pos_mundo_x - centro_tela;
     if (bg->scroll_x < 0)
         bg->scroll_x += bg->largura;

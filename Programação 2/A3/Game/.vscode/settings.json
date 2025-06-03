@@ -65,6 +65,7 @@
     "allegro_font.h": "c",
     "stdio.h": "c",
     "allegro_ttf.h": "c",
-    "utils.h": "c"
+    "utils.h": "c",
+    "includes.h": "c"
   }
 }
