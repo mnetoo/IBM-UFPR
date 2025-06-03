@@ -15,7 +15,6 @@ static Background bg;
 //  Função que roda o jogo
 EstadoJogo run_game() 
 {
-    srand(time(NULL));
     al_set_new_display_flags(ALLEGRO_WINDOWED);
     ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
     al_set_window_title(display, "GAME");
