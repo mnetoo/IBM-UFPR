@@ -85,7 +85,7 @@ EstadoJogo run_game()
                 update_background(&bg, player.player_pos_mundo_x);
 
                 for (int i = 0; i < MAX_INIMIGOS; i++)
-                    update_enemy(&inimigos[i]);
+                    update_enemy(&inimigos[i], player.player_pos_mundo_x);
 
                 bool todos_mortos = true;
                 for (int i = 0; i < MAX_INIMIGOS; i++) 

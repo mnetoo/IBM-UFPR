@@ -13,6 +13,7 @@
 //  HEADERS
 #include "game.h"
 #include "assets.h"
+#include "enemy.h"
 #include "player.h"
 #include "game.h"
 #include "projectile.h"

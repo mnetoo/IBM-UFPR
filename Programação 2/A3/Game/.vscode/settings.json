@@ -66,6 +66,7 @@
     "stdio.h": "c",
     "allegro_ttf.h": "c",
     "utils.h": "c",
-    "includes.h": "c"
+    "includes.h": "c",
+    "player.h": "c"
   }
 }

@@ -1,5 +1,6 @@
 #ifndef ENEMY_H
 #define ENEMY_H
+#include "player.h"
 #include "includes.h"
 
 
@@ -8,6 +9,7 @@ typedef struct
 {
     float x, y;
     float vel_x;
+    float enemy_pos_mundo_x;
     int vida;
     bool ativo;
 
@@ -23,7 +25,7 @@ void init_enemy(Enemy *e, float y);
 //============================================================
 
 //  Função de movimentação de inimigo
-void update_enemy(Enemy *e);
+void update_enemy(Enemy *e, float player_pos_mundo_x);
 
 //============================================================
 

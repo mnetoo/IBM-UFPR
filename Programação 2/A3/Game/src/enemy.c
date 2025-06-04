@@ -16,17 +16,19 @@ void init_enemy(Enemy *e, float y)
     // Gera posição X aleatória com maior espaçamento:
     // - Entre 200% e 500% da largura da tela (mais longe)
     // - Incremento mínimo de 50% da tela entre inimigos
-    float fator_base = 2.0f; // Começa em 2x a largura da tela
-    float variacao = (rand() % 300) / 100.0f; // 0.0 a 3.0
-    e->x = TELA_LARGURA * (fator_base + variacao); // 2.0 a 5.0 x largura
+    //float fator_base = 2.0f; // Começa em 2x a largura da tela
+    //float variacao = (rand() % 300) / 100.0f; // 0.0 a 3.0
+    //e->x = TELA_LARGURA * (fator_base + variacao); // 2.0 a 5.0 x largura
     
     // Ajuste para garantir distância mínima entre inimigos
-    static float ultima_posicao = 0;
-    if (e->x - ultima_posicao < TELA_LARGURA * 0.8f) { // Se muito próximo
-        e->x = ultima_posicao + TELA_LARGURA * 0.8f; // Adiciona distância
-    }
-    ultima_posicao = e->x;
+    //static float ultima_posicao = 0;
+    //if (e->x - ultima_posicao < TELA_LARGURA * 0.8f) { // Se muito próximo
+        e->x = 900;//ultima_posicao + TELA_LARGURA * 0.8f; // Adiciona distância
+    //}
+    //ultima_posicao = e->x;
 
+    e->enemy_pos_mundo_x = e->x; // Posição no mundo do jogo
+    printf("Posição X do inimigo: %.2f\n", e->x);
     e->y = ALTURA_CHAO - 35;
     e->vel_x = -2;
     e->vida = 20;
@@ -51,12 +53,12 @@ void init_enemy(Enemy *e, float y)
 
 
 //  Função de movimentação de inimigo
-void update_enemy(Enemy *e) 
+void update_enemy(Enemy *e, float player_pos_mundo_x)
 {
     if (!e->ativo) return;
 
     //Atualiza a posição
-    e->x += e->vel_x;
+    e->enemy_pos_mundo_x += e->enemy_pos_mundo_x;
 
     // Atualiza animação
     const int FRAME_DELAY = 6; // quanto menor, mais rápido anima
@@ -77,7 +79,7 @@ void draw_enemy(Enemy *e, Background *bg)
 {
     if (!e->ativo) return;
 
-    float pos_x = e->x;
+    float pos_x = e->enemy_pos_mundo_x;
     float pos_y = e->y;
 
     float escala = 3.2;
