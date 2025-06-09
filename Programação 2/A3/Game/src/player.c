@@ -71,28 +71,43 @@ void init_player(Player *p)
 //============================================================================
 
 
-//  Função para criar o projétil
-void shoot_projectile(Player *p) 
+//  Função para o tiro/projétil
+void shoot_projectile(Player *p, int direcao) 
 {
-    float origem_y = 0;
+    float origem_y;
 
-    //  se estiver agachado o tiro sai mais baixo
     if(p->estado == CROUCH || p->estado == CROUCH_AND_SHOT)
         origem_y = 555;
-    //  se estiver pulando o tiro sai mais alto
     else if(p->estado == JUMP || p->estado == JUMP_AND_SHOT)
         origem_y = 450;
-    //  esta de pe altura normal
     else
         origem_y = 525;
 
-    for (int i = 0; i < MAX_PROJECTILES; i++)
-     {
+    for (int i = 0; i < MAX_PROJECTILES; i++) 
+    {
         if (!p->projeteis[i].ativo) 
         {
-            float velocidade = p->olhando_para_direita ? VELOCIDADE_BULLET : -VELOCIDADE_BULLET;
-            float origem_x = p->x + (p->olhando_para_direita ? 150 : -10);
-            init_projectile(&p->projeteis[i], origem_x, origem_y, velocidade);
+            float vel_x = 0, vel_y = 0;
+            float origem_x = p->x + 70; // posição horizontal centralizada
+
+            switch (direcao) 
+            {
+                case SHOOT_DIREITA:
+                    vel_x = VELOCIDADE_BULLET;
+                    origem_x = p->x + 150;
+                    break;
+                case SHOOT_ESQUERDA:
+                    vel_x = -VELOCIDADE_BULLET;
+                    origem_x = p->x + 100;
+                    break;
+                case SHOOT_CIMA:
+                    vel_y = -VELOCIDADE_BULLET;
+                    origem_x = p->x + 150;
+                    origem_y = p->y + 150;
+                    break;
+            }
+
+            init_projectile(&p->projeteis[i], origem_x, origem_y, vel_x, vel_y);
             break;
         }
     }
@@ -106,42 +121,65 @@ void shoot_projectile(Player *p)
 void update_player(Player *p) 
 {
     static bool can_jump = true;
-    static bool mouse_seguro = false;
     const int FRAME_DELAY = 5;
 
     ALLEGRO_KEYBOARD_STATE keyState;
-    ALLEGRO_MOUSE_STATE mouseState;
     al_get_keyboard_state(&keyState);
-    al_get_mouse_state(&mouseState);
 
-    bool atirando = mouseState.buttons & 1;
-    if (atirando && !mouse_seguro) 
+    // Atirar com as setas
+    bool seta_direita = al_key_down(&keyState, ALLEGRO_KEY_RIGHT);
+    bool seta_esquerda = al_key_down(&keyState, ALLEGRO_KEY_LEFT);
+    bool seta_cima = al_key_down(&keyState, ALLEGRO_KEY_UP);
+
+    static bool seta_segura = false;
+    bool atirando = false;  // Variável local para controlar o estado de tiro
+
+    if (!seta_segura) 
     {
-        shoot_projectile(p);
-        mouse_seguro = true;
+        if (seta_direita) 
+        {
+            shoot_projectile(p, SHOOT_DIREITA);
+            seta_segura = true;
+            atirando = true;
+        } 
+        else if (seta_esquerda) 
+        {
+            shoot_projectile(p, SHOOT_ESQUERDA);
+            seta_segura = true;
+            atirando = true;
+        } 
+        else if (seta_cima) 
+        {
+            shoot_projectile(p, SHOOT_CIMA);
+            seta_segura = true;
+            atirando = true;
+        }
     }
-    if (!atirando) mouse_seguro = false;
+
+    // libera disparo quando soltar teclas
+    if (!seta_direita && !seta_esquerda && !seta_cima)
+        seta_segura = false;
 
     p->vel_x = 0;
     bool no_ar = (p->y < (ALTURA_CHAO - ALTURA_SPRITE));
 
-    bool esta_agachado = al_key_down(&keyState, ALLEGRO_KEY_S) || 
-                          al_key_down(&keyState, ALLEGRO_KEY_DOWN) || 
-                          al_key_down(&keyState, ALLEGRO_KEY_LSHIFT);
+    bool esta_agachado = al_key_down(&keyState, ALLEGRO_KEY_S) || al_key_down(&keyState, ALLEGRO_KEY_LSHIFT);
 
     // Pulo
-    if ((al_key_down(&keyState, ALLEGRO_KEY_SPACE) || al_key_down(&keyState, ALLEGRO_KEY_UP) || al_key_down(&keyState, ALLEGRO_KEY_W)) 
-        && can_jump && !no_ar && !esta_agachado) 
+    if ((al_key_down(&keyState, ALLEGRO_KEY_SPACE) || al_key_down(&keyState, ALLEGRO_KEY_W)) && can_jump && !no_ar && !esta_agachado) 
     {
         p->vel_y = PULO;
         can_jump = false;
     }
 
     // Movimento
-    if (al_key_down(&keyState, ALLEGRO_KEY_D) || al_key_down(&keyState, ALLEGRO_KEY_RIGHT)) {
+    if (al_key_down(&keyState, ALLEGRO_KEY_D))
+    {
         p->vel_x = VELOCIDADE;
         p->olhando_para_direita = 1;
-    } else if (al_key_down(&keyState, ALLEGRO_KEY_A) || al_key_down(&keyState, ALLEGRO_KEY_LEFT)) {
+    } 
+    else if (al_key_down(&keyState, ALLEGRO_KEY_A))
+    {
         p->vel_x = -VELOCIDADE;
         p->olhando_para_direita = 0;
     }
@@ -164,7 +202,7 @@ void update_player(Player *p)
     else if (p->vel_x != 0) 
     {
         if (atirando)
-            p->estado = STAND_AND_SHOT; // Pode criar um novo estado WALK_AND_SHOT se quiser animação separada
+            p->estado = STAND_AND_SHOT;
         else 
         {
             p->estado = WALK;
@@ -210,9 +248,7 @@ void update_player(Player *p)
         can_jump = true;
     }
 
-    if (!(al_key_down(&keyState, ALLEGRO_KEY_SPACE) || 
-          al_key_down(&keyState, ALLEGRO_KEY_UP) || 
-          al_key_down(&keyState, ALLEGRO_KEY_W)))
+    if (!(al_key_down(&keyState, ALLEGRO_KEY_SPACE) || al_key_down(&keyState, ALLEGRO_KEY_W)))
         can_jump = true;
 
     // Atualiza projéteis

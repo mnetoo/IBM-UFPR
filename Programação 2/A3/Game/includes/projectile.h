@@ -8,13 +8,14 @@ typedef struct
 {
     float x, y;
     float vel_x;
+    float vel_y;
     bool ativo;
     ALLEGRO_BITMAP *sprite;
 } Projectile;
 
 
 //  Função que inicializa bullet
-void init_projectile(Projectile *p, float x, float y, float vel_x);
+void init_projectile(Projectile *p, float x, float y, float vel_x, float vel_y);
 
 //============================================================================
 

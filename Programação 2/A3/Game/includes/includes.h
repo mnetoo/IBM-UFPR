@@ -45,7 +45,12 @@
 #define NUM_FRAMES_SHOOT 2
 #define NUM_FRAMES_CROUCH_AND_SHOOT 2
 #define MAX_PROJECTILES 10
-#define VELOCIDADE_BULLET 40
+#define VELOCIDADE_BULLET 60
+
+// Direções possíveis
+#define SHOOT_DIREITA   0
+#define SHOOT_ESQUERDA  1
+#define SHOOT_CIMA      2
 
 
 #define PLAYER_LARGURA 40

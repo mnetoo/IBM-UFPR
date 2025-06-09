@@ -7,7 +7,8 @@
 //  Estrutura de inimigo
 typedef struct 
 {
-    float x, y;
+    float x, y;         // Posição na tela
+    float pos_mundo;    // Posição no mundo
     float vel_x;
     float enemy_pos_mundo_x;
     int vida;
@@ -20,12 +21,12 @@ typedef struct
 
 
 //  Função que inicializa um inimigo
-void init_enemy(Enemy *e, float y);
+void init_enemy(Enemy *e);
 
 //============================================================
 
 //  Função de movimentação de inimigo
-void update_enemy(Enemy *e, float player_pos_mundo_x);
+void update_enemy(Enemy *e, float player_mundo);
 
 //============================================================
 

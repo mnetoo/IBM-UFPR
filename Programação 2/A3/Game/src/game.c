@@ -19,10 +19,8 @@ EstadoJogo run_game()
     ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
     al_set_window_title(display, "GAME");
 
-    //float camera_x = player.player_pos_mundo_x - (TELA_LARGURA / 2);
-
     font = al_load_ttf_font("./assets/fonts/ARCAC___.TTF", 20, 0);
-    ALLEGRO_FONT *font_pause = al_load_ttf_font("./assets/fonts/ARCAC___.TTF", 72, 0); // Fonte maior para PAUSE
+    ALLEGRO_FONT *font_pause = al_load_ttf_font("./assets/fonts/ARCAC___.TTF", 72, 0);
 
     queue = al_create_event_queue();
     timer = al_create_timer(1.0 / 60.0);
@@ -36,7 +34,7 @@ EstadoJogo run_game()
 
     printf("Inicializando inimigos...\n");
     for (int i = 0; i < MAX_INIMIGOS; i++)
-        init_enemy(&inimigos[i], ALTURA_CHAO);;
+        init_enemy(&inimigos[i]);
     printf("Inimigos inicializados com sucesso...\n\n");
 
     bool running = true;
