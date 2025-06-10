@@ -20,7 +20,6 @@ void init_background(Background *bg, const char *caminho)
 void update_background(Background *bg, float player_pos_mundo_x)
 {
     int centro_tela = TELA_LARGURA / 2;
-    bg->scroll_x = (int)(player_pos_mundo_x - centro_tela);
 
     bg->scroll_x = player_pos_mundo_x - centro_tela;
     if (bg->scroll_x < 0)

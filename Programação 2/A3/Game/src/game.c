@@ -7,6 +7,7 @@ static ALLEGRO_FONT *font;
 static Player player;
 static Enemy inimigos[MAX_INIMIGOS];
 static Background bg;
+static Boss boss;
 
 
 //===================================================================================================================================================================
@@ -15,6 +16,7 @@ static Background bg;
 //  Função que roda o jogo
 EstadoJogo run_game() 
 {
+    srand(time(NULL)); // Inicializa o gerador de números aleatórios
     al_set_new_display_flags(ALLEGRO_WINDOWED);
     ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
     al_set_window_title(display, "GAME");
@@ -34,8 +36,15 @@ EstadoJogo run_game()
 
     printf("Inicializando inimigos...\n");
     for (int i = 0; i < MAX_INIMIGOS; i++)
-        init_enemy(&inimigos[i]);
+    {
+        // Gera valores bem espaçados e aleatórios
+        int pos_x = 800 + rand() % 5200;
+        init_enemy(&inimigos[i], pos_x);
+        printf("Posição do inimigo (%d): %d\n", i, pos_x);
+    }
     printf("Inimigos inicializados com sucesso...\n\n");
+
+    init_boss(&boss, 600);
 
     bool running = true;
     bool redraw = true;
@@ -108,6 +117,7 @@ EstadoJogo run_game()
 
             draw_background(&bg);
             draw_player(&player);
+            draw_boss(&boss);
 
             for (int i = 0; i < MAX_INIMIGOS; i++)
                 draw_enemy(&inimigos[i], &bg); 
@@ -139,6 +149,7 @@ EstadoJogo run_game()
     for (int i = 0; i < MAX_INIMIGOS; i++) 
         destroy_enemy(&inimigos[i]);
     destroy_background(&bg);
+    destroy_boss(&boss);
 
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);

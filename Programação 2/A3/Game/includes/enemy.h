@@ -1,27 +1,38 @@
 #ifndef ENEMY_H
 #define ENEMY_H
-#include "player.h"
 #include "includes.h"
+
+
+typedef struct 
+{
+    float x, y;
+    float vel_x, vel_y;
+    bool ativo;
+} EnemyProjectile;
 
 
 //  Estrutura de inimigo
 typedef struct 
 {
-    float x, y;         // Posição na tela
-    float pos_mundo;    // Posição no mundo
+    float x, y;
     float vel_x;
-    float enemy_pos_mundo_x;
     int vida;
     bool ativo;
 
+    float enemy_pos_mundo_x;
+
+    int frame_atual;
+    int timer_animacao;
+
     ALLEGRO_BITMAP *sprite[6];
-    int frame_atual;      // Índice do sprite atual
-    int timer_animacao;   // Temporizador para controlar a troca de sprite
+
+    EnemyProjectile projeteis[MAX_ENEMY_PROJECTILES];
+    int tempo_tiro;
 } Enemy;
 
 
 //  Função que inicializa um inimigo
-void init_enemy(Enemy *e);
+void init_enemy(Enemy *e, float pos_x);
 
 //============================================================
 

@@ -6,30 +6,51 @@
 
 
 // Função que inicializa um inimigo
-void init_enemy(Enemy *e) 
+void init_enemy(Enemy *e, float pos_x) 
 {
-    e->x = 900;
-    e->y = 470;
+    e->x = pos_x;
+    e->y = 420;
     e->vel_x = -2;
     e->vida = 20;
     e->ativo = true;
 
     e->frame_atual = 0;
     e->timer_animacao = 0;
+    e->tempo_tiro = 0;
 
     for (int i = 0; i < 6; i++) 
     {
         char filename[100];
         sprintf(filename, "./assets/enemies/enemy-ghost/Sprites/Particles/frame%d.png", i + 1);
         e->sprite[i] = al_load_bitmap(filename);
-
         if (!e->sprite[i]) 
             printf("Erro ao carregar sprite %d do inimigo\n", i);
     }
+
+    for (int i = 0; i < MAX_ENEMY_PROJECTILES; i++) 
+        e->projeteis[i].ativo = false;
 }
 
 
 //==============================================================================
+
+
+//  Função para o tiro/projétil
+void enemy_shoot_projectile(Enemy *e) 
+{
+    for (int i = 0; i < MAX_ENEMY_PROJECTILES; i++) 
+    {
+        if (!e->projeteis[i].ativo) 
+        {
+            e->projeteis[i].x = e->enemy_pos_mundo_x;
+            e->projeteis[i].y = 550;
+            e->projeteis[i].vel_x = -50; // Tiro para esquerda
+            e->projeteis[i].vel_y = 0;
+            e->projeteis[i].ativo = true;
+            break;
+        }
+    }
+}
 
 
 //  Função de movimentação de inimigo
@@ -37,18 +58,35 @@ void update_enemy(Enemy *e, float player_mundo)
 {
     if (!e->ativo) return;
 
-    // Move o inimigo no mundo
-    e->enemy_pos_mundo_x += e->vel_x;
+    e->enemy_pos_mundo_x = e->x - player_mundo;
 
-    // Converte a posição no mundo para posição na tela
-    e->x = e->enemy_pos_mundo_x - player_mundo;
-
-    // Animação: troca de sprite a cada 10 frames
+    // Atualiza animação
     e->timer_animacao++;
     if (e->timer_animacao >= 10) 
     {
         e->timer_animacao = 0;
         e->frame_atual = (e->frame_atual + 1) % 6;
+    }
+
+    // Timer simples de tiro
+    e->tempo_tiro++;
+    if (e->tempo_tiro >= 120) // A cada 2 segundos (se 60fps)
+    {
+        enemy_shoot_projectile(e);
+        e->tempo_tiro = 0;
+    }
+
+    // Atualiza projéteis do inimigo
+    for (int i = 0; i < MAX_ENEMY_PROJECTILES; i++) 
+    {
+        if (e->projeteis[i].ativo) 
+        {
+            e->projeteis[i].x += e->projeteis[i].vel_x;
+
+            // Desativa se sair da tela
+            if (e->projeteis[i].x < 0) 
+                e->projeteis[i].ativo = false;
+        }
     }
 }
 
@@ -61,7 +99,7 @@ void draw_enemy(Enemy *e, Background *bg)
 {
     if (!e->ativo) return;
 
-    float pos_x = e->x;
+    float pos_x = e->enemy_pos_mundo_x;
     float pos_y = e->y;
 
     float escala = 3.5;
@@ -78,6 +116,19 @@ void draw_enemy(Enemy *e, Background *bg)
         al_get_bitmap_height(e->sprite[e->frame_atual]) * escala,
         flip
     );
+
+    for (int i = 0; i < MAX_ENEMY_PROJECTILES; i++) 
+    {
+        if (e->projeteis[i].ativo) 
+        {
+            al_draw_filled_circle(
+                e->projeteis[i].x,
+                e->projeteis[i].y,
+                8,
+                al_map_rgb(255, 0, 110)
+            );
+        }
+    }
 }
 
 

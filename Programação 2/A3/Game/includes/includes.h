@@ -21,6 +21,7 @@
 #include "collision.h"
 #include "utils.h"
 #include "background.h"
+#include "boss.h"
 
 
 //===========================================================
@@ -57,3 +58,5 @@
 #define PLAYER_ALTURA 60
 #define ENEMY_LARGURA 32 * 3.2
 #define ENEMY_ALTURA 32 * 3.2
+
+#define MAX_ENEMY_PROJECTILES 5
