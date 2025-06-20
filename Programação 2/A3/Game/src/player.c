@@ -118,7 +118,7 @@ void shoot_projectile(Player *p, int direcao)
 
 
 // Função de atualização do estado do jogador a cada frame
-void update_player(Player *p) 
+void update_player(Player *p, Enemy enemies[]) 
 {
     static bool can_jump = true;
     const int FRAME_DELAY = 5;
@@ -251,9 +251,47 @@ void update_player(Player *p)
     if (!(al_key_down(&keyState, ALLEGRO_KEY_SPACE) || al_key_down(&keyState, ALLEGRO_KEY_W)))
         can_jump = true;
 
-    // Atualiza projéteis
-    for (int i = 0; i < MAX_PROJECTILES; i++)
-        update_projectile(&p->projeteis[i]);
+    // Atualiza projéteis e verifica colisão com inimigos
+    for (int i = 0; i < MAX_PROJECTILES; i++) 
+    {
+        if (p->projeteis[i].ativo) 
+        {
+            update_projectile(&p->projeteis[i]);
+            
+            Hitbox proj_hb = get_projectile_hitbox(&p->projeteis[i], 1);
+            
+            // Verifica colisão com todos os inimigos ativos
+            for (int j = 0; j < MAX_INIMIGOS; j++) 
+            {
+                if (enemies[j].ativo) 
+                {
+                    Hitbox enemy_hb = get_enemy_hitbox(&enemies[j]);
+                    
+                    if (colisao_retangulos(
+                        proj_hb.x, proj_hb.y, proj_hb.w, proj_hb.h,
+                        enemy_hb.x, enemy_hb.y, enemy_hb.w, enemy_hb.h)) 
+                        {
+                            enemies[j].vida = enemies[j].vida  - 10;  // Reduz vida do inimigo
+                            p->projeteis[i].ativo = false;  // Desativa projétil
+                            printf("Inimigo atingido! Vida restante: %d\n", enemies[j].vida);
+                            
+                            // Verifica se inimigo morreu
+                            if (enemies[j].vida <= 0) 
+                            {
+                                enemies[j].ativo = false;
+                                printf("Inimigo derrotado!\n\n");
+                            }
+                            break;  // Sai do loop de inimigos após acertar um
+                    }
+                }
+            }
+            
+            // Desativa projétil se sair da tela
+            if (p->projeteis[i].x < 0 || p->projeteis[i].x > TELA_LARGURA) {
+                p->projeteis[i].ativo = false;
+            }
+        }
+    }
 }
 
 

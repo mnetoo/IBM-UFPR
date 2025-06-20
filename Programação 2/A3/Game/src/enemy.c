@@ -1,4 +1,3 @@
-#include "player.h"
 #include "includes.h"
 
 
@@ -42,9 +41,9 @@ void enemy_shoot_projectile(Enemy *e)
     {
         if (!e->projeteis[i].ativo) 
         {
-            e->projeteis[i].x = e->enemy_pos_mundo_x;
+            e->projeteis[i].x = e->enemy_pos_mundo_x - 20;
             e->projeteis[i].y = 550;
-            e->projeteis[i].vel_x = -50; // Tiro para esquerda
+            e->projeteis[i].vel_x = -20; // Tiro para esquerda
             e->projeteis[i].vel_y = 0;
             e->projeteis[i].ativo = true;
             break;
@@ -54,7 +53,7 @@ void enemy_shoot_projectile(Enemy *e)
 
 
 //  Função de movimentação de inimigo
-void update_enemy(Enemy *e, float player_mundo) 
+void update_enemy(Enemy *e, float player_mundo, Player *player) 
 {
     if (!e->ativo) return;
 
@@ -62,29 +61,42 @@ void update_enemy(Enemy *e, float player_mundo)
 
     // Atualiza animação
     e->timer_animacao++;
-    if (e->timer_animacao >= 10) 
-    {
+    if (e->timer_animacao >= 10) {
         e->timer_animacao = 0;
         e->frame_atual = (e->frame_atual + 1) % 6;
     }
 
     // Timer simples de tiro
     e->tempo_tiro++;
-    if (e->tempo_tiro >= 120) // A cada 2 segundos (se 60fps)
-    {
+    if (e->tempo_tiro >= 240) {
         enemy_shoot_projectile(e);
         e->tempo_tiro = 0;
     }
 
-    // Atualiza projéteis do inimigo
+    // Atualiza projéteis do inimigo e verifica colisão com jogador
+    Hitbox player_hb = get_player_hitbox(player);
+    
     for (int i = 0; i < MAX_ENEMY_PROJECTILES; i++) 
     {
         if (e->projeteis[i].ativo) 
         {
             e->projeteis[i].x += e->projeteis[i].vel_x;
 
+            // Verifica colisão com jogador
+            Hitbox proj_hb = get_projectile_hitbox(&e->projeteis[i], 1);
+            proj_hb.x -= player_mundo;  // Ajuste importante
+            if (colisao_retangulos(
+                proj_hb.x, proj_hb.y, proj_hb.w, proj_hb.h,
+                player_hb.x, player_hb.y, player_hb.w, player_hb.h)) 
+                {
+                
+                player->vida--;  // Reduz vida do jogador
+                e->projeteis[i].ativo = false;  // Desativa projétil
+                printf("Jogador atingido! Vida: %d\n", player->vida);
+            }
+
             // Desativa se sair da tela
-            if (e->projeteis[i].x < 0) 
+            if (e->projeteis[i].x < 0)
                 e->projeteis[i].ativo = false;
         }
     }

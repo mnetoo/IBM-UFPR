@@ -11,14 +11,13 @@
 #include <stdbool.h>
 
 //  HEADERS
+#include "collision.h"
 #include "game.h"
 #include "assets.h"
 #include "enemy.h"
 #include "player.h"
 #include "game.h"
 #include "projectile.h"
-#include "enemy.h"
-#include "collision.h"
 #include "utils.h"
 #include "background.h"
 #include "boss.h"
@@ -60,3 +59,4 @@
 #define ENEMY_ALTURA 32 * 3.2
 
 #define MAX_ENEMY_PROJECTILES 5
+#define MAX_BOSS_PROJECTILES 10

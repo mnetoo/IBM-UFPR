@@ -3,6 +3,16 @@
 #include "includes.h"
 
 
+typedef struct {
+    float x, y;
+    float vel_x, vel_y;
+    bool ativo;
+
+    int frame_atual;
+    int timer_animacao;
+} BossProjectile;
+
+
 //  Estrutura do Boss
 typedef struct 
 {
@@ -12,9 +22,13 @@ typedef struct
     float pos_mundo_x;
     int vida;
 
-    ALLEGRO_BITMAP *idle[6];
-    ALLEGRO_BITMAP *burn[6];
+    ALLEGRO_BITMAP *idle[4];
+    ALLEGRO_BITMAP *burn[8];
+    ALLEGRO_BITMAP *ataque[3];
 
+    BossProjectile projeteis[MAX_BOSS_PROJECTILES];
+    int tempo_tiro; // Timer do tiro
+    
     int frame_atual;      // Índice do sprite atual
     int timer_animacao;   // Temporizador para controlar a troca de sprite
 } Boss;
@@ -24,7 +38,7 @@ typedef struct
 typedef enum
 {
     IDLE,
-    BURN
+    BURN,
 } BossState;
 
 

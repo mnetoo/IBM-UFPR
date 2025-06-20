@@ -13,6 +13,8 @@ void init_projectile(Projectile *p, float x, float y, float vel_x, float vel_y)
     p->vel_y = vel_y;
     p->ativo = true;
     p->sprite = al_load_bitmap("./assets/player/sprite/bullet.png");
+    p->altura = 2;
+    p->largura = 10;
 }
 
 

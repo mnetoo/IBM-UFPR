@@ -4,13 +4,17 @@
 
 
 // Estrutura bullet
-typedef struct 
+typedef struct Projectile
 {
     float x, y;
     float vel_x;
     float vel_y;
     bool ativo;
     ALLEGRO_BITMAP *sprite;
+
+    float altura;
+    float largura;
+
 } Projectile;
 
 

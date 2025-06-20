@@ -17,6 +17,8 @@ static Boss boss;
 EstadoJogo run_game() 
 {
     srand(time(NULL)); // Inicializa o gerador de números aleatórios
+    bool boss_ativo = false;
+
     al_set_new_display_flags(ALLEGRO_WINDOWED);
     ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
     al_set_window_title(display, "GAME");
@@ -38,13 +40,13 @@ EstadoJogo run_game()
     for (int i = 0; i < MAX_INIMIGOS; i++)
     {
         // Gera valores bem espaçados e aleatórios
-        int pos_x = 800 + rand() % 5200;
+        int pos_x = 500 + rand() % 3200;
         init_enemy(&inimigos[i], pos_x);
         printf("Posição do inimigo (%d): %d\n", i, pos_x);
     }
     printf("Inimigos inicializados com sucesso...\n\n");
 
-    init_boss(&boss, 600);
+    init_boss(&boss, 2000);
 
     bool running = true;
     bool redraw = true;
@@ -88,11 +90,14 @@ EstadoJogo run_game()
         {
             if (!paused)
             {
-                update_player(&player);
+                update_player(&player, inimigos);
                 update_background(&bg, player.player_pos_mundo_x);
 
+                if (boss_ativo)
+                    update_boss(&boss, player.player_pos_mundo_x);
+
                 for (int i = 0; i < MAX_INIMIGOS; i++)
-                    update_enemy(&inimigos[i], player.player_pos_mundo_x);
+                    update_enemy(&inimigos[i], player.player_pos_mundo_x, &player);
 
                 bool todos_mortos = true;
                 for (int i = 0; i < MAX_INIMIGOS; i++) 
@@ -101,8 +106,13 @@ EstadoJogo run_game()
                         todos_mortos = false;
                 }
 
-                if (todos_mortos)
-                    return ESTADO_VITORIA;
+                if (!boss_ativo && todos_mortos) 
+                {
+                    boss_ativo = true;
+                    boss.vida = 200;
+                    printf("Boss ativado!\n");
+                }
+
 
                 if (player.vida <= 0)
                     return ESTADO_GAMEOVER;
@@ -117,7 +127,9 @@ EstadoJogo run_game()
 
             draw_background(&bg);
             draw_player(&player);
-            draw_boss(&boss);
+
+            if (boss_ativo && boss.vida > 0)
+                draw_boss(&boss);
 
             for (int i = 0; i < MAX_INIMIGOS; i++)
                 draw_enemy(&inimigos[i], &bg); 
@@ -242,7 +254,7 @@ EstadoJogo run_menu()
             };
             
             int start_y = TELA_ALTURA / 3;
-            for (int i = 0; i < 5; i++) 
+            for (int i = 0; i < 4; i++) 
             {
                 al_draw_text(font_instrucoes, al_map_rgb(255, 255, 255), 
                             TELA_LARGURA / 2, start_y + i * 40, 
