@@ -13,19 +13,28 @@ static Boss boss;
 void destroy_all(ALLEGRO_FONT *font_pause, ALLEGRO_DISPLAY *display)
 {
     printf("\n\nComeçando destruição do jogo...\n\n");
+
     destroy_player(&player);
+
     printf("Destruindo inimigos...\n");
     for (int i = 0; i < MAX_INIMIGOS; i++) 
         destroy_enemy(&inimigos[i]);
+
     printf("Inimigos destruídos com sucesso...\n\n");
+
     destroy_background(&bg);
     destroy_boss(&boss);
 
-    al_destroy_timer(timer);
-    al_destroy_event_queue(queue);
-    al_destroy_font(font);
-    al_destroy_font(font_pause);
-    al_destroy_display(display);
+    if (timer)
+        al_destroy_timer(timer);
+    if (queue)
+        al_destroy_event_queue(queue);
+    if (font)
+        al_destroy_font(font);
+    if (font_pause)
+        al_destroy_font(font_pause);
+    if (display)
+        al_destroy_display(display);
 
     printf("Jogo destruído com sucesso!\n");
 }
@@ -42,11 +51,29 @@ EstadoJogo run_game()
     bool todos_mortos = true;
 
     al_set_new_display_flags(ALLEGRO_WINDOWED);
+
+    // Verificações após criação
     ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
+    if (!display) {
+        fprintf(stderr, "Erro ao criar display.\n");
+        return ESTADO_SAIR;
+    }
     al_set_window_title(display, "GAME");
 
     font = al_load_ttf_font("./assets/fonts/ARCAC___.TTF", 30, 0);
+    if (!font) {
+        fprintf(stderr, "Erro ao carregar fonte principal.\n");
+        al_destroy_display(display);
+        return ESTADO_SAIR;
+    }
+
     ALLEGRO_FONT *font_pause = al_load_ttf_font("./assets/fonts/ARCAC___.TTF", 72, 0);
+    if (!font_pause) {
+        fprintf(stderr, "Erro ao carregar fonte de pausa.\n");
+        al_destroy_font(font);
+        al_destroy_display(display);
+        return ESTADO_SAIR;
+    }    
 
     queue = al_create_event_queue();
     timer = al_create_timer(1.0 / 60.0);
