@@ -27,7 +27,7 @@ int main()
                 estado_atual = run_gameover();
                 break;
             case ESTADO_VITORIA:
-                estado_atual = run_menu();
+                estado_atual = run_vitoria();
                 break;
             default:
                 estado_atual = ESTADO_SAIR;

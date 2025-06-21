@@ -162,3 +162,41 @@ void destroy_enemy(Enemy *e)
 
 
 //===============================================================================
+
+
+bool posicao_valida(int nova_pos, int posicoes[], int count) 
+{
+    for (int i = 0; i < count; i++)
+        if (abs(nova_pos - posicoes[i]) < DIST_MINIMA)
+            return false;
+
+    return true;
+}
+
+void inicializa_inimigos(Enemy inimigos[]) 
+{
+    printf("Inicializando inimigos...\n");
+
+    int posicoes[MAX_INIMIGOS];  // Para armazenar posições já usadas
+    int count = 0;
+
+    for (int i = 0; i < MAX_INIMIGOS; i++) 
+    {
+        int tentativa = 0;
+        int pos_x;
+        do
+         {
+            pos_x = 500 + rand() % 3200;
+            tentativa++;
+        } while (!posicao_valida(pos_x, posicoes, count) && tentativa < 100);
+
+        if (tentativa == 100)
+            printf("Aviso: não foi possível encontrar posição válida após 100 tentativas.\n");
+
+        posicoes[count++] = pos_x;
+        init_enemy(&inimigos[i], pos_x);
+        printf("Posição do inimigo (%d): %d\n", i, pos_x);
+    }
+
+    printf("Inimigos inicializados com sucesso...\n\n");
+}

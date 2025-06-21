@@ -78,6 +78,29 @@ Hitbox get_player_hitbox(Player *p)
     return hb;
 }
 
+// Função para criar uma hitbox do jogador
+Hitbox get_playerBoss_hitbox(Player *p) 
+{
+    Hitbox hb;
+    hb.x = p->x + 10;  // Ajuste para a área de colisão do jogador
+    hb.y = p->y + 40;
+    
+    // Get the first sprite frame (assuming it's an ALLEGRO_BITMAP*)
+    ALLEGRO_BITMAP* sprite = p->sprite_shoot[0];
+    
+    // Check if sprite exists before getting dimensions
+    if (sprite) {
+        hb.w = al_get_bitmap_width(sprite) - 40;  // Typically you'd subtract to make hitbox smaller than sprite
+        hb.h = al_get_bitmap_height(sprite) - 40;
+    } else {
+        // Default values if sprite isn't loaded
+        hb.w = 20;
+        hb.h = 20;
+    }
+    
+    return hb;
+}
+
 // Função para criar uma hitbox do inimigo
 Hitbox get_enemy_hitbox(Enemy *e) 
 {
@@ -86,5 +109,15 @@ Hitbox get_enemy_hitbox(Enemy *e)
     hb.y = e->y + 10;
     hb.w = al_get_bitmap_width(e->sprite[0]) * 3.5 - 20;  // Considerando o scale 3.5
     hb.h = al_get_bitmap_height(e->sprite[0]) * 3.5 - 20;
+    return hb;
+}
+
+Hitbox get_boss_hitbox(Boss *b)
+{
+    Hitbox hb;
+    hb.x = b->pos_mundo_x + 10;
+    hb.y = b->y;
+    hb.w = al_get_bitmap_width(b->burn[0]) * 4 - 20;
+    hb.h = al_get_bitmap_height(b->burn[0]) * 4 - 20;
     return hb;
 }

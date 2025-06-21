@@ -24,10 +24,12 @@ void init_boss(Boss *b, float pos_x)
     b->y = 200;
     b->vel_x = -2;
     b->vel_y = -2;
-    b->vida = 200;
+    b->vida = 500;
 
     b->frame_atual = 0;
     b->timer_animacao = 0;
+
+    b->morto = false;
 
     // Carrega sprites idle
     for (int i = 0; i < NUM_FRAMES_IDLE; i++) 
@@ -73,6 +75,7 @@ void init_boss(Boss *b, float pos_x)
         b->projeteis[i].timer_animacao = 0;
     }
 
+
     printf("Boss inicializado com sucesso.\n\n");
 }
 
@@ -82,12 +85,20 @@ void init_boss(Boss *b, float pos_x)
 
 void boss_shoot_projectile(Boss *b) 
 {
+    if(b->morto) return;
+
+    int ajuste = 0;
+    if (boss_state == IDLE)
+        ajuste = 170;
+    else
+        ajuste = 300;
+
     for (int i = 0; i < MAX_BOSS_PROJECTILES; i++) 
     {
         if (!b->projeteis[i].ativo) 
         {
             b->projeteis[i].x = b->pos_mundo_x + 100;
-            b->projeteis[i].y = b->y + 300;
+            b->projeteis[i].y = b->y + ajuste;
             b->projeteis[i].vel_x = -20;
             b->projeteis[i].vel_y = 0;
             b->projeteis[i].ativo = true;
@@ -100,7 +111,7 @@ void boss_shoot_projectile(Boss *b)
 
 
 // Função de movimentação e animação do Boss
-void update_boss(Boss *b, float player_mundo) 
+void update_boss(Boss *b, float player_mundo, Player *p) 
 {
     // Atualiza posição mundial
     b->pos_mundo_x = b->x - player_mundo;
@@ -109,7 +120,10 @@ void update_boss(Boss *b, float player_mundo)
     if (b->vida > 100)
         boss_state = BURN;
     else
+    {
         boss_state = IDLE;
+        b->y = 330;
+    }
 
     // Atualiza animação
     b->timer_animacao++;
@@ -144,6 +158,25 @@ void update_boss(Boss *b, float player_mundo)
                 b->projeteis[i].timer_animacao = 0;
             }
 
+            Hitbox hitbox_jogador = get_playerBoss_hitbox(p);
+
+            for (int i = 0; i < MAX_BOSS_PROJECTILES; i++) 
+            {
+                if (b->projeteis[i].ativo) 
+                {
+                    Hitbox hitbox_proj = get_projectile_hitbox(&(b->projeteis[i]), 1); // 1 = projétil inimigo (boss)
+
+                    if (colisao_retangulos(hitbox_jogador.x, hitbox_jogador.y, hitbox_jogador.w, hitbox_jogador.h,
+                                        hitbox_proj.x, hitbox_proj.y, hitbox_proj.w, hitbox_proj.h)) 
+                    {
+                        // Colisão detectada
+                        p->vida = p->vida - 20;
+                        b->projeteis[i].ativo = false;  // Desativa o projétil
+                        printf("Jogador Atingido. Vida: %d\n", p->vida);
+                    }
+                }
+            }
+
             // Desativa se sair da tela
             if (b->projeteis[i].x < -50 || b->projeteis[i].x > 1300)
                 b->projeteis[i].ativo = false;
@@ -159,6 +192,8 @@ void update_boss(Boss *b, float player_mundo)
 void draw_boss(Boss *b) 
 {
     if (!b) return;
+
+    if(b->morto) return;
 
     // Determina qual sprite usar (IDLE ou BURN)
     ALLEGRO_BITMAP *sprite_atual = NULL;
@@ -220,14 +255,19 @@ void draw_boss(Boss *b)
 // Libera memória dos bitmaps do Boss
 void destroy_boss(Boss *b) 
 {
-    for (int i = 0; i < NUM_FRAMES; i++) 
+    printf("Destruindo Boss...\n");
+
+    for (int i = 0; i < 4; i++) 
     {
         if (b->idle[i]) 
         {
             al_destroy_bitmap(b->idle[i]);
             b->idle[i] = NULL;
         }
+    }
 
+    for (int i = 0; i < 8; i++) 
+    {
         if (b->burn[i]) 
         {
             al_destroy_bitmap(b->burn[i]);
@@ -235,7 +275,16 @@ void destroy_boss(Boss *b)
         }
     }
 
-    printf("The Boss foi destruído com sucesso.\n");
+    for (int i = 0; i < 3; i++) 
+    {
+        if (b->ataque[i]) 
+        {
+            al_destroy_bitmap(b->ataque[i]);
+            b->ataque[i] = NULL;
+        }
+    }
+
+    printf("Boss foi destruído com sucesso.\n\n");
 }
 
 

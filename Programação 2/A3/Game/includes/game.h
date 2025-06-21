@@ -28,5 +28,8 @@ EstadoJogo run_gameover();
 
 //======================================================
 
+//  Função que roda tela de VITÓRIA
+EstadoJogo run_vitoria();
+
 
 #endif

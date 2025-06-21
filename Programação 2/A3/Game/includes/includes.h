@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <math.h>
 
 //  HEADERS
 #include "collision.h"
@@ -30,7 +31,7 @@
 
 //player.c
 #define GRAVIDADE 0.7
-#define PULO -11
+#define PULO -13
 #define VELOCIDADE 2
 #define VIDA_PLAYER 100
 #define POSICAO_INICIAL_Y 380
@@ -60,3 +61,5 @@
 
 #define MAX_ENEMY_PROJECTILES 5
 #define MAX_BOSS_PROJECTILES 10
+
+#define DIST_MINIMA 300  // Distância mínima entre inimigos

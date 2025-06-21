@@ -91,5 +91,7 @@ void draw_background(Background *bg)
 
 void destroy_background(Background *bg) 
 {
+    printf("Destruindo background...\n");
     if (bg->imagem) al_destroy_bitmap(bg->imagem);
+    printf("Background destruído com sucesso!\n\n");
 }

@@ -18,6 +18,9 @@ typedef struct Player Player;
 // Declara que Enemy é uma struct (sem precisar saber os campos ainda)
 typedef struct Projectile Projectile;
 
+// Declara que Enemy é uma struct (sem precisar saber os campos ainda)
+typedef struct Boss Boss;
+
 
 bool colisao_retangulos(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2);
 
@@ -25,8 +28,11 @@ bool colisao_retangulos(float x1, float y1, float w1, float h1, float x2, float 
 Hitbox get_projectile_hitbox(void *p, int is_enemy_projectile);
 
 Hitbox get_player_hitbox(Player *p);
+Hitbox get_playerBoss_hitbox(Player *p) ;
 
 Hitbox get_enemy_hitbox(Enemy *e);
+
+Hitbox get_boss_hitbox(Boss *b);
 
 
 #endif

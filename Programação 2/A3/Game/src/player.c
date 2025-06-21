@@ -118,7 +118,7 @@ void shoot_projectile(Player *p, int direcao)
 
 
 // Função de atualização do estado do jogador a cada frame
-void update_player(Player *p, Enemy enemies[]) 
+void update_player(Player *p, Enemy enemies[], Boss *boss) 
 {
     static bool can_jump = true;
     const int FRAME_DELAY = 5;
@@ -259,17 +259,41 @@ void update_player(Player *p, Enemy enemies[])
             update_projectile(&p->projeteis[i]);
             
             Hitbox proj_hb = get_projectile_hitbox(&p->projeteis[i], 1);
-            
-            // Verifica colisão com todos os inimigos ativos
-            for (int j = 0; j < MAX_INIMIGOS; j++) 
+
+            bool colidiu = false;
+
+            if (p->projeteis[i].ativo && boss->vida > 0) 
             {
-                if (enemies[j].ativo) 
+                Hitbox boss_hb = get_boss_hitbox(boss);
+                if (colisao_retangulos(proj_hb.x, proj_hb.y, proj_hb.w, proj_hb.h,
+                                        boss_hb.x, boss_hb.y, boss_hb.w, boss_hb.h)) 
                 {
-                    Hitbox enemy_hb = get_enemy_hitbox(&enemies[j]);
-                    
-                    if (colisao_retangulos(
-                        proj_hb.x, proj_hb.y, proj_hb.w, proj_hb.h,
-                        enemy_hb.x, enemy_hb.y, enemy_hb.w, enemy_hb.h)) 
+                    boss->vida -= 10;
+                    p->projeteis[i].ativo = false;
+                    printf("Boss atingido! Vida restante: %d\n", boss->vida);
+                    colidiu = true;
+
+                    if (boss->vida <= 0)
+                    {
+                        boss->morto = true;
+                        printf("Boss derrotado!\n\n");
+                    }
+                }
+            }
+
+            // Verifica colisão com inimigos, somente se ainda não colidiu com o boss
+            if (!colidiu) 
+            {
+                // Verifica colisão com todos os inimigos ativos
+                for (int j = 0; j < MAX_INIMIGOS; j++) 
+                {
+                    if (enemies[j].ativo) 
+                    {
+                        Hitbox enemy_hb = get_enemy_hitbox(&enemies[j]);
+                        
+                        if (colisao_retangulos(
+                            proj_hb.x, proj_hb.y, proj_hb.w, proj_hb.h,
+                            enemy_hb.x, enemy_hb.y, enemy_hb.w, enemy_hb.h)) 
                         {
                             enemies[j].vida = enemies[j].vida  - 10;  // Reduz vida do inimigo
                             p->projeteis[i].ativo = false;  // Desativa projétil
@@ -282,14 +306,13 @@ void update_player(Player *p, Enemy enemies[])
                                 printf("Inimigo derrotado!\n\n");
                             }
                             break;  // Sai do loop de inimigos após acertar um
+                        }
                     }
                 }
-            }
-            
-            // Desativa projétil se sair da tela
-            if (p->projeteis[i].x < 0 || p->projeteis[i].x > TELA_LARGURA) {
+        }
+        // Desativa projétil se sair da tela
+        if (p->projeteis[i].x < 0 || p->projeteis[i].x > TELA_LARGURA)
                 p->projeteis[i].ativo = false;
-            }
         }
     }
 }
@@ -390,14 +413,16 @@ void destroy_player(Player *p)
         if (p->sprite_shoot[i])
             al_destroy_bitmap(p->sprite_shoot[i]);
 
-    for (int i = 0; i < 10; i++) 
+    for (int i = 0; i < 2; i++) 
         if (p->sprite_crouch_and_shot[i])
             al_destroy_bitmap(p->sprite_crouch_and_shot[i]);
 
+    printf("Jogador destruído com sucesso!\n\n");
+
+    printf("Destruindo projéteis...\n");
     for (int i = 0; i < MAX_PROJECTILES; i++)
         destroy_projectile(&p->projeteis[i]);
-
-    printf("Jogador destruído com sucesso!\n\n");
+    printf("Projéteis destruídos!\n\n");
 }
 
 

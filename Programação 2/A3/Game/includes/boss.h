@@ -14,7 +14,7 @@ typedef struct {
 
 
 //  Estrutura do Boss
-typedef struct 
+typedef struct Boss
 {
     float x, y;         // Posição na tela
     float vel_x;
@@ -31,6 +31,8 @@ typedef struct
     
     int frame_atual;      // Índice do sprite atual
     int timer_animacao;   // Temporizador para controlar a troca de sprite
+
+    bool morto;
 } Boss;
 
 
@@ -39,6 +41,7 @@ typedef enum
 {
     IDLE,
     BURN,
+    DIE
 } BossState;
 
 
@@ -48,7 +51,7 @@ void init_boss(Boss *b, float pos_x);
 //============================================================
 
 //  Função de movimentação de inimigo
-void update_boss(Boss *b, float player_mundo);
+void update_boss(Boss *b, float player_mundo, Player *p);
 
 //============================================================
 

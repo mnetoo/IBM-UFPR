@@ -54,6 +54,9 @@ typedef struct Player
 // Declara que Enemy é uma struct (sem precisar saber os campos ainda)
 typedef struct Enemy Enemy;
 
+// Declara que Boss é uma struct (sem precisar saber os campos ainda)
+typedef struct Boss Boss;
+
 
 //  Função para iniciar o player
 void init_player(Player *p);
@@ -61,7 +64,7 @@ void init_player(Player *p);
 //========================================================
 
 //  Função para movimentar o player
-void update_player(Player *p, Enemy *enemies);
+void update_player(Player *p, Enemy *enemies, Boss *boss);
 
 //========================================================
 

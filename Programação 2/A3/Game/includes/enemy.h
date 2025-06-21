@@ -51,4 +51,9 @@ void destroy_enemy(Enemy *e);
 
 //============================================================
 
+
+bool posicao_valida(int nova_pos, int posicoes[], int count);
+
+void inicializa_inimigos(Enemy inimigos[]);
+
 #endif
