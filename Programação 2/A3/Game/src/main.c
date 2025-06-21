@@ -28,12 +28,6 @@ int main()
         return ESTADO_SAIR;
     }
 
-    if (!al_install_mouse()) {
-        fprintf(stderr, "Erro ao inicializar mouse.\n");
-        return ESTADO_SAIR;
-    }
-
-
     EstadoJogo estado_atual = ESTADO_MENU;
 
     while (estado_atual != ESTADO_SAIR) 
