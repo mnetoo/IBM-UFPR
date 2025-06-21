@@ -39,8 +39,8 @@ Hitbox get_projectile_hitbox(void *p, int is_enemy_projectile)
     if (is_enemy_projectile) 
     {
         EnemyProjectile *ep = (EnemyProjectile *)p;
-        hb.x = ep->x - 8;
-        hb.y = ep->y - 8;
+        hb.x = ep->x - 10;
+        hb.y = ep->y - 10;
     } 
     else 
     {
@@ -54,12 +54,13 @@ Hitbox get_projectile_hitbox(void *p, int is_enemy_projectile)
 }
 
 
+
 // Função para criar uma hitbox do jogador
 Hitbox get_player_hitbox(Player *p) 
 {
     Hitbox hb;
-    hb.x = p->player_pos_mundo_x + 20;  // Ajuste para a área de colisão do jogador
-    hb.y = p->y + 20;
+    hb.x = p->x + 10;  // Ajuste para a área de colisão do jogador
+    hb.y = p->y + 90;
     
     // Get the first sprite frame (assuming it's an ALLEGRO_BITMAP*)
     ALLEGRO_BITMAP* sprite = p->sprite_shoot[0];

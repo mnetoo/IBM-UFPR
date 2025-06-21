@@ -84,13 +84,13 @@ void update_enemy(Enemy *e, float player_mundo, Player *player)
 
             // Verifica colisão com jogador
             Hitbox proj_hb = get_projectile_hitbox(&e->projeteis[i], 1);
-            proj_hb.x -= player_mundo;  // Ajuste importante
+            
             if (colisao_retangulos(
                 proj_hb.x, proj_hb.y, proj_hb.w, proj_hb.h,
                 player_hb.x, player_hb.y, player_hb.w, player_hb.h)) 
-                {
-                
-                player->vida--;  // Reduz vida do jogador
+            {
+            
+                player->vida = player->vida - 5;  // Reduz vida do jogador
                 e->projeteis[i].ativo = false;  // Desativa projétil
                 printf("Jogador atingido! Vida: %d\n", player->vida);
             }

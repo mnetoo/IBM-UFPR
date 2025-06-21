@@ -371,6 +371,8 @@ void draw_player(Player *p)
 //  Função para destruir o player
 void destroy_player(Player *p) 
 {
+    printf("Destruindo jogador...\n");
+
     // Destrói todos os bitmaps carregados
     al_destroy_bitmap(p->sprite_stand_and_stop);
     al_destroy_bitmap(p->sprite_jump_and_shot);
@@ -394,7 +396,8 @@ void destroy_player(Player *p)
 
     for (int i = 0; i < MAX_PROJECTILES; i++)
         destroy_projectile(&p->projeteis[i]);
-    
+
+    printf("Jogador destruído com sucesso!\n\n");
 }
 
 

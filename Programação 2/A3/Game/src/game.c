@@ -115,7 +115,14 @@ EstadoJogo run_game()
 
 
                 if (player.vida <= 0)
+                {
+                    al_destroy_timer(timer);
+                    al_destroy_event_queue(queue);
+                    al_destroy_font(font);
+                    al_destroy_font(font_pause);
+                    al_destroy_display(display);
                     return ESTADO_GAMEOVER;
+                }
             }
 
             redraw = true; // Sempre redesenha, mesmo pausado
@@ -344,8 +351,7 @@ EstadoJogo run_gameover()
     al_init_primitives_addon();
     al_init_image_addon();
 
-    // Removendo a flag de tela cheia e criando uma janela fixa
-    al_set_new_display_flags(ALLEGRO_WINDOWED); // Modo janela (não fullscreen)
+    al_set_new_display_flags(ALLEGRO_WINDOWED);
     ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
     al_set_window_title(display, "Game Over");
 
@@ -364,18 +370,42 @@ EstadoJogo run_gameover()
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(display));
 
-    const char* opcoes[] = { "TENTAR NOVAMENTE", "VOLTAR AO MENU" };
+    const char* opcoes[] = { "TENTAR   NOVAMENTE", "VOLTAR   AO   MENU" };
     int opcao_selecionada = 0;
     const int total_opcoes = 2;
+
+    // Configurações do fundo (mesmo estilo do menu)
+    float img_ratio = (float)al_get_bitmap_width(fundo) / (float)al_get_bitmap_height(fundo);
+    float screen_ratio = (float)TELA_LARGURA / (float)TELA_ALTURA;
+    float zoom_factor = 1.1f;
 
     bool running = true;
     while (running) 
     {
-        // Escurece o fundo com uma camada semi-transparente
-        al_draw_filled_rectangle(0, 0, TELA_LARGURA, TELA_ALTURA, al_map_rgba(0, 0, 0, 200));
+        // Recorte e escala do fundo igual ao menu
+        int src_width = al_get_bitmap_width(fundo);
+        int src_height = al_get_bitmap_height(fundo);
 
-        al_draw_scaled_bitmap(fundo, 0, 0, al_get_bitmap_width(fundo), al_get_bitmap_height(fundo),
+        int crop_w, crop_h;
+        if (img_ratio > screen_ratio) {
+            crop_h = src_height;
+            crop_w = src_height * screen_ratio;
+        } else {
+            crop_w = src_width;
+            crop_h = src_width / screen_ratio;
+        }
+
+        crop_w = crop_w / zoom_factor;
+        crop_h = crop_h / zoom_factor;
+
+        int crop_x = (src_width - crop_w) / 2;
+        int crop_y = (src_height - crop_h) / 2;
+
+        al_draw_scaled_bitmap(fundo, crop_x, crop_y, crop_w, crop_h,
                               0, 0, TELA_LARGURA, TELA_ALTURA, 0);
+
+        // Camada escura semi-transparente
+        al_draw_filled_rectangle(0, 0, TELA_LARGURA, TELA_ALTURA, al_map_rgba(0, 0, 0, 150));
 
         // Título centralizado
         al_draw_text(font_titulo, al_map_rgb(128, 0, 170), TELA_LARGURA / 2, TELA_ALTURA / 6, ALLEGRO_ALIGN_CENTER, "GAME OVER");
@@ -406,7 +436,7 @@ EstadoJogo run_gameover()
                     running = false;
                     break;
                 case ALLEGRO_KEY_ESCAPE:
-                    opcao_selecionada = 1; // Voltar ao menu
+                    opcao_selecionada = 1; // voltar ao menu
                     running = false;
                     break;
             }
@@ -418,6 +448,7 @@ EstadoJogo run_gameover()
         }
     }
 
+    // Limpeza
     al_destroy_bitmap(fundo);
     al_destroy_event_queue(queue);
     al_destroy_font(font_titulo);
