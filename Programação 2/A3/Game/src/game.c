@@ -1,15 +1,22 @@
 #include "includes.h"
 
-static ALLEGRO_TIMER *timer;
-static ALLEGRO_EVENT_QUEUE *queue;
-static ALLEGRO_FONT *font;
+// Variáveis globais estáticas
+static ALLEGRO_TIMER *timer;        // Timer para controle de FPS
+static ALLEGRO_EVENT_QUEUE *queue;  // Fila de eventos
+static ALLEGRO_FONT *font;          // Fonte principal do jogo
 
-static Player player;
-static Enemy inimigos[MAX_INIMIGOS];
-static Background bg;
-static Boss boss;
+// Objetos do jogo
+static Player player;               // Instância do jogador
+static Enemy inimigos[MAX_INIMIGOS];// Array de inimigos
+static Background bg;               // Plano de fundo
+static Boss boss;                   // Chefão do jogo
 
-
+/**
+ * @brief Libera todos os recursos alocados do jogo
+ * 
+ * @param font_pause Fonte usada no menu de pausa
+ * @param display Ponteiro para a janela do jogo
+ */
 void destroy_all(ALLEGRO_FONT *font_pause, ALLEGRO_DISPLAY *display)
 {
     printf("\n\nComeçando destruição do jogo...\n\n");
@@ -43,52 +50,61 @@ void destroy_all(ALLEGRO_FONT *font_pause, ALLEGRO_DISPLAY *display)
 //===================================================================================================================================================================
 
 
-//  Função que roda o jogo
+/**
+ * @brief Função principal que executa o loop do jogo
+ * 
+ * @return EstadoJogo Próximo estado a ser executado (MENU, GAMEOVER, etc)
+ */
 EstadoJogo run_game() 
 {
     srand(time(NULL)); // Inicializa o gerador de números aleatórios
-    bool primeira_vez = true;
-    bool todos_mortos = true;
+    bool primeira_vez = true;      // Flag para controle de mensagem
+    bool todos_mortos = true;      // Flag para verificar se todos inimigos morreram
 
+    // Configuração inicial da janela
     al_set_new_display_flags(ALLEGRO_WINDOWED);
-
-    // Verificações após criação
     ALLEGRO_DISPLAY *display = al_create_display(TELA_LARGURA, TELA_ALTURA);
-    if (!display) {
+    if (!display) 
+    {
         fprintf(stderr, "Erro ao criar display.\n");
         return ESTADO_SAIR;
     }
     al_set_window_title(display, "GAME");
 
+    // Carrega fontes
     font = al_load_ttf_font("./assets/fonts/ARCAC___.TTF", 30, 0);
-    if (!font) {
+    if (!font) 
+    {
         fprintf(stderr, "Erro ao carregar fonte principal.\n");
         al_destroy_display(display);
         return ESTADO_SAIR;
     }
 
     ALLEGRO_FONT *font_pause = al_load_ttf_font("./assets/fonts/ARCAC___.TTF", 72, 0);
-    if (!font_pause) {
+    if (!font_pause) 
+    {
         fprintf(stderr, "Erro ao carregar fonte de pausa.\n");
         al_destroy_font(font);
         al_destroy_display(display);
         return ESTADO_SAIR;
     }    
 
+    // Configuração de eventos e timer
     queue = al_create_event_queue();
     timer = al_create_timer(1.0 / 60.0);
 
+    // Registra fontes de eventos
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(display));
     al_register_event_source(queue, al_get_timer_event_source(timer));
 
+    // Inicializa objetos do jogo
     init_player(&player);
     init_background(&bg, "./assets/bg/cyberpunk-corridor-PREVIEW.png");
-
     inicializa_inimigos(inimigos);
+    init_boss(&boss, 4500);
 
-    init_boss(&boss, 4000);
-
+    // Variáveis de controle do loop principal
     bool running = true;
     bool redraw = true;
     bool paused = false;
@@ -96,10 +112,12 @@ EstadoJogo run_game()
 
     al_start_timer(timer);
 
+    // Loop principal do jogo
     while (running) 
     {
         al_wait_for_event(queue, &ev);
 
+        // Evento de fechar janela
         if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) 
         {
             running = false;
@@ -107,8 +125,10 @@ EstadoJogo run_game()
             return ESTADO_SAIR;
         }
 
+        // Eventos de teclado
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) 
         {
+            // Pausa/despausa com P
             if (ev.keyboard.keycode == ALLEGRO_KEY_P) 
             {
                 paused = !paused;
@@ -116,11 +136,13 @@ EstadoJogo run_game()
                     printf("Jogo Pausado!\n\n");
             }
             
+            // Ignora outros inputs se pausado
             if (paused && ev.keyboard.keycode != ALLEGRO_KEY_P) 
             {
                 continue;
             }
 
+            // Volta ao menu com ESC
             if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) 
             {
                 running = false;
@@ -129,17 +151,21 @@ EstadoJogo run_game()
             }
         }
 
+        // Atualização lógica do jogo (60 FPS)
         if (ev.type == ALLEGRO_EVENT_TIMER)
         {
             if (!paused)
             {
+                // Atualiza todos os elementos do jogo
                 update_player(&player, inimigos, &boss);
                 update_background(&bg, player.player_pos_mundo_x);
                 update_boss(&boss, player.player_pos_mundo_x, &player);
 
+                // Atualiza inimigos
                 for (int i = 0; i < MAX_INIMIGOS; i++)
                     update_enemy(&inimigos[i], player.player_pos_mundo_x, &player);
 
+                // Verifica se todos inimigos morreram
                 todos_mortos = true;
                 for (int i = 0; i < MAX_INIMIGOS; i++) 
                 {
@@ -147,6 +173,7 @@ EstadoJogo run_game()
                         todos_mortos = false;
                 }
 
+                // Mensagem sobre chefão
                 if(todos_mortos)
                 {
                     if(primeira_vez)
@@ -154,6 +181,7 @@ EstadoJogo run_game()
                     primeira_vez = false;
                 }
 
+                // Verifica condições de fim de jogo
                 if (player.vida <= 0)
                 {
                     destroy_all(font_pause, display);
@@ -167,13 +195,15 @@ EstadoJogo run_game()
                 }                
             }
 
-            redraw = true; // Sempre redesenha, mesmo pausado
+            redraw = true; // Marca para redesenhar
         }
 
+        // Renderização
         if (redraw && al_is_event_queue_empty(queue)) 
         {
             redraw = false;
 
+            // Desenha todos os elementos
             draw_background(&bg);
             draw_player(&player);
 
@@ -181,35 +211,37 @@ EstadoJogo run_game()
                 draw_boss(&boss);
 
             for (int i = 0; i < MAX_INIMIGOS; i++)
-                draw_enemy(&inimigos[i], &bg); 
+                draw_enemy(&inimigos[i]); 
 
+            // HUD do jogo
             al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 20, 0, "Player:   %d", player.vida);
             if(todos_mortos)
-                al_draw_textf(font, al_map_rgb(255, 255, 255), 1050, 20, 0, "Boss:   %d", boss.vida);
+                al_draw_textf(font, al_map_rgb(255, 255, 255), TELA_LARGURA - 150, 20, 0, "Boss:   %d", boss.vida);
             
+            // Menu de pausa
             if (paused) 
             {
-                // Escurece o fundo com uma camada semi-transparente
+                // Overlay escuro
                 al_draw_filled_rectangle(0, 0, TELA_LARGURA, TELA_ALTURA, al_map_rgba(0, 0, 0, 200));
             
-            
+                // Texto de pausa
                 al_draw_text(font_pause, al_map_rgb(255, 255, 255), 
                              TELA_LARGURA/2, TELA_ALTURA/2 - 90, 
                              ALLEGRO_ALIGN_CENTER, "PAUSE");
             
-                // Texto de instrução
+                // Instruções
                 al_draw_text(font, al_map_rgb(128, 0, 170), 
                              TELA_LARGURA/2, TELA_ALTURA/2 + 40, 
                              ALLEGRO_ALIGN_CENTER, "Pressione   P   para   continuar");
             }
 
+            // Atualiza display
             al_flip_display();
             al_clear_to_color(al_map_rgb(0, 0, 0));
         }
     }
 
     destroy_all(font_pause, display);
-
     return ESTADO_MENU;
 }
 
@@ -218,7 +250,11 @@ EstadoJogo run_game()
 //==============================================================================================================================================================
 
 
-// Função que roda a tela de MENU
+/**
+ * @brief Executa a tela de menu principal
+ * 
+ * @return EstadoJogo Próximo estado a ser executado (JOGO ou SAIR)
+ */
 EstadoJogo run_menu() 
 {
     al_init_primitives_addon();
@@ -288,11 +324,11 @@ EstadoJogo run_menu()
             
             // Lista de controles
             const char* controles[] = {
-                "PARA FRENTE  -   Tecla   D",
-                "PARA TRAS  -   Tecla   A",
+                "PARA   FRENTE  -   Tecla   D",
+                "PARA   TRAS  -   Tecla   A",
                 "AGACHAR  -     Shift   Esquerdo   ou   Tecla   S",
                 "ATIRAR  -     Setas    Direcionais ",
-                "PULAR  -     Tecla   W",
+                "PULAR  -     Tecla   W   ou   Space   Bar",
                 "PAUSAR  -     Tecla   P",
             };
             
@@ -381,7 +417,11 @@ EstadoJogo run_menu()
 //==============================================================================================================================================================
 
 
-//  Função que roda tela de GAME OVER
+/**
+ * @brief Executa a tela de game over
+ * 
+ * @return EstadoJogo Próximo estado (JOGAR NOVAMENTE ou MENU)
+ */
 EstadoJogo run_gameover() 
 {
     al_init_primitives_addon();
@@ -498,7 +538,11 @@ EstadoJogo run_gameover()
 //==============================================================================================================================================================
 
 
-//  Função que roda tela de VITÓRIA
+/**
+ * @brief Executa a tela de vitória
+ * 
+ * @return EstadoJogo Próximo estado (JOGAR NOVAMENTE ou MENU)
+ */
 EstadoJogo run_vitoria() 
 {
     al_init_primitives_addon();

@@ -1,21 +1,17 @@
 #include "includes.h"
 
-// Número de quadros por animação
-const int NUM_FRAMES = 7;
-#define NUM_FRAMES_PROJ 3
-#define NUM_FRAMES_IDLE 3  // Corrigido para 7 frames
-#define NUM_FRAMES_BURN 7
-#define BOSS_SHOOT_COOLDOWN 120  // Tempo entre tiros
-
-
-// Estado atual do Boss (poderia também estar no struct Boss)
+// Estado atual do Boss
 static BossState boss_state = BURN;
-
 
 //==============================================================================
 
 
-// Função que inicializa o Boss
+/**
+ * @brief - Função que inicializa o Boss
+ * 
+ * @param b - Ponteiro para a estrutura Boss
+ * @param pos_x - posição do boss
+ */
 void init_boss(Boss *b, float pos_x) 
 {
     printf("Inicializando Boss...\n");
@@ -24,7 +20,7 @@ void init_boss(Boss *b, float pos_x)
     b->y = 200;
     b->vel_x = -2;
     b->vel_y = -2;
-    b->vida = 500;
+    b->vida = 400;
 
     b->frame_atual = 0;
     b->timer_animacao = 0;
@@ -75,7 +71,6 @@ void init_boss(Boss *b, float pos_x)
         b->projeteis[i].timer_animacao = 0;
     }
 
-
     printf("Boss inicializado com sucesso.\n\n");
 }
 
@@ -83,6 +78,11 @@ void init_boss(Boss *b, float pos_x)
 //==============================================================================
 
 
+/**
+ * @brief - Função que atira projétil do Boss
+ * 
+ * @param b - Ponteiro para a estrutura Boss
+ */
 void boss_shoot_projectile(Boss *b) 
 {
     if(b->morto) return;
@@ -99,7 +99,7 @@ void boss_shoot_projectile(Boss *b)
         {
             b->projeteis[i].x = b->pos_mundo_x + 100;
             b->projeteis[i].y = b->y + ajuste;
-            b->projeteis[i].vel_x = -20;
+            b->projeteis[i].vel_x = -30;
             b->projeteis[i].vel_y = 0;
             b->projeteis[i].ativo = true;
             b->projeteis[i].frame_atual = 0;
@@ -110,7 +110,16 @@ void boss_shoot_projectile(Boss *b)
 }  
 
 
-// Função de movimentação e animação do Boss
+//==============================================================================
+
+
+/**
+ * @brief - Função de animação do Boss
+ * 
+ * @param b - Ponteiro para a estrutura Boss
+ * @param player_mundo - deslocamento do player no mundo
+ * @param p - Ponteiro para a estrutura Player
+ */
 void update_boss(Boss *b, float player_mundo, Player *p) 
 {
     // Atualiza posição mundial
@@ -188,7 +197,11 @@ void update_boss(Boss *b, float player_mundo, Player *p)
 //==============================================================================
 
 
-//  Desenha o Boss e projéteis
+/**
+ * @brief - Desenha o Boss e projéteis
+ * 
+ * @param b - Ponteiro para a estrutura Boss
+ */
 void draw_boss(Boss *b) 
 {
     if (!b) return;
@@ -252,7 +265,11 @@ void draw_boss(Boss *b)
 //==============================================================================
 
 
-// Libera memória dos bitmaps do Boss
+/**
+ * @brief - Função que destróis Boss
+ * 
+ * @param b - Ponteiro para a estrutura Boss
+ */
 void destroy_boss(Boss *b) 
 {
     printf("Destruindo Boss...\n");

@@ -3,7 +3,8 @@
 #include "includes.h"
 
 
-typedef struct {
+typedef struct 
+{
     float x, y;
     float vel_x, vel_y;
     bool ativo;
@@ -45,22 +46,41 @@ typedef enum
 } BossState;
 
 
-//  Função que inicializa um inimigo
+/**
+ * @brief - Função que inicializa o Boss
+ * 
+ * @param b - Ponteiro para a estrutura Boss
+ * @param pos_x - posição do boss
+ */
 void init_boss(Boss *b, float pos_x);
 
 //============================================================
 
-//  Função de movimentação de inimigo
+/**
+ * @brief - Função de animação do Boss
+ * 
+ * @param b - Ponteiro para a estrutura Boss
+ * @param player_mundo - deslocamento do player no mundo
+ * @param p - Ponteiro para a estrutura Player
+ */
 void update_boss(Boss *b, float player_mundo, Player *p);
 
 //============================================================
 
-//  Carrega a sprite do inimigo
+/**
+ * @brief - Desenha o Boss e projéteis
+ * 
+ * @param b - Ponteiro para a estrutura Boss
+ */
 void draw_boss(Boss *b);
 
 //============================================================
 
-//  Função que destrói inimigo
+/**
+ * @brief - Função que destróis Boss
+ * 
+ * @param b - Ponteiro para a estrutura Boss
+ */
 void destroy_boss(Boss *b);
 
 //============================================================

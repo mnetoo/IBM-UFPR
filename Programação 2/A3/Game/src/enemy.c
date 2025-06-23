@@ -4,7 +4,12 @@
 //==============================================================================
 
 
-// Função que inicializa um inimigo
+/**
+ * @brief - Função que inicializa um inimigo
+ * 
+ * @param e - Ponteiro para a estrutura Enemy
+ * @param pox_x - valor para a posição do inimigo
+ */
 void init_enemy(Enemy *e, float pos_x) 
 {
     e->x = pos_x;
@@ -34,7 +39,11 @@ void init_enemy(Enemy *e, float pos_x)
 //==============================================================================
 
 
-//  Função para o tiro/projétil
+/**
+ * @brief - Função para o tiro/projétil
+ * 
+ * @param e - Ponteiro para a estrutura Enemy
+ */
 void enemy_shoot_projectile(Enemy *e) 
 {
     for (int i = 0; i < MAX_ENEMY_PROJECTILES; i++) 
@@ -52,7 +61,16 @@ void enemy_shoot_projectile(Enemy *e)
 }
 
 
-//  Função de movimentação de inimigo
+//==============================================================================
+
+
+/**
+ * @brief - Função de movimentação de inimigo
+ * 
+ * @param e - Ponteiro para a estrutura Enemy
+ * @param player_mundo - deslocamento do player
+ * @param player - Ponteiro para a estrutura Player
+ */
 void update_enemy(Enemy *e, float player_mundo, Player *player) 
 {
     if (!e->ativo) return;
@@ -61,14 +79,16 @@ void update_enemy(Enemy *e, float player_mundo, Player *player)
 
     // Atualiza animação
     e->timer_animacao++;
-    if (e->timer_animacao >= 10) {
+    if (e->timer_animacao >= 10) 
+    {
         e->timer_animacao = 0;
         e->frame_atual = (e->frame_atual + 1) % 6;
     }
 
     // Timer simples de tiro
     e->tempo_tiro++;
-    if (e->tempo_tiro >= 240) {
+    if (e->tempo_tiro >= 240) 
+    {
         enemy_shoot_projectile(e);
         e->tempo_tiro = 0;
     }
@@ -106,8 +126,12 @@ void update_enemy(Enemy *e, float player_mundo, Player *player)
 //==============================================================================
 
 
-//  Carrega a sprite do inimigo
-void draw_enemy(Enemy *e, Background *bg) 
+/**
+ * @brief - Carrega a sprite do inimigo
+ * 
+ * @param e - Ponteiro para a estrutura Enemy
+*/
+void draw_enemy(Enemy *e) 
 {
     if (!e->ativo) return;
 
@@ -147,7 +171,11 @@ void draw_enemy(Enemy *e, Background *bg)
 //==============================================================================
 
 
-//  Função que destrói inimigo
+/**
+ * @brief - Função que destrói inimigo
+ * 
+ * @param e - Ponteiro para a estrutura Enemy
+*/
 void destroy_enemy(Enemy *e) 
 {
     for (int i = 0; i < 6; i++)
@@ -163,7 +191,15 @@ void destroy_enemy(Enemy *e)
 
 //===============================================================================
 
-
+/**
+ * @brief Verifica se a posição para um novo inimigo é válida (não muito próxima de outros)
+ * 
+ * @param nova_pos Posição x que está sendo testada para o novo inimigo
+ * @param posicoes Vetor com as posições x dos inimigos já colocados
+ * @param count Quantidade de inimigos já posicionados
+ * @return true Se a posição é válida (distante o suficiente de outros inimigos)
+ * @return false Se a posição é inválida (muito próxima de outro inimigo)
+ */
 bool posicao_valida(int nova_pos, int posicoes[], int count) 
 {
     for (int i = 0; i < count; i++)
@@ -173,26 +209,34 @@ bool posicao_valida(int nova_pos, int posicoes[], int count)
     return true;
 }
 
+/**
+ * @brief Inicializa todos os inimigos do jogo com posições aleatórias válidas
+ * 
+ * @param inimigos Array de inimigos a ser inicializado
+ */
 void inicializa_inimigos(Enemy inimigos[]) 
 {
     printf("Inicializando inimigos...\n");
 
-    int posicoes[MAX_INIMIGOS];  // Para armazenar posições já usadas
-    int count = 0;
+    int posicoes[MAX_INIMIGOS];  // Armazena posições x já utilizadas
+    int count = 0;               // Contador de inimigos posicionados
 
     for (int i = 0; i < MAX_INIMIGOS; i++) 
     {
-        int tentativa = 0;
-        int pos_x;
-        do
-         {
-            pos_x = 500 + rand() % 3200;
+        int tentativa = 0;       // Contador de tentativas de posicionamento
+        int pos_x;               // Posição x do inimigo atual
+        
+        // Tenta encontrar posição válida (com distância mínima de outros inimigos)
+        do {
+            pos_x = 500 + rand() % 3200;  // Gera posição aleatória entre 500 e 3700
             tentativa++;
         } while (!posicao_valida(pos_x, posicoes, count) && tentativa < 100);
 
+        // Avisa se não encontrou posição válida
         if (tentativa == 100)
             printf("Aviso: não foi possível encontrar posição válida após 100 tentativas.\n");
 
+        // Armazena a posição e inicializa o inimigo
         posicoes[count++] = pos_x;
         init_enemy(&inimigos[i], pos_x);
         printf("Posição do inimigo (%d): %d\n", i, pos_x);

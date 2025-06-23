@@ -13,22 +13,38 @@ typedef enum
 } EstadoJogo;
 
 
-//  Função que roda o jogo
+/**
+ * @brief Função principal que executa o loop do jogo
+ * 
+ * @return EstadoJogo Próximo estado a ser executado (MENU, GAMEOVER, etc)
+ */
 EstadoJogo run_game();
 
 //======================================================
 
-//  Função que roda a tela de MENU
+/**
+ * @brief Executa a tela de menu principal
+ * 
+ * @return EstadoJogo Próximo estado a ser executado (JOGO ou SAIR)
+ */
 EstadoJogo run_menu();
 
 //======================================================
 
-//  Função que roda tela de GAME OVER
+/**
+ * @brief Executa a tela de game over
+ * 
+ * @return EstadoJogo Próximo estado (JOGAR NOVAMENTE ou MENU)
+ */
 EstadoJogo run_gameover();
 
 //======================================================
 
-//  Função que roda tela de VITÓRIA
+/**
+ * @brief Executa a tela de vitória
+ * 
+ * @return EstadoJogo Próximo estado (JOGAR NOVAMENTE ou MENU)
+ */
 EstadoJogo run_vitoria();
 
 

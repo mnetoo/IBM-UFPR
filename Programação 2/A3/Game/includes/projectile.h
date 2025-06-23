@@ -18,22 +18,42 @@ typedef struct Projectile
 } Projectile;
 
 
-//  Função que inicializa bullet
+/**
+ * Inicializa uma estrutura de projétil com parâmetros básicos
+ * 
+ * @param p Ponteiro para a estrutura Projectile a ser inicializada
+ * @param x Posição X inicial do projétil
+ * @param y Posição Y inicial do projétil
+ * @param vel_x Velocidade horizontal do projétil (pixels por frame)
+ * @param vel_y Velocidade vertical do projétil (pixels por frame)
+ */
 void init_projectile(Projectile *p, float x, float y, float vel_x, float vel_y);
 
 //============================================================================
 
-//  Função que movimentação do projétil
+/**
+ * Atualiza a posição do projétil e verifica se saiu da tela
+ * 
+ * @param proj Ponteiro para a estrutura Projectile a ser atualizada
+ */
 void update_projectile(Projectile *p);
 
 //============================================================================
 
-//  Função que carrega a sprite bullet
+/**
+ * Desenha o projétil na tela com rotação e flip adequados à direção
+ * 
+ * @param p Ponteiro para a estrutura Projectile a ser desenhada
+ */
 void draw_projectile(Projectile *p);
 
 //============================================================================
 
-//  Função que destrói bullet
+/**
+ * Libera os recursos alocados para o projétil
+ * 
+ * @param p Ponteiro para a estrutura Projectile a ser destruída
+ */
 void destroy_projectile(Projectile *p);
 
 //============================================================================

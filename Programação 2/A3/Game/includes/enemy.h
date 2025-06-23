@@ -31,29 +31,63 @@ typedef struct Enemy
 } Enemy;
 
 
-//  Função que inicializa um inimigo
+/**
+ * @brief - Função que inicializa um inimigo
+ * 
+ * @param e - Ponteiro para a estrutura Enemy
+ * @param pox_x - valor para a posição do inimigo
+ */
 void init_enemy(Enemy *e, float pos_x);
 
 //============================================================
 
-//  Função de movimentação de inimigo
+/**
+ * @brief - Função de movimentação de inimigo
+ * 
+ * @param e - Ponteiro para a estrutura Enemy
+ * @param player_mundo - deslocamento do player
+ * @param player - Ponteiro para a estrutura Player
+ */
 void update_enemy(Enemy *e, float player_mundo, Player *player);
 
 //============================================================
 
-//  Carrega a sprite do inimigo
-void draw_enemy(Enemy *e, Background *bg);
+/**
+ * @brief - Carrega a sprite do inimigo
+ * 
+ * @param e - Ponteiro para a estrutura Enemy
+*/
+void draw_enemy(Enemy *e);
 
 //============================================================
 
-//  Função que destrói inimigo
+/**
+ * @brief - Função que destrói inimigo
+ * 
+ * @param e - Ponteiro para a estrutura Enemy
+*/
 void destroy_enemy(Enemy *e);
 
 //============================================================
 
-
+/**
+ * @brief Verifica se a posição para um novo inimigo é válida (não muito próxima de outros)
+ * 
+ * @param nova_pos Posição x que está sendo testada para o novo inimigo
+ * @param posicoes Vetor com as posições x dos inimigos já colocados
+ * @param count Quantidade de inimigos já posicionados
+ * @return true Se a posição é válida (distante o suficiente de outros inimigos)
+ * @return false Se a posição é inválida (muito próxima de outro inimigo)
+ */
 bool posicao_valida(int nova_pos, int posicoes[], int count);
 
+//============================================================
+
+/**
+ * @brief Inicializa todos os inimigos do jogo com posições aleatórias válidas
+ * 
+ * @param inimigos Array de inimigos a ser inicializado
+ */
 void inicializa_inimigos(Enemy inimigos[]);
 
 #endif

@@ -1,6 +1,5 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "enemy.h"
 #include "includes.h"
 
 
@@ -47,33 +46,51 @@ typedef struct Player
     int frame_shoot;    // índice atual da animação de tiro
     int timer_shoot;    // contador para controle da troca de tiro
 
-    Projectile projeteis[MAX_PROJECTILES]; // <- Lista de projéteis
+    Projectile projeteis[MAX_PROJECTILES];
 } Player;
 
 
-// Declara que Enemy é uma struct (sem precisar saber os campos ainda)
+// Declara que Enemy é uma struct 
 typedef struct Enemy Enemy;
 
-// Declara que Boss é uma struct (sem precisar saber os campos ainda)
+// Declara que Boss é uma struct
 typedef struct Boss Boss;
 
 
-//  Função para iniciar o player
+/**
+ * @brief - Inicializa o jogador com valores padrão e carrega seus sprites
+ * 
+ * @param p - Ponteiro para a estrutura Player que será inicializada
+ */
 void init_player(Player *p);
 
 //========================================================
 
-//  Função para movimentar o player
+/**
+ * @brief - Atualiza o estado do jogador a cada frame
+ * 
+ * @param p - Ponteiro para a estrutura Player a ser atualizada
+ * @param enemies - Vetor de inimigos para verificação de colisão
+ * @param boss - Ponteiro para o boss para verificação de colisão
+ */
 void update_player(Player *p, Enemy *enemies, Boss *boss);
 
 //========================================================
 
-//  Função para trocar as sprites do player
+/**
+ * @brief - Desenha o jogador na tela de acordo com seu estado atual
+ * 
+ * @param p - Ponteiro para a estrutura Player a ser desenhada
+ */
 void draw_player(Player *p);
 
 //========================================================
 
-//  Função para destruir o player
+/**
+ * @brief - Libera a memória alocada para os sprites e projéteis do jogador
+ * 
+ * @param p - Ponteiro para a estrutura Player a ser destruída
+ */
 void destroy_player(Player *p);
 
 //========================================================

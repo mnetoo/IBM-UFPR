@@ -14,12 +14,10 @@
 //  HEADERS
 #include "collision.h"
 #include "game.h"
-#include "assets.h"
 #include "enemy.h"
 #include "player.h"
 #include "game.h"
 #include "projectile.h"
-#include "utils.h"
 #include "background.h"
 #include "boss.h"
 
@@ -63,3 +61,9 @@
 #define MAX_BOSS_PROJECTILES 10
 
 #define DIST_MINIMA 300  // Distância mínima entre inimigos
+
+// Número de quadros por animação
+#define NUM_FRAMES_PROJ 3
+#define NUM_FRAMES_IDLE 3  // Corrigido para 7 frames
+#define NUM_FRAMES_BURN 7
+#define BOSS_SHOOT_COOLDOWN 90  // Tempo entre tiros
