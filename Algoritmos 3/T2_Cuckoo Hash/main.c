@@ -3,8 +3,8 @@
 
 int main(int argc, char *argv[]) 
 {
-    // Se foi passado o argumento -h, imprime informações e sai
-    if (argc == 2 && strcmp(argv[1], "-h") == 0) 
+    // Se foi passado o argumento -h ou h, imprime informações e sai
+    if (argc == 2 && (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "h") == 0)) 
     {
         printf("Nome: Marcus Sebastião Adriano Rocha Neto\n");
         printf("GRR: 20240710\n");
