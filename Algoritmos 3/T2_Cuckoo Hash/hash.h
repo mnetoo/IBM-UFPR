@@ -13,14 +13,12 @@
 #define REMOVIDO -2
 
 
-
 // Estrutura que representa uma Tabela Hash
 struct HashTable
 {
     int Tabela1[M];
     int Tabela2[M]; 
 };
-
 
 
 //=====================================================================================
@@ -42,16 +40,16 @@ int h2(int k);
 
 // Busca a chave k nas tabelas Tabela1 e Tabela2
 // Retorna a posição em Tabela1 ou Tabela2 onde a chave está
-// Se não encontrar, retorna -1
+// Se não encontrar retorna -1
 int busca(struct HashTable *h, int k);
 
 //=====================================================================================
 
-// Insere a chave k na tabela, tratando colisões estilo Cuckoo Hash
+// Insere a chave k na tabela, tratando colisões
 // Retorna:
 //   posição de T1 se inserido lá,
 //   posição de T2 se houve colisão e foi movido,
-//  -1 se a chave já existia (não insere duplicadas)
+//  -1 se a chave já existia (ignora duplicadas)
 int inserir(struct HashTable *h, int k);
 
 //=====================================================================================

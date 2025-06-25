@@ -1,12 +1,6 @@
 #include "hash.h"
 
 
-
-
-
-
-
-
 //=====================================================================================
 
 
@@ -48,8 +42,6 @@ int h2(int k)
 
 
 // Busca a chave k nas tabelas Tabela1 e Tabela2
-// Retorna a posição em Tabela1 ou Tabela2 onde a chave está
-// Se não encontrar, retorna -1
 int busca(struct HashTable *h, int k) 
 {
     int pos1 = h1(k);
@@ -76,10 +68,6 @@ int busca(struct HashTable *h, int k)
 
 
 // Insere a chave k na tabela, tratando colisões estilo Cuckoo Hash
-// Retorna:
-//   posição de T1 se inserido lá,
-//   posição de T2 se houve colisão e foi movido,
-//  -1 se a chave já existia (não insere duplicadas)
 int inserir(struct HashTable *h, int k) 
 {
     int pos1 = h1(k);
@@ -89,10 +77,13 @@ int inserir(struct HashTable *h, int k)
         return -1;
 
     // Se a posição em T1 está vazia ou foi removida
-    if (h->Tabela1[pos1] == VAZIO || h->Tabela1[pos1] == REMOVIDO) {
+    if (h->Tabela1[pos1] == VAZIO || h->Tabela1[pos1] == REMOVIDO) 
+    {
         h->Tabela1[pos1] = k;
         return pos1; // Inserido em T1
-    } else {
+    } 
+    else 
+    {
         // Colisão: chave ki já está na posição de T1
         int ki = h->Tabela1[pos1];
         int pos2 = h2(ki);
@@ -110,9 +101,6 @@ int inserir(struct HashTable *h, int k)
 
 
 // Remove a chave k (marca como REMOVIDO se for encontrada)
-// Retorna:
-//   1 se a chave foi removida com sucesso
-//   0 se a chave não foi encontrada
 int remover(struct HashTable *h, int k)
 {
     int pos2 = h2(k);
@@ -177,7 +165,7 @@ void imprimeHash(struct HashTable *h)
         }
     }
 
-    // Ordenação simples: Bubble Sort
+    // Ordenação usando bubble Sort
     for (int i = 0; i < count - 1; i++) 
     {
         for (int j = 0; j < count - i - 1; j++) 
@@ -185,23 +173,17 @@ void imprimeHash(struct HashTable *h)
             int troca = 0;
 
             if (lista[j].chave > lista[j + 1].chave) 
-            {
                 troca = 1;
-            } 
             else if (lista[j].chave == lista[j + 1].chave) 
             {
                 // mesma chave, T1 antes de T2
                 if (strcmp(lista[j].tabela, "T1") > strcmp(lista[j + 1].tabela, "T1")) 
-                {
                     troca = 1;
-                } 
                 else if (strcmp(lista[j].tabela, "T1") == strcmp(lista[j + 1].tabela, "T1")) 
                 {
                     // mesma tabela, ordenar pela posição
                     if (lista[j].pos > lista[j + 1].pos) 
-                    {
                         troca = 1;
-                    }
                 }
             }
 
@@ -214,11 +196,9 @@ void imprimeHash(struct HashTable *h)
         }
     }
 
-    // Imprime no formato pedido
+    // Imprime no formatado
     for (int i = 0; i < count; i++) 
-    {
         printf("%d,%s,%d\n", lista[i].chave, lista[i].tabela, lista[i].pos);
-    }
 }
 
 

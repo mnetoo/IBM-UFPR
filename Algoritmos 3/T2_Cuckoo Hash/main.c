@@ -1,6 +1,5 @@
-#include <stdio.h>
-#include <string.h>
 #include "hash.h"
+
 
 int main(int argc, char *argv[]) 
 {
@@ -30,7 +29,7 @@ int main(int argc, char *argv[])
 
         else
             // opcao inválido
-            printf("opcao desconhecido: %c\n", opcao);
+            printf("Opção desconhecida: %c\n", opcao);
     }
 
     // Imprime a tabela final
