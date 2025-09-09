@@ -82,5 +82,4 @@ void imprime_vertice(vertice v);
 // imprime a aresta e
 void imprime_aresta(aresta e);
 
-
 #endif

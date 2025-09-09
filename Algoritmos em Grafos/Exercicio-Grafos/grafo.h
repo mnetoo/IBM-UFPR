@@ -24,7 +24,6 @@ typedef struct t_vertice {
 
 typedef struct t_aresta {
 	int id;
-	int peso; // NOVO CAMPO
 	vertice u, v;
 } t_aresta;
 
@@ -81,6 +80,5 @@ void imprime_vertice(vertice v);
 
 // imprime a aresta e
 void imprime_aresta(aresta e);
-
 
 #endif

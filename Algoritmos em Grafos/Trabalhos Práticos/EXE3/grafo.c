@@ -52,6 +52,55 @@ static int get_aresta_id(obj e) {
 
 
 
+// --- FUNÇÕES AUXILIARES ---
+
+/*
+ * Verifica se um 'id' pertence a um conjunto de inteiros 'X'.
+ * Retorna 1 se pertence, 0 caso contrário.
+ */
+int pertence_ao_conjunto(int id, int *X, int n_X) 
+{
+  for (int i = 0; i < n_X; i++) 
+    if (X[i] == id)
+      return 1;
+
+  return 0;
+}
+
+
+
+/*
+ * Transforma o grafo G no seu subgrafo induzido G[X].
+ * Remove todos os vértices de G que não estão no conjunto X.
+ */
+void induzir_subgrafo(grafo G, int *X, int n_X) 
+{
+  no n_vert = primeiro_no(vertices(G));
+  
+  // Itera pela lista de vértices de forma segura para remoção
+  while (n_vert) 
+  {
+    // 1. Salva o ponteiro para o próximo nó ANTES de qualquer modificação
+    no proximo_n = proximo(n_vert);
+
+    vertice v = (vertice) conteudo(n_vert);
+    int v_id = vertice_id(v);
+
+    // 2. Verifica se o vértice atual deve ser removido
+    if (!pertence_ao_conjunto(v_id, X, n_X)) {
+      // Se não pertence a X, remove do grafo
+      printf("-> Removendo vértice %d (não pertence a X).\n", v_id);
+      remove_vertice(v_id, G);
+    }
+
+    // 3. Avança para o próximo nó (que foi salvo anteriormente)
+    n_vert = proximo_n;
+  }
+}
+
+
+
+
 
 //---------------------------------------------------------
 // funcoes para construcao/desconstrucao do grafo:
@@ -345,54 +394,4 @@ void imprime_aresta(aresta e)
   
   // Formato: "  Aresta 101: {1, 2}"
   printf("  Aresta %d: {%d, %d}\n", aresta_id(e), u_id, v_id);
-}
-
-
-
-
-
-// --- FUNÇÕES AUXILIARES ---
-
-/*
- * Verifica se um 'id' pertence a um conjunto de inteiros 'X'.
- * Retorna 1 se pertence, 0 caso contrário.
- */
-int pertence_ao_conjunto(int id, int *X, int n_X) 
-{
-  for (int i = 0; i < n_X; i++) 
-    if (X[i] == id)
-      return 1;
-
-  return 0;
-}
-
-
-
-/*
- * Transforma o grafo G no seu subgrafo induzido G[X].
- * Remove todos os vértices de G que não estão no conjunto X.
- */
-void induzir_subgrafo(grafo G, int *X, int n_X) 
-{
-  no n_vert = primeiro_no(vertices(G));
-  
-  // Itera pela lista de vértices de forma segura para remoção
-  while (n_vert) 
-  {
-    // 1. Salva o ponteiro para o próximo nó ANTES de qualquer modificação
-    no proximo_n = proximo(n_vert);
-
-    vertice v = (vertice) conteudo(n_vert);
-    int v_id = vertice_id(v);
-
-    // 2. Verifica se o vértice atual deve ser removido
-    if (!pertence_ao_conjunto(v_id, X, n_X)) {
-      // Se não pertence a X, remove do grafo
-      printf("-> Removendo vértice %d (não pertence a X).\n", v_id);
-      remove_vertice(v_id, G);
-    }
-
-    // 3. Avança para o próximo nó (que foi salvo anteriormente)
-    n_vert = proximo_n;
-  }
 }
