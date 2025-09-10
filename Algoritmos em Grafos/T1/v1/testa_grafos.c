@@ -13,6 +13,8 @@ void atualiza_pesos(grafo G);
 
 int main()
 {
+    //  PARTE 1 (Grafo Normal)
+
     // Cria grafo vazio
     grafo G = cria_grafo();
 
@@ -35,12 +37,12 @@ int main()
     }
     
     atualiza_pesos(G);
-
-    // Impriem informações do grafo
+    printf("\nGrafo:\n");
     imprime_grafo(G);
 
 
 
+    //  PARTE 2 (Grafo Induzido)
 
     // Lê o conjunto X do usuário
     int X[100]; // Suporta até 100 vértices no conjunto X
@@ -62,11 +64,9 @@ int main()
     printf("\nProcesso de indução do subgrafo:\n");
     induzir_subgrafo(G, X, n_X);
 
-    // Imprime o resultado
+
     printf("\nGrafo Resultante (G[X]):\n");
     imprime_grafo(G);
-
-    // Libera a memória
     destroi_grafo(G);
 
     return 0;

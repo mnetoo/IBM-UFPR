@@ -104,6 +104,6 @@ obj remove_chave(int chave, lista l, int f_chave(obj c)) {
 void imprime_lista(lista l, void imprime_conteudo(obj c)) {
   for (no n = primeiro_no(l); n; n = proximo(n)) {
     imprime_conteudo(conteudo(n));
-    printf(" ");
+    printf("\n");
   }
 }
