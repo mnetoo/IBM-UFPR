@@ -72,7 +72,7 @@ int obtem_ou_cria_id_vertice(char *nome, tipo_vertice tipo, grafo G)
 
 //  retorna 1 se achar ciclo e 0 se não
 //  se não achar ciclo empilha na lista para a ornemação topológica
-int dfs_visit(vertice u, grafo G, int *status, lista ordenacao)
+int DFS(vertice u, grafo G, int *status, lista ordenacao)
 {
     int u_id = vertice_id(u);
     status[u_id] = PROCESSANDO;     //  marca o vértice
@@ -91,7 +91,7 @@ int dfs_visit(vertice u, grafo G, int *status, lista ordenacao)
         if (status[v_id] == ABERTO) 
         {
             //  visita o vizinho recursivamente
-            if (dfs_visit(v, G, status, ordenacao))
+            if (DFS(v, G, status, ordenacao))
                 return 1; 
         }
     }
@@ -187,7 +187,7 @@ int main(int argc, char *argv[])
 
         if (status_visita[vertice_id(v)] == ABERTO)
         {
-            if (dfs_visit(v, G, status_visita, resultado_ordenado)) 
+            if (DFS(v, G, status_visita, resultado_ordenado)) 
             {
                 ciclo_encontrado = 1;
                 break;
