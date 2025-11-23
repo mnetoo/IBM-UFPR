@@ -34,6 +34,9 @@ def main():
         analyzer.analisar_clusters(G)
         analyzer.analisar_cliques(G)
 
+        # 4 - Análise de Modelo de grafo
+        analyzer.analisar_modelo(G)
+
 
 #=================================================================================
 

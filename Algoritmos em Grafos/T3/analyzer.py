@@ -426,3 +426,77 @@ def analisar_cliques(G):
 
 
 #=============================================================================================
+
+
+def analisar_modelo(G):
+    """
+    Executa todas as análises e gera um relatório-resumo no console
+    com uma sugestão de modelo de grafo correspondente.
+    """
+
+    print("\nAnálise - Modelo de Grafo\n")
+    
+    # --- Coletando dados básicos ---
+    num_nos = G.number_of_nodes()
+    num_arestas = G.number_of_edges()
+    e_direcionado = G.is_directed()
+
+    # --- Análises estruturais ---
+    componentes = list(nx.connected_components(G.to_undirected()))
+    diametro = -1
+    if len(componentes) > 0:
+        maior_subgrafo = G.subgraph(max(componentes, key=len))
+        if nx.is_connected(maior_subgrafo.to_undirected()):
+            diametro = nx.diameter(maior_subgrafo)
+
+
+    # --- Análise de Comunidades ---
+    modularidade = -1
+    if not e_direcionado and num_arestas > 0:
+        comunidades = community.louvain_communities(G, weight='weight')
+        modularidade = community.modularity(G, comunidades, weight='weight')
+    
+    # --- Análise de Distribuição de Graus ---
+    graus = [d for n, d in G.degree()]
+    grau_medio = sum(graus) / num_nos
+    grau_maximo = max(graus)
+
+
+    # 1. Teste de Mundo Pequeno
+    tem_mundo_pequeno = (diametro > 0 and diametro < 10 * (num_nos**0.25)) # Heurística
+    if tem_mundo_pequeno:
+        print("- 'Mundo Pequeno': SIM.")
+    else:
+        print("- 'Mundo Pequeno': NÃO.")
+
+    # 2. Teste de Estrutura de Comunidades
+    tem_comunidades = modularidade > 0.3
+    if tem_comunidades:
+        print("- 'Estrutura de Comunidades': SIM (modularidade > 0.3).")
+    else:
+        print("- 'Estrutura de Comunidades': NÃO.")
+
+    # 3. Teste de Lei de Potência (Livre de Escala) - se o grau máximo é muito maior que o médio.
+    e_livre_de_escala = grau_maximo > 5 * grau_medio and grau_maximo > 100
+    if e_livre_de_escala:
+        print("- 'Livre de Escala': SIM (presença de hubs - grau máx >> grau méd).")
+    else:
+        print("- 'Livre de Escala': NÃO.")
+
+    # Conclusão Final
+    print("\nResultado")
+    if e_livre_de_escala and tem_mundo_pequeno and tem_comunidades:
+        print("- O modelo que melhor representa a rede é o de BARABÁSI-ALBERT (Livre de Escala).")
+        print()
+        print("-" * 100)
+    elif tem_mundo_pequeno and tem_comunidades and not e_livre_de_escala:
+        print("- O modelo que melhor representa a rede é o de WATTS-STROGATZ (Mundo Pequeno).")
+        print()
+        print("-" * 100)
+    else:
+        print("- A rede exibe características que se aproximam do modelo de ERDÖS-RÉNYI (Aleatório).")
+        print()
+        print("-" * 100)
+
+
+#=============================================================================================
