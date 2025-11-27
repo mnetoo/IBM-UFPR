@@ -1,1 +1,0 @@
-caminho_do_arquivo = "kasthuri_graph_v4.graphml"

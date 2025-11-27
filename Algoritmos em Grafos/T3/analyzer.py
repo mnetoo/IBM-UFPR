@@ -159,7 +159,6 @@ def analisar_distribuicao_graus(G):
 
 
 
-
 def plotar_histograma_graus(graus_lista, titulo, nome_arquivo):
     """
     Função auxiliar que gera e salva um histograma da distribuição de graus
@@ -212,9 +211,6 @@ def analisar_centralidades(G, top_n=5):
     - Centralidade de Grau (Degree): Vértices com mais conexões.
     - Centralidade de Proximidade (Closeness): Vértices mais próximos de todos os outros.
     - Centralidade de Intermediação (Betweenness): Vértices que atuam como pontes.
-    
-    Aviso: Centralidade de Proximidade e Intermediação podem ser computacionalmente
-    intensivas em grafos muito grandes.
     """
 
     print(f"\nAnálise de Centralidades (Top {top_n} Vértices):")
@@ -254,10 +250,6 @@ def analisar_centralidades(G, top_n=5):
     print("\n--- Centralidade de Intermediação (Betweenness) ---")
     print("Mede a frequência com que um vértice aparece nos caminhos mais curtos entre outros.")
     try:
-        # Para grafos grandes, o cálculo pode ser muito lento.
-        # Uma aproximação pode ser usada com o parâmetro 'k'. Ex: k=int(G.number_of_nodes() * 0.1)
-        # Por padrão, vamos calcular o valor exato.
-        print("  (Aviso: Esta operação pode ser MUITO lenta para grafos grandes)")
         centralidade_intermediacao = nx.betweenness_centrality(G, normalized=True)
         top_intermediacao = sorted(centralidade_intermediacao.items(), key=lambda item: item[1], reverse=True)
         
@@ -282,23 +274,14 @@ def arvores_geradoras(G):
 
     print("\nAnálise de Árvore Geradora Mínima (AGM):\n")
 
-    # A AGM é um conceito para grafos não-direcionados.
-    if G.is_directed():
-        print("  - Esta análise é projetada para grafos não-direcionados e não será executada.")
-        print("  - Para grafos direcionados, o conceito análogo é a 'Arborescência'.\n")
-        print("-" * 100)
-        return
-
     # A AGM funciona sobre grafos conectados. Se não for, calcula-se uma para cada componente.
     if not nx.is_connected(G):
         print("  - O grafo não é conexo. O algoritmo encontrará uma 'floresta geradora mínima' (uma AGM para cada componente).")
 
     print("  - Calculando a estrutura de conexão mais eficiente (menor custo total)...")
-    print("  - (Se as arestas não tiverem 'peso', NetworkX assume peso 1 para todas).")
+    print("  - (Se as arestas não tiverem 'peso', a biblioteca NetworkX assume peso 1 para todas).")
 
     try:
-        # O algoritmo de Prim ou Kruskal é usado por baixo dos panos aqui.
-        # 'weight' especifica qual atributo da aresta usar como custo.
         mst = nx.minimum_spanning_tree(G, weight='weight')
         
         # O custo total é a soma dos pesos das arestas na árvore gerada.
@@ -327,12 +310,7 @@ def analisar_clusters(G):
 
     print("\nAnálise de Clusters:\n")
 
-    # O método de Louvain funciona em grafos não-direcionados.
-    # Se o grafo for direcionado, usamos sua versão não-direcionada para a análise.
     G_para_analise = G
-    if G.is_directed():
-        print("  - O grafo é direcionado. A análise será feita na sua representação não-direcionada.")
-        G_para_analise = G.to_undirected()
     
     # O grafo precisa ter arestas para encontrar comunidades
     if G_para_analise.number_of_edges() == 0:
@@ -384,12 +362,6 @@ def analisar_cliques(G):
     """
 
     print("\nAnálise de Cliques:")
-
-    # O conceito de clique é para grafos não-direcionados.
-    if G.is_directed():
-        print("  - Esta análise é projetada para grafos não-direcionados e não será executada.\n")
-        print("-" * 100)
-        return
 
     try:
         # Encontra todos os cliques maximais. Retorna um iterador.

@@ -1,7 +1,7 @@
 import utils
 import networkx as nx
 import analyzer
-import config
+caminho_da_rede = "kasthuri_graph_v4.graphml"
 
 
 #=================================================================================
@@ -10,7 +10,7 @@ import config
 def main():
 
     # Carrega grafo
-    G_original = utils.carregar_rede(config.caminho_do_arquivo)
+    G_original = utils.carregar_rede(caminho_da_rede)
 
 
     # Converte para um grafo simples e não-direcionado

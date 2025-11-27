@@ -1,28 +1,28 @@
 import networkx as nx
-import config
+caminho_da_rede = "kasthuri_graph_v4.graphml"
 
 
 #=============================================================================================
 
 
-def carregar_rede(caminho_arquivo):
+def carregar_rede(caminho_da_rede):
     """
     Carrega uma rede a partir de um arquivo GraphML.
 
     Args:
-        caminho_arquivo (str): O caminho para o arquivo .graphml.
+        caminho_da_rede (str): O caminho para o arquivo .graphml.
 
     Returns:
         nx.Graph: O objeto do grafo NetworkX.
     """
 
-    if(caminho_arquivo is None):
+    if(caminho_da_rede is None):
         print("Caminho do arquivo não fornecido.")
         return None
     
     else:
-        print(f"\nRede '{config.caminho_do_arquivo}' carregada com sucesso.\n")
-        return nx.read_graphml(caminho_arquivo)
+        print(f"\nRede '{caminho_da_rede}' carregada com sucesso.\n")
+        return nx.read_graphml(caminho_da_rede)
     
 
 #=============================================================================================
