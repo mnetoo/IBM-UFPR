@@ -1,0 +1,520 @@
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 260, FP = 168) 
+
+ for conf_thresh = 0.00, TP = 260, FP = 168, FN = 11, average IoU = 47.43 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 257, FP = 66) 
+
+ for conf_thresh = 0.05, TP = 257, FP = 66, FN = 14, average IoU = 62.17 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 251, FP = 59) 
+
+ for conf_thresh = 0.10, TP = 251, FP = 59, FN = 20, average IoU = 63.55 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 251, FP = 49) 
+
+ for conf_thresh = 0.15, TP = 251, FP = 49, FN = 20, average IoU = 65.67 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 248, FP = 48) 
+
+ for conf_thresh = 0.20, TP = 248, FP = 48, FN = 23, average IoU = 65.71 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 248, FP = 46) 
+
+ for conf_thresh = 0.25, TP = 248, FP = 46, FN = 23, average IoU = 66.16 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 248, FP = 45) 
+
+ for conf_thresh = 0.30, TP = 248, FP = 45, FN = 23, average IoU = 66.38 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 248, FP = 43) 
+
+ for conf_thresh = 0.35, TP = 248, FP = 43, FN = 23, average IoU = 66.84 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 246, FP = 43) 
+
+ for conf_thresh = 0.40, TP = 246, FP = 43, FN = 25, average IoU = 66.78 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 245, FP = 42) 
+
+ for conf_thresh = 0.45, TP = 245, FP = 42, FN = 26, average IoU = 66.95 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 244, FP = 39) 
+
+ for conf_thresh = 0.50, TP = 244, FP = 39, FN = 27, average IoU = 67.66 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 242, FP = 36) 
+
+ for conf_thresh = 0.55, TP = 242, FP = 36, FN = 29, average IoU = 68.30 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 240, FP = 34) 
+
+ for conf_thresh = 0.60, TP = 240, FP = 34, FN = 31, average IoU = 68.79 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 240, FP = 32) 
+
+ for conf_thresh = 0.65, TP = 240, FP = 32, FN = 31, average IoU = 69.29 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 238, FP = 29) 
+
+ for conf_thresh = 0.70, TP = 238, FP = 29, FN = 33, average IoU = 70.03 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 237, FP = 27) 
+
+ for conf_thresh = 0.75, TP = 237, FP = 27, FN = 34, average IoU = 70.59 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 231, FP = 26) 
+
+ for conf_thresh = 0.80, TP = 231, FP = 26, FN = 40, average IoU = 70.55 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 225, FP = 22) 
+
+ for conf_thresh = 0.85, TP = 225, FP = 22, FN = 46, average IoU = 71.49 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 222, FP = 18) 
+
+ for conf_thresh = 0.90, TP = 222, FP = 18, FN = 49, average IoU = 72.62 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 428, unique_truth_count = 271  
+ rank = 0 of ranks = 428  rank = 100 of ranks = 428  rank = 200 of ranks = 428  rank = 300 of ranks = 428  rank = 400 of ranks = 428 class_id = 0, name = celulas, ap = 91.16%   	 (TP = 214, FP = 15) 
+
+ for conf_thresh = 0.95, TP = 214, FP = 15, FN = 57, average IoU = 73.68 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset

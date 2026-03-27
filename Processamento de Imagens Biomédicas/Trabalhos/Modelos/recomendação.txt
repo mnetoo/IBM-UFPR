@@ -1,0 +1,8 @@
+Relatório Yolov4
+------------------------------
+Melhor escolha: Imagem 800px
+Threshold ideal: 0.75
+F1-Score máximo: 0.8860
+------------------------------
+Justificativa: Escolhemos esta configuração por apresentar o maior F1-Score,
+equilibrando a precisão do diagnóstico com a capacidade de detectar todas as células.

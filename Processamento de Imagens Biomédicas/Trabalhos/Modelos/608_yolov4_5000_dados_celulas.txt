@@ -1,0 +1,520 @@
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 259, FP = 123) 
+
+ for conf_thresh = 0.00, TP = 259, FP = 123, FN = 12, average IoU = 53.35 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 250, FP = 61) 
+
+ for conf_thresh = 0.05, TP = 250, FP = 61, FN = 21, average IoU = 63.36 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 249, FP = 51) 
+
+ for conf_thresh = 0.10, TP = 249, FP = 51, FN = 22, average IoU = 65.42 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 248, FP = 48) 
+
+ for conf_thresh = 0.15, TP = 248, FP = 48, FN = 23, average IoU = 66.02 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 246, FP = 47) 
+
+ for conf_thresh = 0.20, TP = 246, FP = 47, FN = 25, average IoU = 66.20 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 244, FP = 46) 
+
+ for conf_thresh = 0.25, TP = 244, FP = 46, FN = 27, average IoU = 66.36 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 242, FP = 45) 
+
+ for conf_thresh = 0.30, TP = 242, FP = 45, FN = 29, average IoU = 66.68 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 241, FP = 45) 
+
+ for conf_thresh = 0.35, TP = 241, FP = 45, FN = 30, average IoU = 66.71 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 241, FP = 45) 
+
+ for conf_thresh = 0.40, TP = 241, FP = 45, FN = 30, average IoU = 66.71 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 239, FP = 42) 
+
+ for conf_thresh = 0.45, TP = 239, FP = 42, FN = 32, average IoU = 67.40 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 239, FP = 40) 
+
+ for conf_thresh = 0.50, TP = 239, FP = 40, FN = 32, average IoU = 67.89 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 239, FP = 39) 
+
+ for conf_thresh = 0.55, TP = 239, FP = 39, FN = 32, average IoU = 68.13 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 235, FP = 37) 
+
+ for conf_thresh = 0.60, TP = 235, FP = 37, FN = 36, average IoU = 68.68 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 234, FP = 33) 
+
+ for conf_thresh = 0.65, TP = 234, FP = 33, FN = 37, average IoU = 69.66 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 233, FP = 31) 
+
+ for conf_thresh = 0.70, TP = 233, FP = 31, FN = 38, average IoU = 70.17 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 231, FP = 28) 
+
+ for conf_thresh = 0.75, TP = 231, FP = 28, FN = 40, average IoU = 70.94 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 230, FP = 27) 
+
+ for conf_thresh = 0.80, TP = 230, FP = 27, FN = 41, average IoU = 71.24 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 229, FP = 24) 
+
+ for conf_thresh = 0.85, TP = 229, FP = 24, FN = 42, average IoU = 72.17 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 224, FP = 20) 
+
+ for conf_thresh = 0.90, TP = 224, FP = 20, FN = 47, average IoU = 73.24 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
+ CUDNN_HALF=1 
+net.optimized_memory = 0 
+mini_batch = 1, batch = 1, time_steps = 1, train = 0 
+Create CUDA-stream - 0 
+ Create cudnn-handle 0 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+nms_kind: greedynms (1), beta = 0.600000 
+
+ seen 64, trained: 640 K-images (10 Kilo-batches_64) 
+
+ Detection layer: 139 - type = 28 
+ Detection layer: 150 - type = 28 
+ Detection layer: 161 - type = 28 
+
+ detections_count = 382, unique_truth_count = 271  
+ rank = 0 of ranks = 382  rank = 100 of ranks = 382  rank = 200 of ranks = 382  rank = 300 of ranks = 382 class_id = 0, name = celulas, ap = 92.05%   	 (TP = 215, FP = 14) 
+
+ for conf_thresh = 0.95, TP = 215, FP = 14, FN = 56, average IoU = 75.09 % 
+
+ IoU threshold =  0 %, used Area-Under-Curve for each unique Recall 
+
+Set -points flag:
+ `-points 101` for MS COCO 
+ `-points 11` for PascalVOC 2007 (uncomment `difficult` in voc.data) 
+ `-points 0` (AUC) for ImageNet, PascalVOC 2010-2012, your custom dataset
