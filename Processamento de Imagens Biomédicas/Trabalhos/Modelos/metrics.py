@@ -17,6 +17,7 @@ def extrair_metricas(caminho_arquivo):
     with open(caminho_arquivo, 'r') as f:
 
         for linha in f:
+
             if "conf_thresh" in linha:
                 # quebra a linha nas vírgulas e depois no '='
                 partes = linha.split(',')
@@ -31,9 +32,7 @@ def extrair_metricas(caminho_arquivo):
                 rec = tp / (tp + fn) if (tp + fn) > 0 else 0.0
                 f1 = (2 * prec * rec) / (prec + rec) if (prec + rec) > 0 else 0.0
                 
-                dados.append({
-                    'thresh': t, 'prec': prec, 'rec': rec, 'f1': f1
-                })
+                dados.append({ 'thresh': t, 'prec': prec, 'rec': rec, 'f1': f1 })
     
     return sorted(dados, key=lambda x: x['thresh'])
 
@@ -41,7 +40,7 @@ def extrair_metricas(caminho_arquivo):
 
 def calcular_ap(recalls, precisions):
 
-    """Calcula a Área sob a Curva (Average Precision)"""
+    """Calcula a área sob a curva"""
 
     r = np.array(recalls)
     p = np.array(precisions)
@@ -59,27 +58,9 @@ def calcular_ap(recalls, precisions):
 
 #===============================================================================================
 
-def salvar_txt(melhor_config, diretorio_saida):
-
-    """Gera o arquivo de recomendação no diretório alvo"""
-
-    caminho_txt = os.path.join(diretorio_saida, 'recomendação.txt')
-
-    with open(caminho_txt, 'w') as f:
-        f.write("Relatório Yolov4\n")
-        f.write("-" * 30 + "\n")
-        f.write(f"Melhor escolha: Imagem {melhor_config['tamanho']}px\n")
-        f.write(f"Threshold ideal: {melhor_config['thresh']}\n")
-        f.write(f"F1-Score máximo: {melhor_config['f1']:.4f}\n")
-        f.write("-" * 30 + "\n")
-        f.write("Justificativa: Escolhemos esta configuração por apresentar o maior F1-Score,\n")
-        f.write("equilibrando a precisão do diagnóstico com a capacidade de detectar todas as células.")
-
-#===============================================================================================
-
 def main():
 
-    # verifica se o usuário passou o diretório, senão usa o atual ('.')
+    # verifica se o usuário passou o diretório se não usa o atual
     if len(sys.argv) > 1:
         diretorio = sys.argv[1]
     else:
@@ -103,7 +84,7 @@ def main():
                 break
         
         if not arquivo_nome:
-            print(f"Aviso: Arquivo de {sz}px não achado em {diretorio}")
+            print(f"Arquivo de {sz}px não achado em {diretorio}")
             continue
 
         # caminho completo para leitura
@@ -137,10 +118,6 @@ def main():
     
     caminho_grafico = os.path.join(diretorio, 'grafico.png')
     plt.savefig(caminho_grafico)
-    print(f"Resultados salvos em: {diretorio}")
-    
-    if config_campea:
-        salvar_txt(config_campea, diretorio)
     
     plt.show()
 

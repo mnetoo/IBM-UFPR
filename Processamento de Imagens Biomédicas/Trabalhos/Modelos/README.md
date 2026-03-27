@@ -51,4 +51,4 @@ python3 metrics.py ./dados
 
 ## Como funciona:
 
-O script lê os arquivos .txt de entrada e calcula as métricas. Gera e exibe em tela o gráfico Precision-Recall (AP) e arquivo .txt de recomendação. Os arquivos que são gerados serão salvos no mesmo diretório onde os arquivos de entrada estão, ou seja, [input_dir].
+O script lê os arquivos .txt de entrada e calcula as métricas. Gera e exibe em tela o gráfico Precision-Recall (AP). Os arquivos que são gerados serão salvos no mesmo diretório onde os arquivos de entrada estão, ou seja, [input_dir].
