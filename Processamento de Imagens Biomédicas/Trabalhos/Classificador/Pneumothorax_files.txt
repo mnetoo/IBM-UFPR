@@ -1,0 +1,15 @@
+train/Pneumothorax/000001.dcm
+train/Pneumothorax/000003.dcm
+train/Pneumothorax/000004.dcm
+train/Pneumothorax/000010.dcm
+train/Pneumothorax/000013.dcm
+train/Pneumothorax/000016.dcm
+train/Pneumothorax/000021.dcm
+train/Pneumothorax/000029.dcm
+train/Pneumothorax/000038.dcm
+train/Pneumothorax/000042.dcm
+train/Pneumothorax/000043.dcm
+train/Pneumothorax/000046.dcm
+train/Pneumothorax/000049.dcm
+train/Pneumothorax/000050.dcm
+train/Pneumothorax/000052.dcm

@@ -1,0 +1,23 @@
+192.168.0.242 (TV Smart Casa)
+9A:33:9F:5B:99:54
+Android 9-11 Linux 4.9 - 4.14
+
+192.168.0.136 (Computador Pessoal 1)
+3E:0A:F3:F0:39:A3
+Microsoft Windows 11 24H2 - 25H2
+
+192.168.0.179 (Computador Pessoal 2)
+EC:4C:8C:7B:3D:E2
+Microsoft Windows 11
+
+192.168.0.235 (Tablet Pessoal)
+06:A0:72:CB:41:1C
+Galaxy Tab S9 FE - Android 16
+
+192.168.0.183
+5A:ED:8D:DF:1C:C6 (Celular Pessoal)
+Samsung A33 - Android 16
+
+192.168.0.1 (Gateway Padrão)
+02:10::18:36:8F:33
+Linux 5.10 - 5.15

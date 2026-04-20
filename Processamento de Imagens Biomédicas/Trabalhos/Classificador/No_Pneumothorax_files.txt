@@ -1,0 +1,15 @@
+train/No Pneumothorax/000000.dcm
+train/No Pneumothorax/000002.dcm
+train/No Pneumothorax/000005.dcm
+train/No Pneumothorax/000006.dcm
+train/No Pneumothorax/000007.dcm
+train/No Pneumothorax/000008.dcm
+train/No Pneumothorax/000009.dcm
+train/No Pneumothorax/000011.dcm
+train/No Pneumothorax/000012.dcm
+train/No Pneumothorax/000014.dcm
+train/No Pneumothorax/000015.dcm
+train/No Pneumothorax/000017.dcm
+train/No Pneumothorax/000018.dcm
+train/No Pneumothorax/000019.dcm
+train/No Pneumothorax/000020.dcm
