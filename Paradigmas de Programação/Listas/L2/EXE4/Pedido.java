@@ -7,17 +7,14 @@ public class Pedido
     private List<ItemPedido> itensPedido;
     
     // Construtores
-    public Pedido(int numPedido)
-    {
-        setNumPedido(numPedido);
-        this.itensPedido = new ArrayList<>();
-    }
-    
-    public Pedido(int numPedido, ArrayList<ItemPedido> itensPedido)
+    public Pedido(int numPedido, List<ItemPedido> itensPedido)
     {
         setNumPedido(numPedido);
         setItensPedido(itensPedido);
     }
+    
+    public Pedido(int numPedido)    { this(numPedido, new ArrayList<>()); }
+    public Pedido(List<ItemPedido> itensPedido)    { this(0, itensPedido); }
     
     // Getters
     public int getNumPedido() { return this.numPedido; }
