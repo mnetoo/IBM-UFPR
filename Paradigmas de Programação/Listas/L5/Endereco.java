@@ -13,6 +13,9 @@ public class Endereco
         setCidade(cidade);
         setEstado(estado);
     }
+    
+    public Endereco(String rua, int numero, String cidade)  { this(rua, numero, "", cidade, ""); }
+    public Endereco(String rua, int numero)  { this(rua, numero, "", "", "UF"); }
 
     //  Getters
     public String getRua()  { return this.rua; }
