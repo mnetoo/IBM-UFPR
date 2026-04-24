@@ -13,11 +13,9 @@ public class Aluno
         setCr(cr);
     }
     
-    public Aluno()
-    {
-        this.nome = null;
-        this.cr = 0;
-    }
+    public Aluno()  { this("", 0); }
+    public Aluno(String nome)  { this(nome, 0); }
+    public Aluno(int cr)  { this("", cr); }
     
     // Getters
     public String getNome() { return this.nome; }
