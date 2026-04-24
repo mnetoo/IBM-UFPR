@@ -8,20 +8,19 @@ public class Turma
     private String professor;
     private List<Aluno> alunos;
     
-    // Construtores
-    public Turma(int codigo, String Professor)
+    //  Construtores
+    public Turma(int codigo, String professor, List<Aluno> alunos) 
     {
         setCodigo(codigo);
-        setProfessor(Professor);
-        this.alunos = new ArrayList<>();
-    }
-    
-    public Turma(int codigo, String Professor, ArrayList<Aluno> alunos)
-    {
-        setCodigo(codigo);
-        setProfessor(Professor);
+        setProfessor(professor);
         setAlunos(alunos);
     }
+
+    public Turma(int codigo, String professor)  { this(codigo, professor, new ArrayList<>()); }
+    public Turma(int codigo)    { this(codigo, "", new ArrayList<>()); }
+    public Turma(String professor)   { this(0, professor, new ArrayList<>()); }
+    public Turma(String professor, List<Aluno> alunos)   { this(0, professor, alunos); }
+    public Turma(List<Aluno> alunos)    { this(0, "", alunos); }
     
     // Getters
     public int getCodigo() { return this.codigo; }
