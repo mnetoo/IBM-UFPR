@@ -19,12 +19,9 @@ public class Main
         for(Professor p : professores)
             System.out.println(p);
 
-        System.out.println("Buscando professor indíce 1...");
-        System.out.println(professores.get(1));
-
-        System.out.println("Removendo professor indíce 1...");
-        professores.remove(1);
-
+        int matBusca = 1001;
+        professores.removeIf(p -> p.getMatricula() == matBusca);
+        
         for(Professor p : professores)
             System.out.println(p);
 
