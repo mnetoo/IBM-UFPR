@@ -38,7 +38,7 @@ tar -xzf siim_small.tgz
 Na **Célula 1** há a variável `BASE_PATH`:
 
 ```python
-BASE_PATH = "."  # Caminho base onde a pasta train/ está localizada
+BASE_PATH = "./siim_small/"  # Caminho base onde a pasta train/ está localizada
 ```
 
 Se a pasta `train/` estiver em outro local, altere o valor. Exemplo:
@@ -49,6 +49,8 @@ BASE_PATH = "/home/usuario/datasets/siim_small"
 
 Os caminhos nos arquivos `.txt` já são relativos (ex.: `train/Pneumothorax/000001.dcm`),
 portanto `BASE_PATH` é apenas o prefixo a ser concatenado.
+
+Você deve fazer o upload dos arquivos `.txt` no Colab para o programa ler cada um deles para ler as imagens.
 
 ---
 
