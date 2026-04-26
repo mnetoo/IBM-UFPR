@@ -10,6 +10,9 @@ public class LampadaFluorescente extends Lampada
         setComprimento(comprimento);
     }
     
+    public LampadaFluorescente(boolean estado)  { this(estado, 0.0); }
+    public LampadaFluorescente(double comprimento)  { this(false, comprimento); }
+    
     // Getters
     public double getComprimento() { return this.comprimento; }
     

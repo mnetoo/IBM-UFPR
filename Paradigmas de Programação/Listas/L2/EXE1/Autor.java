@@ -9,17 +9,8 @@ public class Autor
         setNacionalidade(nacionalidade);
     }
     
-    public Autor(String nome)
-    {
-        setNome(nome);
-        this.nacionalidade = null;
-    }
-    
-    public Autor()
-    {
-        this.nome = null;
-        this.nacionalidade = null;
-    }
+    public Autor(String nome)   { this(nome, ""); }
+    public Autor()  { this(null, null); }
     
     // Getters
     public String getNome() { return this.nome; }

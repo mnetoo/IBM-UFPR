@@ -23,8 +23,15 @@ public class Main
 		    return;
 		}
 		
-		System.out.println("Ligando ou desligando lampada selecionada. Estado: " + selecionada.toString());
-		selecionada.alterar();
-	    System.out.println("Estado Final: " + selecionada.toString());
+		if(selecionada.isEstado())
+		{
+		    selecionada.desligar();
+		    System.out.println("Desligando lampada selecionada. Estado: " + selecionada.toString());
+		}
+		else
+		{
+		    selecionada.ligar();
+		    System.out.println("Ligando lampada selecionada. Estado: " + selecionada.toString());
+		}
 	}
 }
