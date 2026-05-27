@@ -38,3 +38,29 @@ totalEstoque ((_, preco, quantidade):t)
 -- gerador de lista apenas os nomes dos produtos com preço abaixo do limite.
 produtosBaratos :: Catalogo -> PrecoProduto -> [NomeProduto]
 produtosBaratos catalogo pmax = [nome | (nome, preco, _) <- catalogo, preco <= pmax]
+
+-- -------------------------------------------------------------------------------------------------------
+
+-- c) Escreva uma função recursiva removerEsgotados :: [Produto] -> [Produto] que remova da lista todos os 
+-- produtos cuja quantidade seja zero.
+removerEsgotados :: Catalogo -> Catalogo
+removerEsgotados [] = []
+removerEsgotados ((nome, preco, quantidade):t)
+    | quantidade > 0 = (nome, preco, quantidade) : removerEsgotados t
+    | otherwise = removerEsgotados t 
+
+-- d) Escreva uma função recursiva aplicarDesconto :: Double -> [Produto] -> [Produto] que receba um percentual 
+-- (ex.: 0.10 para 10%) e retorne a lista com o preço de todos os produtos reduzido por esse percentual.
+
+-- Com função de alta ordem
+desconto :: PrecoProduto -> PrecoProduto
+desconto x = x - (x * 0.10)
+
+aplicarDesconto :: Catalogo -> (PrecoProduto -> PrecoProduto) -> Catalogo
+aplicarDesconto [] _ = []
+aplicarDesconto ((nome, preco, quantidade):t) f = (nome, f preco, quantidade) : aplicarDesconto t f 
+
+-- Sem função de alta ordem
+aplicarDesconto2 :: Catalogo -> Catalogo
+aplicarDesconto2 [] = []
+aplicarDesconto2 ((nome, preco, quantidade):t)= (nome, preco - (preco * 0.10), quantidade) : aplicarDesconto2 t

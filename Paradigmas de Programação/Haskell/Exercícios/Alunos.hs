@@ -40,3 +40,45 @@ pontoExtra x = x + 1.0
 processaNota :: Turma -> (NotaAluno -> NotaAluno) -> Turma
 processaNota [] _ = []
 processaNota ((nome, n1, n2):t) f = (nome, f n1, f n2) : processaNota t f
+
+
+-- ----------------------------------------------------------------------------------------------------------------
+
+-- b) Escreva uma função mediaAluno :: Aluno -> Double que calcule a média aritmética duas notas sem usar 
+-- divisão direta — some as notas recursivamente com uma função auxiliar
+-- somarDois :: Double -> Double -> Double e divida ao final.
+somarDois :: NotaAluno -> NotaAluno -> NotaAluno
+somarDois x y = x + y
+
+mediaAluno :: Aluno -> NotaAluno
+mediaAluno (_,0.0,0.0) = 0.0
+mediaAluno (_, n1, n2) = (somarDois n1 n2) / fromIntegral 2 
+
+-- c) Escreva uma função recursiva quantosAprovados :: [Aluno] -> Int que conte quantos alunos têm média maior 
+-- ou igual a 6.0. Utilize mediaAluno internamente.
+quantosAprovados :: Turma -> Int
+quantosAprovados [] = 0
+quantosAprovados (h:t)
+    | mediaAluno h > 6.0 = 1 + quantosAprovados t
+    | otherwise = quantosAprovados t
+
+-- d) Escreva uma função recursiva listarReprovados :: [Aluno] -> [NomeAluno] que retorne apenas os nomes dos 
+-- alunos com média menor que 6.0.
+listarReprovados :: Turma -> [NomeAluno]
+listarReprovados [] = []
+listarReprovados ((nome, n1, n2):t) =
+    if(mediaAluno (nome, n1, n2) < 6.0) then nome : listarReprovados t
+    else listarReprovados t 
+
+-- e) Escreva uma função recursiva de alta ordem classificar :: (Aluno -> Bool) -> [Aluno] -> [NomeAluno] que 
+-- receba um predicado e retorne os nomes dos alunos que o satisfazem. Reescreva listarReprovados usando classificar.
+notaAlta :: Aluno -> Bool
+notaAlta a
+    | mediaAluno a > 8.0 = True
+    | otherwise = False
+
+classificar :: (Aluno -> Bool) -> Turma -> [NomeAluno]
+classificar _ [] = []
+classificar f ((nome, n1, n2):t)
+    | notaAlta (nome, n1, n2) == True = [nome] ++ classificar f t 
+    | otherwise = classificar f t
