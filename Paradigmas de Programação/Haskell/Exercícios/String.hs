@@ -34,3 +34,18 @@ classificar [] _ = []
 classificar (h:t) f
     | f h = h : classificar t f
     | otherwise = classificar t f
+
+
+-- Questão 4
+
+analiseTexto :: [String] -> (Int, Int)
+analiseTexto [] = (0,0)
+analiseTexto (h:t)
+    | h == "" = (vazias + 1, soUm)
+    | temUm h = (vazias, soUm + 1)
+    | otherwise = (vazias, soUm)
+    where
+        (vazias, soUm) = analiseTexto t
+
+        temUm [_] = True
+        temUm _ = False
