@@ -1,6 +1,9 @@
 module Contas where
 
 -- Questão 1
+-- Escreva uma função chamada filtrarContas que receba um Banco, um valor limite de Saldo e um TipoConta. Utilizando obrigatoriamente um gerador de lista
+-- (list comprehension), a função deve retornar uma lista contendo apenas o Titular de todas as contas que possuam saldo maior ou igual ao limite fornecido 
+-- e que sejam do tipo especificado.
 
 baseContas :: Int -> (String, Float, String)
 baseContas x
