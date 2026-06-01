@@ -37,6 +37,9 @@ classificar (h:t) f
 
 
 -- Questão 4
+-- Escreva uma função recursiva chamada analiseTexto que receba uma lista de strings ([String]). Utilizando casamento de padrões (pattern matching) 
+-- na estrutura da lista (h:t), a função deve retornar uma tupla do tipo (Int, Int) contendo, respectivamente: a quantidade de strings vazias ("") e 
+-- a quantidade de strings que possuem exatamente 1 caractere.
 
 analiseTexto :: [String] -> (Int, Int)
 analiseTexto [] = (0,0)

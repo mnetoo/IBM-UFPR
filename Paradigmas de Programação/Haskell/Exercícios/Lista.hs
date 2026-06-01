@@ -1,6 +1,8 @@
 module Lista where
 
 -- Questão 3
+-- A função deve ser recursiva e aplicar a função de transformação (segundo parâmetro) em um elemento da lista apenas se este elemento satisfizer a 
+-- função de teste (terceiro parâmetro). Caso não satisfaça, o elemento deve ser mantido na lista sem alterações.
 
 ehPar :: Int -> Bool
 ehPar x
