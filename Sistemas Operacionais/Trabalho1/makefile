@@ -1,5 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -pthread -O2
+TARGET = programa
 
 all: main
 
