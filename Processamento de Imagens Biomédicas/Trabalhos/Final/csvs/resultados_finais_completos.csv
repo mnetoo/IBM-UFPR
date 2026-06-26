@@ -1,0 +1,19 @@
+Modelo,Características,Acurácia,Sensibilidade,Especificidade,F1-Score
+Random Forest,1. Radiômica Médico - Bruto,60.41,55.78,63.92,54.85
+Random Forest,2. Radiômica Médico - c/ PCA,59.53,57.14,61.34,54.9
+Random Forest,3. Radiômica Otsu - Bruto,65.1,66.67,63.92,62.22
+Random Forest,4. Radiômica Otsu - c/ PCA,60.7,62.59,59.28,57.86
+Random Forest,5. Radiômica Otsu + ResNet - Bruto,63.64,68.03,60.31,61.73
+Random Forest,6. Radiômica Otsu + ResNet - c/ PCA,58.65,65.31,53.61,57.66
+Random Forest,7. ResNet + Radiômica Médico - Bruto,64.22,68.03,61.34,62.11
+Random Forest,8. ResNet + Radiômica Médico - c/ PCA,58.94,64.63,54.64,57.58
+Random Forest,9. ResNet Pura,65.69,71.43,61.34,64.22
+SVM (RBF),1. Radiômica Médico - Bruto,60.12,58.5,61.34,55.84
+SVM (RBF),2. Radiômica Médico - c/ PCA,59.24,57.82,60.31,55.02
+SVM (RBF),3. Radiômica Otsu - Bruto,61.58,66.67,57.73,59.94
+SVM (RBF),4. Radiômica Otsu - c/ PCA,59.24,65.31,54.64,58.01
+SVM (RBF),5. Radiômica Otsu + ResNet - Bruto,67.74,72.79,63.92,66.05
+SVM (RBF),6. Radiômica Otsu + ResNet - c/ PCA,67.74,70.75,65.46,65.41
+SVM (RBF),7. ResNet + Radiômica Médico - Bruto,66.28,70.07,63.4,64.17
+SVM (RBF),8. ResNet + Radiômica Médico - c/ PCA,66.28,68.03,64.95,63.49
+SVM (RBF),9. ResNet Pura,67.16,70.75,64.43,65.0
